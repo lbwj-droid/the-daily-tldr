@@ -4,7 +4,7 @@
 import { readFile, writeFile, readdir, unlink, mkdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { fetchAll, fetchOgImage, fetchYoutubeMeta, shortId } from "./lib/feeds.mjs";
+import { fetchAll, fetchOgImage, fetchYoutubeMeta, shortId, pruneSiteSeen } from "./lib/feeds.mjs";
 import { makeClient, selectStories, rewriteHeadlines, verifyHeadlines } from "./lib/claude.mjs";
 import { loadFocus, effectiveSections, focusPromptBlock, focusToneBlock } from "./lib/focus.mjs";
 import { sheetsConfigured, ensureTabs, readRows, writeRows, clearTab, appendRows, toRow } from "../lib/sheets.mjs";
@@ -36,9 +36,14 @@ async function main() {
   // 1. Fetch every feed.
   const ytCachePath = path.join(root, "config", "youtube-ids.json");
   const ytCache = await readFile(ytCachePath, "utf8").then(JSON.parse).catch(() => ({}));
-  const readFixture = dryRun ? (s) => readFile(path.join(root, "test", "fixtures", `${shortId(s.name)}.xml`), "utf8") : undefined;
-  const { items, health } = await fetchAll(sources, { ytCache, readFixture });
-  if (!dryRun) await writeFile(ytCachePath, JSON.stringify(ytCache, null, 2) + "\n");
+  const readFixture = dryRun ? (s) => readFile(path.join(root, "test", "fixtures", `${shortId(s.name)}.${s.kind === "site" ? "html" : "xml"}`), "utf8") : undefined;
+  const siteSeenPath = path.join(root, "config", "site-seen.json");
+  const siteSeen = dryRun ? {} : await readFile(siteSeenPath, "utf8").then(JSON.parse).catch(() => ({}));
+  const { items, health } = await fetchAll(sources, { ytCache, readFixture, siteSeen });
+  if (!dryRun) {
+    await writeFile(ytCachePath, JSON.stringify(ytCache, null, 2) + "\n");
+    await writeFile(siteSeenPath, JSON.stringify(pruneSiteSeen(siteSeen), null, 2) + "\n");
+  }
   report.feeds = health.sort((a, b) => a.source.localeCompare(b.source));
   const failed = health.filter((h) => !h.ok).length;
   report.emptyFeeds = health.filter((h) => h.ok && h.items === 0).map((h) => h.source);

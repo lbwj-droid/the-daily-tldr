@@ -2,7 +2,7 @@
 
 Editor: Lester. Runs 14 days from 25 October 2026.
 
-Background for recognising stories (as reported by Reuters and AP in October 2026; never put any of this in a headline unless the item itself says it): a student- and youth-led movement is demanding the resignation of Chief Election Commissioner (CEC) Gyanesh Kumar over the electoral-roll revision (SIR) and alleged vote-rigging. It builds on earlier 2026 student protests over NEET exam paper leaks and the National Education Policy (NEP). Visible faces include Neha Bora (AISA national president), the Cockroach Janta Party (CJP), the INC and Rahul Gandhi, and Vishal Dadlani.
+Background for recognising stories (as reported by Reuters and AP in October 2026; never put any of this in a headline unless the item itself says it): a student- and youth-led movement is demanding the resignation of Chief Election Commissioner (CEC) Gyanesh Kumar over the electoral-roll revision (SIR) and alleged vote-rigging. It builds on earlier 2026 student protests over NEET exam paper leaks and the National Education Policy (NEP). Visible faces include Neha Bora (AISA national president); the Cockroach Janta Party (CJP), whose spokespersons are Abhijeet Dipke, Saurav Das and Ashutosh Ranka, and whose schools campaign is "School Thik Karo" (Fix Our Schools); the INC and Rahul Gandhi, whose education campaign is "Chhatron Ki Goonj"; and Vishal Dadlani. "CJP" in this brief always means the Cockroach Janta Party.
 
 ## 1. Scope
 
@@ -10,7 +10,8 @@ In:
 - Protests, marches, detentions and campaigns against the CEC and the Election Commission over the SIR and alleged vote-rigging.
 - Education: the NEP, NEET and other exam leaks, fees, campus crackdowns, and teachers' strikes.
 - Court and judicial hearings on any of the above.
-- The BJP's and the government's response: statements, police action, detentions, legislation.
+- The BJP's and the government's response: statements, police action, detentions, legislation. When the Election Commission or a ministry has issued its own statement, link that official statement (sources marked `official`) as one of the India links.
+- CJP's "School Thik Karo" (Fix Our Schools) campaign and the INC's "Chhatron Ki Goonj" campaign.
 
 Out:
 - Routine election news with no protest or accountability angle.
@@ -23,7 +24,7 @@ One global link a day: current student or youth protests in France or Italy. Com
 
 ## 3. Angle
 
-By the end of the two weeks the readers must understand exactly what the students are protesting and what they are fighting for. Rank highest the items that state the demands clearly: explainers, and interviews with movement leaders (Neha Bora, CJP, INC and Rahul Gandhi, Vishal Dadlani) or with Yogendra Yadav and Prashant Bhushan. Rank lower the items that only show clashes or crowd sizes.
+By the end of the two weeks the readers must understand exactly what the students are protesting and what they are fighting for. Rank highest the items that state the demands clearly: explainers, and interviews with movement leaders (Neha Bora; CJP spokespersons Abhijeet Dipke, Saurav Das and Ashutosh Ranka; Rahul Gandhi and the INC; Vishal Dadlani) or with Yogendra Yadav and Prashant Bhushan. Rank lower the items that only show clashes or crowd sizes.
 
 ## 4. Headline tone
 
@@ -31,7 +32,9 @@ The snarky Drudge voice is allowed here, punching up at authorities. Never mock 
 
 ## 5. Sources
 
-Prefer, in this order: interviews with Neha Bora and AISA; Cockroach Janta Party; INC (including Rahul Gandhi interviews); Dhruv Rathee; Griha Atul; Mojo Story; Naman Shrivastava; interviews with Yogendra Yadav or Prashant Bhushan on any channel; campus publications.
+Prefer, in this order: interviews with Neha Bora on any channel, and aisa.in; interviews with CJP spokespersons (Abhijeet Dipke, Saurav Das, Ashutosh Ranka) on any channel, and cockroachjantaparty.org; INC, including Rahul Gandhi interviews and rahulgandhi.in/chhatron-ki-goonj; Dhruv Rathee; Griha Atul; Mojo Story; Naman Shrivastava; interviews with Yogendra Yadav or Prashant Bhushan on any channel; coverage of "School Thik Karo" from any of these.
+
+CJP and Neha Bora mostly post on Instagram and X, which this pipeline cannot read, so their voices reach the page through interviews and coverage on the channels above.
 
 For this focus only, a single item from these sources qualifies on its own when it adds new information or explains the demands clearly.
 

@@ -1,5 +1,5 @@
 {
-  "_readme": "role: detect = used only to spot the day's big stories, never linked for politics; prefer = linked first wherever it covered a story; neutral = linked for sports, culture, tech, money and internet stories. kind: rss (url) or youtube (handle, user or channelId). tag: short label shown next to the link, used for party channels. Feeds that fail are skipped and listed in reports/last-run.json.",
+  "_readme": "role: official = a government body or the Election Commission, linked only for its own statement or response; detect = used only to spot the day's big stories, never linked for politics; prefer = linked first wherever it covered a story; neutral = linked for sports, culture, tech, money and internet stories. kind: rss (url), youtube (handle, handles, user or channelId) or site (a web page; uses its advertised feed if any, otherwise reads its article links). tag: short label shown next to the link, used for party channels. Feeds that fail are skipped and listed in reports/last-run.json.",
   "sources": [
     {
       "name": "BBC World",
@@ -77,12 +77,6 @@
       "role": "prefer",
       "kind": "youtube",
       "user": "grihaatul"
-    },
-    {
-      "name": "CJP",
-      "role": "prefer",
-      "kind": "rss",
-      "url": "https://cjp.org.in/feed/"
     },
     {
       "name": "Indian National Congress",
@@ -229,6 +223,20 @@
       "role": "neutral",
       "kind": "rss",
       "url": "https://www.highsnobiety.com/feed/"
+    },
+    {
+      "name": "Election Commission of India",
+      "role": "official",
+      "kind": "site",
+      "url": "https://www.eci.gov.in/",
+      "tag": "Official"
+    },
+    {
+      "name": "PIB (Government of India)",
+      "role": "official",
+      "kind": "rss",
+      "url": "https://pib.gov.in/RssMain.aspx?ModId=6&Lang=1&Regid=3",
+      "tag": "Official"
     }
   ]
 }

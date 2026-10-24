@@ -42,7 +42,7 @@ Give each reader `https://<your-site>.vercel.app/?r=<name>`. Each of them opens 
 
 | To change | Edit |
 | --- | --- |
-| Sources | `config/sources.json` (role: `detect`, `prefer` or `neutral`) |
+| Sources | `config/sources.json`. Roles: `detect`, `prefer`, `neutral`, or `official` (linked only for that body's own statement). Kinds: `rss`, `youtube`, or `site` (any web page: its feed if it has one, otherwise its article links, dated by when first seen) |
 | Sections, quotas, model, paywalled domains | `config/settings.json` |
 | What gets picked or excluded | `prompts/editorial.md` |
 | Headline voice and starter examples | `prompts/voice.md` |

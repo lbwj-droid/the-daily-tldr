@@ -138,10 +138,15 @@ async function pool(items, limit, fn) {
 }
 
 // Fetches every source. Returns the items plus a per-source health report; a failing feed never stops the run.
-export async function fetchAll(sources, { ytCache, readFixture } = {}) {
+export async function fetchAll(sources, { ytCache, readFixture, siteSeen = {} } = {}) {
   const health = [];
   const lists = await pool(sources, 8, async (source) => {
     try {
+      if (source.kind === "site") {
+        const items = await fetchSite(source, siteSeen, readFixture);
+        health.push({ source: source.name, ok: true, items: items.length, via: items.via });
+        return items;
+      }
       let xml;
       if (readFixture) xml = await readFixture(source);
       else {
@@ -183,4 +188,73 @@ export async function fetchYoutubeMeta(url) {
   } catch {
     return { url: watch, title: "", source: "YouTube", image: `https://i.ytimg.com/vi/${id}/hqdefault.jpg` };
   }
+}
+
+// Websites without a known feed: use the feed the page advertises if it has one, otherwise read the
+// page's article links. A plain link has no date, so it is dated by when the pipeline first saw it
+// (kept in config/site-seen.json). Links already there on a site's first visit are back-dated 48 hours,
+// which keeps them available to focus sections without flooding the regular page.
+async function fetchSite(source, siteSeen, readFixture) {
+  const html = readFixture ? await readFixture(source) : await get(source.url);
+  const feedUrl = discoverFeed(html, source.url);
+  if (feedUrl && !readFixture) {
+    try {
+      const items = parseFeed(await get(feedUrl), source);
+      if (items.length) return Object.assign(items, { via: "feed" });
+    } catch {}
+  }
+  return Object.assign(extractSiteLinks(html, source, siteSeen), { via: "page links" });
+}
+
+export function discoverFeed(html, pageUrl) {
+  const m = html.match(/<link[^>]+type=["']application\/(?:rss|atom)\+xml["'][^>]*>/i);
+  const href = m && m[0].match(/href=["']([^"']+)["']/i);
+  return href ? new URL(href[1].replace(/&amp;/g, "&"), pageUrl).href : "";
+}
+
+const NAV = /\b(login|log in|sign ?up|register|privacy|terms|contact|about us|donate|join us|subscribe|cookie|home|menu|search|read more|click here|share|whatsapp|facebook|instagram|twitter|youtube)\b/i;
+
+export function extractSiteLinks(html, source, siteSeen, now = Date.now()) {
+  const page = new URL(source.url);
+  const firstVisit = !Object.keys(siteSeen).some((k) => k.startsWith(`${page.hostname}|`));
+  const out = [];
+  const seenUrls = new Set();
+  for (const m of html.matchAll(/<a\b[^>]*href=["']([^"'#]+)["'][^>]*>([\s\S]*?)<\/a>/gi)) {
+    let url;
+    try {
+      url = new URL(m[1].replace(/&amp;/g, "&"), page);
+    } catch {
+      continue;
+    }
+    const title = clean(m[2], 220);
+    if (!/^https?:$/.test(url.protocol) || url.hostname.replace(/^www\./, "") !== page.hostname.replace(/^www\./, "")) continue;
+    if (url.pathname.replace(/\/$/, "") === page.pathname.replace(/\/$/, "") || url.pathname.split("/").filter(Boolean).length < 1) continue;
+    if (title.length < 25 || title.split(" ").length < 4 || NAV.test(title) || /\.(pdf|jpe?g|png|zip)$/i.test(url.pathname)) continue;
+    url.hash = "";
+    if (seenUrls.has(url.href)) continue;
+    seenUrls.add(url.href);
+    const key = `${page.hostname}|${url.href}`;
+    if (!siteSeen[key]) siteSeen[key] = new Date(firstVisit ? now - 48 * 3600e3 : now).toISOString();
+    out.push({
+      id: shortId(url.href),
+      source: source.name,
+      role: source.role,
+      tag: source.tag || "",
+      kind: "article",
+      title,
+      summary: "",
+      url: url.href,
+      published: siteSeen[key],
+      image: "",
+      isShort: false,
+    });
+    if (out.length >= 40) break;
+  }
+  return out;
+}
+
+// Drops first-seen records older than 30 days so config/site-seen.json stays small.
+export function pruneSiteSeen(siteSeen, now = Date.now()) {
+  for (const [k, v] of Object.entries(siteSeen)) if (now - Date.parse(v) > 30 * 86400e3) delete siteSeen[k];
+  return siteSeen;
 }

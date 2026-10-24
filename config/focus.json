@@ -59,9 +59,37 @@
         "Italy",
         "Italian students",
         "Rome",
-        "Milan"
+        "Milan",
+        "Cockroach Janta Party",
+        "Abhijeet Dipke",
+        "Saurav Das",
+        "Ashutosh Ranka",
+        "School Thik Karo",
+        "Fix Our Schools",
+        "Chhatron Ki Goonj",
+        "Chhatron ki Goonj"
       ],
       "sources": [
+        {
+          "name": "Cockroach Janta Party",
+          "role": "prefer",
+          "kind": "site",
+          "url": "https://www.cockroachjantaparty.org",
+          "tag": "CJP"
+        },
+        {
+          "name": "AISA",
+          "role": "prefer",
+          "kind": "site",
+          "url": "https://www.aisa.in"
+        },
+        {
+          "name": "Chhatron Ki Goonj (INC)",
+          "role": "prefer",
+          "kind": "site",
+          "url": "https://rahulgandhi.in/chhatron-ki-goonj",
+          "tag": "INC"
+        },
         {
           "name": "Naman Shrivastava",
           "role": "prefer",

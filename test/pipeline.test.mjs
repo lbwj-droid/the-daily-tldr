@@ -5,7 +5,7 @@ import { mkdtempSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { parseFeed, clean } from "../scripts/lib/feeds.mjs";
+import { parseFeed, clean, extractSiteLinks, discoverFeed } from "../scripts/lib/feeds.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const src = { name: "Test", role: "prefer" };
@@ -95,4 +95,24 @@ test("an expired or disabled focus leaves the page unchanged", async () => {
   writeFileSync(path.join(out, "f.json"), JSON.stringify({ focuses: [f, { ...f, key: "y", enabled: false, start: "2026-10-01", days: 100 }] }));
   assert.equal((await loadFocus(root, "2026-01-21", path.join(out, "f.json"))).active.length, 1, "day 21 is live");
   assert.equal((await loadFocus(root, "2026-01-22", path.join(out, "f.json"))).active.length, 0, "day 22 has ended");
+});
+
+test("website sources: finds an advertised feed, else reads article links and dates them by first sight", () => {
+  const page = "https://example.org/campaign";
+  assert.equal(discoverFeed('<link rel="alternate" type="application/rss+xml" href="/feed.xml">', page), "https://example.org/feed.xml");
+  assert.equal(discoverFeed("<html></html>", page), "");
+
+  const html = `<a href="/about">About us</a><a href="/donate">Donate to the movement today please</a>
+    <a href="/news/a">Students march on the Election Commission in large numbers</a>
+    <a href="/news/a">Students march on the Election Commission in large numbers</a>
+    <a href="https://other.org/x">An external link that should never be included here</a>`;
+  const seen = {};
+  const now = Date.parse("2026-10-25T00:00:00Z");
+  const first = extractSiteLinks(html, { name: "Site", role: "prefer", url: page }, seen, now);
+  assert.deepEqual(first.map((i) => i.url), ["https://example.org/news/a"], "nav, duplicate and external links dropped");
+  assert.equal(first[0].published, "2026-10-23T00:00:00.000Z", "links present on the first visit are back-dated 48h");
+
+  const later = extractSiteLinks(html + '<a href="/news/b">A brand new statement from the student union today</a>', { name: "Site", role: "prefer", url: page }, seen, now + 86400e3);
+  assert.equal(later.find((i) => i.url.endsWith("/news/b")).published, "2026-10-26T00:00:00.000Z", "new links dated when first seen");
+  assert.equal(later.find((i) => i.url.endsWith("/news/a")).published, "2026-10-23T00:00:00.000Z", "old links keep their first-seen date");
 });

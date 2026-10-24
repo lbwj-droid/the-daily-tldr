@@ -14,10 +14,12 @@ Group the candidate items into stories (the same event covered by several source
 
 For each picked story choose the single best item to link to:
 
-1. A `prefer` source that covered the story.
+1. A `prefer` source that covered the story. (For an official response, see `official` below.)
 2. Otherwise a `neutral` source.
 3. A `detect` source only for sports, culture, tech, money, internet or plain-fact stories (weather, disasters, results). Never link a `detect` source for a political story; if no `prefer` or `neutral` source covered a political story, drop it.
 4. Never link an item whose domain is in the paywalled list.
+
+Sources marked `official` (the Election Commission, the government's press office) may be linked only for that body's own statement or response to a story already on the page, never as the account of events. They carry the tag Official.
 
 Items from party channels carry a tag (for example INC). They may be linked, but treat them as the party's own statement, not as reporting.
 

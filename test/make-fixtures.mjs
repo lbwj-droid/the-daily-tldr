@@ -56,6 +56,14 @@ const F = {
   Highsnobiety: rss([["Loafers are back and this time they have a lug sole", "Menswear trend report.", 12], ["The kurta-and-sneakers rule book", "Styling guide.", 18]]),
 };
 
+const SITES = {
+  "Cockroach Janta Party": `<html><head><title>CJP</title></head><body><nav><a href="/about">About us</a><a href="/donate">Donate to the movement today</a></nav>
+    <main><a href="/news/school-thik-karo-week-two">School Thik Karo enters week two with 40 new schools surveyed</a>
+    <a href="/news/spokesperson-statement-detentions">Spokesperson statement on student detentions outside the Election Commission</a>
+    <a href="https://www.instagram.com/cockroachjantaparty">Follow us on Instagram for daily updates</a></main></body></html>`,
+};
+
 await mkdir(dir, { recursive: true });
+for (const [name, html] of Object.entries(SITES)) await writeFile(path.join(dir, `${shortId(name)}.html`), html);
 for (const [name, xml] of Object.entries(F)) await writeFile(path.join(dir, `${shortId(name)}.xml`), xml);
 console.log(`Wrote ${Object.keys(F).length} fixture feeds to ${dir}`);
