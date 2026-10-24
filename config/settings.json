@@ -1,0 +1,25 @@
+{
+  "siteName": "The Daily TL;DR",
+  "timezone": "Asia/Kolkata",
+  "archiveDays": 14,
+  "lookbackHours": 30,
+  "maxItemsPerFeed": 25,
+  "model": "claude-opus-5-5",
+  "effort": "medium",
+  "footerNote": "Clicks are counted so Uncle Lester knows what lands.",
+  "helpline": "Need to talk? Tele-MANAS, free and 24x7: call 14416.",
+  "sections": [
+    { "key": "india", "title": "India", "quota": 4, "covers": "Indian politics, society, women's safety, India climate and environment" },
+    { "key": "world", "title": "World", "quota": 4, "covers": "Geopolitics, wars and diplomacy, global climate" },
+    { "key": "culture", "title": "Culture & Entertainment", "quota": 3, "covers": "Film, OTT and streaming, music, K-pop, celebrity news" },
+    { "key": "sports", "title": "Sports", "quota": 3, "covers": "Cricket, football, major global competitions" },
+    { "key": "techmoney", "title": "Tech & Money", "quota": 3, "covers": "Technology, AI, startups, markets, personal finance" },
+    { "key": "internet", "title": "Internet & Style", "quota": 2, "covers": "Social media and internet culture, memes, creators, men's fashion" }
+  ],
+  "independentPathMax": 4,
+  "paywalledDomains": [
+    "nytimes.com", "wsj.com", "ft.com", "economist.com", "bloomberg.com", "washingtonpost.com",
+    "theinformation.com", "thehindu.com", "hindustantimes.com", "indianexpress.com",
+    "economictimes.indiatimes.com", "business-standard.com", "theken.com", "the-ken.com", "newslaundry.com"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "the-daily-tldr",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The Daily TL;DR: a daily Drudge-style news board for the niblings",
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "build": "node scripts/build-edition.mjs",
+    "dry-run": "node scripts/build-edition.mjs --dry-run",
+    "dev": "node scripts/dev-server.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.3.0",
+    "fast-xml-parser": "^5.3.0",
+    "google-auth-library": "^10.5.0"
+  }
+}

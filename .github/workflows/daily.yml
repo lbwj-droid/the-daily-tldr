@@ -1,0 +1,55 @@
+name: Daily edition
+
+on:
+  schedule:
+    # 00:52 UTC = 06:22 IST, so the page is ready by 06:30. GitHub can start scheduled jobs a few minutes late.
+    - cron: "52 0 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-edition
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Fails (and GitHub emails the owner) if no edition could be built. The site then keeps yesterday's page.
+      - name: Build today's edition
+        run: node scripts/build-edition.mjs
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SHEET_ID: ${{ secrets.SHEET_ID }}
+          GOOGLE_SA_KEY: ${{ secrets.GOOGLE_SA_KEY }}
+
+      - name: Publish (commit the edition; Vercel redeploys on push)
+        run: |
+          git config user.name "daily-tldr-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data reports config/youtube-ids.json
+          if git diff --cached --quiet; then echo "Nothing to publish"; exit 0; fi
+          git commit -m "Edition $(TZ=Asia/Kolkata date +%F)"
+          for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push && exit 0; sleep $((i * 5)); done
+          exit 1
+
+      # Published, but something needs a look (feeds down, Sheet unreachable, a thin section): fail so GitHub emails.
+      - name: Check run report for warnings
+        run: |
+          node -e '
+            const r = require("./reports/last-run.json");
+            for (const w of r.warnings) console.log("::warning::" + w);
+            if (r.warnings.length) process.exit(1);
+          '
