@@ -88,8 +88,11 @@
       "name": "Indian National Congress",
       "role": "prefer",
       "kind": "youtube",
-      "handle": "INCIndia",
-      "tag": "INC"
+      "tag": "INC",
+      "handles": [
+        "IndianNationalCongress",
+        "INCIndia"
+      ]
     },
     {
       "name": "Rahul Gandhi",

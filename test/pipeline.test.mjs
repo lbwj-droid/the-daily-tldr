@@ -78,6 +78,8 @@ test("a live focus gets its own section first and the regular sections shrink", 
   assert.deepEqual(edition.sections.slice(0, 2).map((s) => s.key), ["campus", "mideast"]);
   assert.equal(edition.sections[0].focus, true);
   assert.equal(edition.sections[0].day, 1);
+  const pins = config.focuses.find((f) => f.key === "campus").pins || [];
+  pins.forEach((p, n) => assert.equal(edition.sections[0].items[n].pinned, true, "pinned starter links come first"));
   const all = [edition.lead, ...edition.sections.flatMap((s) => s.items)];
   assert.ok(all.some((i) => /hunger strike/.test(i.original_headline)), "campus story is on the page");
   assert.ok(edition.sections.find((s) => s.key === "mideast").items.some((i) => /Hormuz/.test(i.original_headline)), "Hormuz story in its focus");

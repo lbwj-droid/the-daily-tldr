@@ -171,3 +171,16 @@ export async function fetchOgImage(url) {
     return "";
   }
 }
+
+// Title and channel of a YouTube video via its public oEmbed endpoint (used for pinned links).
+export async function fetchYoutubeMeta(url) {
+  const id = (url.match(/(?:v=|\/live\/|youtu\.be\/|\/shorts\/)([\w-]{11})/) || [])[1];
+  if (!id) return null;
+  const watch = `https://www.youtube.com/watch?v=${id}`;
+  try {
+    const meta = JSON.parse(await get(`https://www.youtube.com/oembed?url=${encodeURIComponent(watch)}&format=json`, 8000));
+    return { url: watch, title: clean(meta.title || ""), source: meta.author_name || "YouTube", image: `https://i.ytimg.com/vi/${id}/hqdefault.jpg` };
+  } catch {
+    return { url: watch, title: "", source: "YouTube", image: `https://i.ytimg.com/vi/${id}/hqdefault.jpg` };
+  }
+}

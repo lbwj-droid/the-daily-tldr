@@ -4,7 +4,7 @@
 import { readFile, writeFile, readdir, unlink, mkdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { fetchAll, fetchOgImage, shortId } from "./lib/feeds.mjs";
+import { fetchAll, fetchOgImage, fetchYoutubeMeta, shortId } from "./lib/feeds.mjs";
 import { makeClient, selectStories, rewriteHeadlines, verifyHeadlines } from "./lib/claude.mjs";
 import { loadFocus, effectiveSections, focusPromptBlock, focusToneBlock } from "./lib/focus.mjs";
 import { sheetsConfigured, ensureTabs, readRows, writeRows, clearTab, appendRows, toRow } from "../lib/sheets.mjs";
@@ -142,6 +142,17 @@ async function main() {
     thumbnail: p.thumb || undefined,
     helpline: p.helpline || undefined,
   });
+  // Pinned starter links from config/focus.json sit at the top of their focus section, outside its link cap.
+  const pinsBySection = {};
+  for (const f of focus.active) {
+    pinsBySection[f.key] = [];
+    for (const pin of f.pins || []) {
+      const meta = dryRun ? { url: pin.url, title: "", source: "YouTube" } : (await fetchYoutubeMeta(pin.url)) || { url: pin.url, title: "", source: new URL(pin.url).hostname };
+      const title = pin.headline || meta.title || "Start here";
+      pinsBySection[f.key].push({ id: shortId(meta.url), section: f.key, rank: 0, headline: title, original_headline: title, url: meta.url, source: meta.source, kind: /youtube\.com/.test(meta.url) ? "video" : "article", thumbnail: meta.image, pinned: true });
+    }
+  }
+  const pinnedUrls = new Set(Object.values(pinsBySection).flat().map((p) => p.url));
   const lead = picks.find((p) => p.isLead);
   const edition = {
     date: settings.today,
@@ -151,7 +162,7 @@ async function main() {
       key: s.key,
       title: s.title,
       ...(s.focus ? { focus: true, day: s.day, days: s.days } : {}),
-      items: picks.filter((p) => !p.isLead && p.section === s.key).map(toItem),
+      items: [...(pinsBySection[s.key] || []), ...picks.filter((p) => !p.isLead && p.section === s.key && !pinnedUrls.has(p.url)).map(toItem)],
     })),
   };
   for (const s of settings.sections.filter((x) => !x.focus)) {
@@ -180,9 +191,10 @@ function validatePicks(selection, byCid, settings) {
   const take = (p, isLead) => {
     const item = byCid.get(p.item_id);
     if (!item || used.has(item.cid) || item.paywalled || item.isShort) return;
-    if (p.path === "independent" && ++independent > settings.independentPathMax) return;
     const section = settings.sections.find((s) => s.key === p.section);
     if (!section || (item.focusOnly && !section.focus)) return;
+    // Focus briefs may let single-source items in, so the daily cap applies to regular sections only.
+    if (p.path === "independent" && !section.focus && ++independent > settings.independentPathMax) return;
     const rank = out.filter((o) => !o.isLead && o.section === p.section).length + 1;
     if (!isLead && rank > section.quota) return;
     used.add(item.cid);
