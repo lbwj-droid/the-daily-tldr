@@ -1,16 +1,18 @@
 // Builds one day's edition: fetch feeds, pick stories, rewrite headlines, publish JSON, sync the Google Sheet.
-// Usage: node scripts/build-edition.mjs [--dry-run] [--out <dir>]
+// Usage: node scripts/build-edition.mjs [--dry-run] [--out <dir>] [--focus <focus.json>]
 //   --dry-run  reads test/fixtures instead of the internet and skips Claude and Sheets.
 import { readFile, writeFile, readdir, unlink, mkdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { fetchAll, fetchOgImage, shortId } from "./lib/feeds.mjs";
 import { makeClient, selectStories, rewriteHeadlines, verifyHeadlines } from "./lib/claude.mjs";
+import { loadFocus, effectiveSections, focusPromptBlock, focusToneBlock } from "./lib/focus.mjs";
 import { sheetsConfigured, ensureTabs, readRows, writeRows, clearTab, appendRows, toRow } from "../lib/sheets.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
 const dryRun = args.includes("--dry-run");
+const focusPath = args.includes("--focus") ? path.resolve(args[args.indexOf("--focus") + 1]) : undefined;
 const outDir = args.includes("--out") ? path.resolve(args[args.indexOf("--out") + 1]) : path.join(root, "public", "data");
 
 const PRICES = { "claude-opus-5-5": [4, 20], "claude-sonnet-5-5": [2, 10], "claude-haiku-5-5": [0.1, 0.5] };
@@ -21,9 +23,15 @@ const report = { started: new Date().toISOString(), dryRun, warnings: [], usage:
 
 async function main() {
   const settings = await readJson("config/settings.json");
-  const { sources } = await readJson("config/sources.json");
+  const { sources: regularSources } = await readJson("config/sources.json");
   settings.today = process.env.EDITION_DATE || istDate();
   report.date = settings.today;
+
+  // Focus topics live today get their own sections first; the regular sections shrink.
+  const focus = await loadFocus(root, settings.today, focusPath);
+  settings.sections = effectiveSections(settings.sections, focus);
+  report.focus = focus.active.map((f) => ({ key: f.key, title: f.title, day: f.day, of: f.days }));
+  const sources = [...regularSources, ...focus.active.flatMap((f) => (f.sources || []).map((s) => ({ ...s, focus: f.key })))];
 
   // 1. Fetch every feed.
   const ytCachePath = path.join(root, "config", "youtube-ids.json");
@@ -38,12 +46,15 @@ async function main() {
 
   // 2. Keep recent, unique, linkable candidates.
   const cutoff = dryRun ? 0 : Date.now() - settings.lookbackHours * 3600e3;
+  const focusCutoff = dryRun ? 0 : Date.now() - Math.max(settings.lookbackHours, ...focus.active.map((f) => f.lookbackHours || 0)) * 3600e3;
+  const isFocusMatch = (i) => focus.active.some((f) => f.matches(i));
   const paywalled = (url) => settings.paywalledDomains.some((d) => new URL(url).hostname.replace(/^www\./, "").endsWith(d));
   const seenUrl = new Set();
   const seenTitle = new Set();
   const perSource = {};
   const candidates = items
-    .filter((i) => i.title && /^https?:\/\//.test(i.url) && !i.isShort && i.published && Date.parse(i.published) >= cutoff)
+    .filter((i) => i.title && /^https?:\/\//.test(i.url) && !i.isShort && i.published)
+    .filter((i) => Date.parse(i.published) >= cutoff || (Date.parse(i.published) >= focusCutoff && isFocusMatch(i)))
     .sort((a, b) => b.published.localeCompare(a.published))
     .filter((i) => {
       const t = i.title.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
@@ -54,17 +65,19 @@ async function main() {
       seenTitle.add(t);
       return true;
     })
-    .map((i, n) => ({ ...i, cid: `c${n + 1}`, paywalled: paywalled(i.url) }));
+    .map((i, n) => ({ ...i, cid: `c${n + 1}`, paywalled: paywalled(i.url), focusOnly: Date.parse(i.published) < cutoff }));
   report.candidates = candidates.length;
+  // How much raw material each focus had today: tells us whether its link count is realistic.
+  report.focusCoverage = Object.fromEntries(focus.active.map((f) => [f.key, candidates.filter((c) => f.matches(c)).length]));
   if (candidates.length < 30) throw new Error(`Only ${candidates.length} candidate items; feeds look broken, keeping yesterday's page`);
   const byCid = new Map(candidates.map((c) => [c.cid, c]));
 
   // 3. Pick the stories.
   const client = dryRun ? null : makeClient();
   let selection;
-  if (dryRun) selection = heuristicSelect(candidates, settings);
+  if (dryRun) selection = heuristicSelect(candidates, settings, focus);
   else {
-    const editorial = await readFile(path.join(root, "prompts", "editorial.md"), "utf8");
+    const editorial = (await readFile(path.join(root, "prompts", "editorial.md"), "utf8")) + focusPromptBlock(focus, settings);
     const res = await selectStories({ client, settings, editorial, candidates });
     report.usage.push({ step: "select", model: res.model, ...res.usage });
     selection = res.data;
@@ -87,7 +100,7 @@ async function main() {
 
   let rewritten = {};
   if (!dryRun) {
-    const voice = await readFile(path.join(root, "prompts", "voice.md"), "utf8");
+    const voice = (await readFile(path.join(root, "prompts", "voice.md"), "utf8")) + focusToneBlock(focus);
     const res = await rewriteHeadlines({ client, settings, voice, styleExamples, picks });
     report.usage.push({ step: "rewrite", model: res.model, ...res.usage });
     rewritten = Object.fromEntries(res.data.headlines.map((h) => [h.item_id, h.headline]));
@@ -137,10 +150,11 @@ async function main() {
     sections: settings.sections.map((s) => ({
       key: s.key,
       title: s.title,
+      ...(s.focus ? { focus: true, day: s.day, days: s.days } : {}),
       items: picks.filter((p) => !p.isLead && p.section === s.key).map(toItem),
     })),
   };
-  for (const s of settings.sections) {
+  for (const s of settings.sections.filter((x) => !x.focus)) {
     const got = edition.sections.find((x) => x.key === s.key).items.length;
     if (got < s.quota - 1) report.warnings.push(`Section ${s.title} has ${got} of ${s.quota} links`);
   }
@@ -168,7 +182,7 @@ function validatePicks(selection, byCid, settings) {
     if (!item || used.has(item.cid) || item.paywalled || item.isShort) return;
     if (p.path === "independent" && ++independent > settings.independentPathMax) return;
     const section = settings.sections.find((s) => s.key === p.section);
-    if (!section) return;
+    if (!section || (item.focusOnly && !section.focus)) return;
     const rank = out.filter((o) => !o.isLead && o.section === p.section).length + 1;
     if (!isLead && rank > section.quota) return;
     used.add(item.cid);
@@ -180,7 +194,7 @@ function validatePicks(selection, byCid, settings) {
 }
 
 // Dry-run stand-in for Claude: sorts candidates into sections by source and keywords.
-function heuristicSelect(candidates, settings) {
+function heuristicSelect(candidates, settings, focus) {
   const neutralSection = {
     ESPNcricinfo: "sports", "BBC Sport": "sports", "BBC Football": "sports",
     "BBC Entertainment": "culture", "Film Companion": "culture", Soompi: "culture",
@@ -190,9 +204,15 @@ function heuristicSelect(candidates, settings) {
   };
   const indiaWords = /india|delhi|mumbai|modi|bjp|congress|rahul|kerala|bihar|tamil|karnataka|maharashtra|rupee|lok sabha|data bill|data protection|exam|metro|night-bus/i;
   const pool = candidates.filter((c) => c.role !== "detect" && !c.paywalled);
-  const picks = pool.map((c) => ({
+  const sectionFor = (c) => {
+    const f = focus.active.find((x) => x.matches(c));
+    if (f) return f.key;
+    if (c.focusOnly) return null;
+    return c.role === "neutral" ? neutralSection[c.source] || "world" : indiaWords.test(c.title + c.summary) ? "india" : "world";
+  };
+  const picks = pool.filter((c) => sectionFor(c)).map((c) => ({
     item_id: c.cid,
-    section: c.role === "neutral" ? neutralSection[c.source] || "world" : indiaWords.test(c.title + c.summary) ? "india" : "world",
+    section: sectionFor(c),
     story: c.title.slice(0, 60),
     path: c.role === "neutral" ? "neutral" : "independent",
     helpline: false,
@@ -229,7 +249,8 @@ async function syncStyle(todayRows) {
 async function syncToday(existing, edition, settings) {
   const oldest = istDate(new Date(Date.parse(`${edition.date}T12:00:00+05:30`) - (settings.archiveDays - 1) * 86400e3));
   const edited = (r) => r.my_headline || r.status || !r.ai_headline;
-  const keep = existing.filter((r) => r.date >= oldest && (r.date !== edition.date || edited(r)));
+  const pinned = (r) => r.status.trim().toLowerCase() === "pin";
+  const keep = existing.filter((r) => pinned(r) || (r.date >= oldest && (r.date !== edition.date || edited(r))));
   const kept = new Set(keep.filter((r) => r.date === edition.date).map((r) => r.id));
   const items = [edition.lead, ...edition.sections.flatMap((s) => s.items)].filter(Boolean);
   const fresh = items

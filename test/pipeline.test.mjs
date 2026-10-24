@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, readFileSync, readdirSync } from "node:fs";
+import { mkdtempSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -62,4 +62,35 @@ test("dry run builds a valid edition from fixtures", () => {
     const quota = settings.sections.find((x) => x.key === s.key).quota;
     assert.ok(s.items.length <= quota, `${s.key} within quota`);
   }
+});
+
+test("a live focus gets its own section first and the regular sections shrink", () => {
+  execFileSync("node", [path.join(root, "test", "make-fixtures.mjs")]);
+  const out = mkdtempSync(path.join(tmpdir(), "tldr-focus-"));
+  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata" }).format(new Date());
+  const config = JSON.parse(readFileSync(path.join(root, "config", "focus.json"), "utf8"));
+  for (const f of config.focuses) Object.assign(f, { enabled: true, start: today });
+  const focusFile = path.join(out, "focus.json");
+  writeFileSync(focusFile, JSON.stringify(config));
+  execFileSync("node", [path.join(root, "scripts", "build-edition.mjs"), "--dry-run", "--out", out, "--focus", focusFile]);
+  const [file] = readdirSync(path.join(out, "editions"));
+  const edition = JSON.parse(readFileSync(path.join(out, "editions", file), "utf8"));
+  assert.deepEqual(edition.sections.slice(0, 2).map((s) => s.key), ["campus", "mideast"]);
+  assert.equal(edition.sections[0].focus, true);
+  assert.equal(edition.sections[0].day, 1);
+  const all = [edition.lead, ...edition.sections.flatMap((s) => s.items)];
+  assert.ok(all.some((i) => /hunger strike/.test(i.original_headline)), "campus story is on the page");
+  assert.ok(edition.sections.find((s) => s.key === "mideast").items.some((i) => /Hormuz/.test(i.original_headline)), "Hormuz story in its focus");
+  for (const [key, quota] of Object.entries(config.regularQuotasWhenFocused)) {
+    assert.ok(edition.sections.find((s) => s.key === key).items.length <= quota, `${key} shrinks to ${quota}`);
+  }
+});
+
+test("an expired or disabled focus leaves the page unchanged", async () => {
+  const { loadFocus } = await import("../scripts/lib/focus.mjs");
+  const out = mkdtempSync(path.join(tmpdir(), "tldr-focus-"));
+  const f = { key: "x", title: "X", enabled: true, start: "2026-01-01", days: 21, maxLinks: 3, brief: "prompts/focus/_TEMPLATE.md", keywords: [] };
+  writeFileSync(path.join(out, "f.json"), JSON.stringify({ focuses: [f, { ...f, key: "y", enabled: false, start: "2026-10-01", days: 100 }] }));
+  assert.equal((await loadFocus(root, "2026-01-21", path.join(out, "f.json"))).active.length, 1, "day 21 is live");
+  assert.equal((await loadFocus(root, "2026-01-22", path.join(out, "f.json"))).active.length, 0, "day 22 has ended");
 });

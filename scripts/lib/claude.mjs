@@ -48,9 +48,9 @@ export async function selectStories({ client, settings, editorial, candidates })
   const sectionList = settings.sections.map((s) => `- ${s.key} (${s.title}): ${s.quota} stories. Covers ${s.covers}.`).join("\n");
   const system = editorial.replaceAll("{{independentPathMax}}", String(settings.independentPathMax)).replaceAll("{{sectionList}}", sectionList);
   const lines = candidates.map((c) =>
-    [c.cid, c.role, c.source + (c.tag ? ` [${c.tag}]` : "") + (c.kind === "video" ? " (video)" : ""), c.published.slice(0, 16), c.paywalled ? "PAYWALLED" : "", c.title, c.summary].join(" | "),
+    [c.cid, c.role, c.source + (c.tag ? ` [${c.tag}]` : "") + (c.kind === "video" ? " (video)" : ""), c.published.slice(0, 16), [c.paywalled && "PAYWALLED", c.focusOnly && "FOCUS-ONLY"].filter(Boolean).join(" "), c.title, c.summary].join(" | "),
   );
-  const user = `Today is ${settings.today} (India time). Here are ${candidates.length} candidate items, one per line:\nid | role | source | published (UTC) | paywall | title | summary\n\n${lines.join("\n")}\n\nApply the editorial rules and return the lead and the section picks.`;
+  const user = `Today is ${settings.today} (India time). Here are ${candidates.length} candidate items, one per line:\nid | role | source | published (UTC) | flags | title | summary\n\n${lines.join("\n")}\n\nApply the editorial rules and return the lead and the section picks.`;
   return askJson(client, { model: settings.model, effort: settings.effort, system, user, schema });
 }
 

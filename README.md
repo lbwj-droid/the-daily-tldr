@@ -20,8 +20,19 @@ If the build fails, nothing is committed, so the site keeps the last good page, 
 | Column | What to do |
 | --- | --- |
 | `my_headline` | Type your own headline. It replaces Claude's on the live page within about 5 minutes, and it becomes a style example for tomorrow's rewrite. |
-| `status` | `hide` removes the link. `lead` makes it the top story. |
+| `status` | `hide` removes the link. `lead` makes it the top story. `pin` keeps it at the top of its section every day. |
 | New row | To add a link of your own, fill in `date`, `section` (india, world, culture, sports, techmoney, internet), `url` and `my_headline`. Leave `ai_headline` blank. |
+
+## Focus topics (showcase sections)
+
+A focus is a time-boxed section shown under the lead, for example "Campus Watch, Day 6 of 21". Several can run at once.
+
+1. Write the brief: copy `prompts/focus/_TEMPLATE.md` (or edit `campus.md` / `mideast.md`) and fill in its 7 parts.
+2. In `config/focus.json`, set the focus's `enabled` to `true`, plus its `start` date, `days`, `maxLinks` and any extra `sources`.
+3. While any focus is live, the regular sections shrink to `regularQuotasWhenFocused`. When the last day passes, the page goes back to normal by itself.
+4. **Pinned links:** in the Sheet, add a row with `section` set to the focus key (`campus`, `mideast`), plus `url` and `my_headline`, and `status` = `pin`. It stays at the top of that section every day, marked START HERE, until you clear the status. Pins can also go in regular sections.
+
+Each run's `reports/last-run.json` shows `focusCoverage`: how many candidate stories matched each focus that day. Use it to check whether `maxLinks` is realistic.
 
 ## Personal links for readers
 
@@ -35,6 +46,7 @@ Give each reader `https://<your-site>.vercel.app/?r=<name>`. Each of them opens 
 | Sections, quotas, model, paywalled domains | `config/settings.json` |
 | What gets picked or excluded | `prompts/editorial.md` |
 | Headline voice and starter examples | `prompts/voice.md` |
+| Focus topics | `config/focus.json` and `prompts/focus/*.md` |
 
 ## One-time setup
 

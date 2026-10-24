@@ -1,0 +1,30 @@
+{
+  "_readme": "Focus topics: time-boxed showcase sections that appear right under the lead story. A focus is live when enabled is true and today (India time) falls within start + days. While any focus is live, the regular sections shrink to regularQuotasWhenFocused. keywords only decide which older items (up to lookbackHours) are kept as focus candidates; Claude still judges relevance from the brief. sources are extra feeds fetched only while that focus is live, same format as config/sources.json. Pin a link to a focus section from the Sheet: set section to the focus key and status to pin.",
+  "regularQuotasWhenFocused": { "india": 2, "world": 2, "culture": 2, "sports": 2, "techmoney": 1, "internet": 2 },
+  "focuses": [
+    {
+      "key": "campus",
+      "title": "Campus Watch",
+      "enabled": false,
+      "start": "2026-10-27",
+      "days": 21,
+      "maxLinks": 5,
+      "lookbackHours": 72,
+      "brief": "prompts/focus/campus.md",
+      "keywords": ["student", "students", "campus", "university", "universities", "college", "JNU", "Jamia", "AMU", "Delhi University", "hunger strike", "protest", "protesters", "ABVP", "SFI", "NSUI", "AISA", "UGC", "NEET", "paper leak", "Gen Z protest"],
+      "sources": []
+    },
+    {
+      "key": "mideast",
+      "title": "Israel & Hormuz Watch",
+      "enabled": false,
+      "start": "2026-10-27",
+      "days": 21,
+      "maxLinks": 4,
+      "lookbackHours": 72,
+      "brief": "prompts/focus/mideast.md",
+      "keywords": ["Israel", "Israeli", "Gaza", "West Bank", "IDF", "Netanyahu", "Hamas", "Hezbollah", "Lebanon", "Iran", "Iranian", "Tehran", "Hormuz", "Strait", "tanker", "Houthi", "Red Sea", "Gulf", "UAE", "Dubai", "Abu Dhabi", "Saudi", "Qatar", "Oman", "Brent", "oil price", "shipping"],
+      "sources": []
+    }
+  ]
+}

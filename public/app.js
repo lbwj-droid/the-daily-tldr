@@ -77,6 +77,13 @@
       promoted.section = "lead";
       edition.lead = promoted;
     }
+    // Pinned links go to the top of their section, every day, ahead of the day's picks.
+    ((ov && ov.pinned) || []).slice().reverse().forEach(function (p) {
+      var s = edition.sections.filter(function (x) { return x.key === p.section; })[0];
+      if (!s || (edition.lead && edition.lead.url === p.url)) return;
+      edition.sections.forEach(function (x) { x.items = x.items.filter(function (i) { return i.url !== p.url; }); });
+      s.items.unshift(p);
+    });
     if (edition.lead && edition.lead.hidden) edition.lead = null;
     edition.sections.forEach(function (s) { s.items = s.items.filter(function (i) { return !i.hidden; }); });
     return edition;
@@ -95,6 +102,7 @@
     wrap.appendChild(a);
 
     var meta = el("div", { class: "meta" });
+    if (item.pinned) meta.appendChild(el("span", { class: "pin" }, "Start here"));
     if (item.tag) meta.appendChild(el("span", { class: "tag" }, "[" + item.tag + "]"));
     meta.appendChild(el("span", null, (item.kind === "video" ? "▶ Video · " : "") + (item.source || "")));
     if (item.original_headline && item.original_headline !== item.headline) {
@@ -124,16 +132,20 @@
       lead.appendChild(itemNode(edition.lead, edition.date, true, true));
       page.appendChild(lead);
     }
+    var band = el("div", { class: "focus-band" });
     var grid = el("div", { class: "sections" });
     edition.sections.forEach(function (s) {
       if (!s.items.length) return;
-      var sec = el("section", { class: "section", "aria-labelledby": "h-" + s.key });
-      sec.appendChild(el("h2", { id: "h-" + s.key }, s.title));
+      var sec = el("section", { class: s.focus ? "section focus" : "section", "aria-labelledby": "h-" + s.key });
+      var h = el("h2", { id: "h-" + s.key }, s.title);
+      if (s.focus && s.day) h.appendChild(el("span", { class: "day" }, "Day " + s.day + " of " + s.days));
+      sec.appendChild(h);
       var ul = el("ul");
       s.items.forEach(function (item, n) { ul.appendChild(itemNode(item, edition.date, n === 0, false)); });
       sec.appendChild(ul);
-      grid.appendChild(sec);
+      (s.focus ? band : grid).appendChild(sec);
     });
+    if (band.childNodes.length) page.appendChild(band);
     page.appendChild(grid);
 
     var all = [edition.lead].concat.apply([], edition.sections.map(function (s) { return s.items; }));
