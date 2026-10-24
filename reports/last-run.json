@@ -1,0 +1,303 @@
+{
+  "started": "2026-10-24T13:39:08.386Z",
+  "dryRun": false,
+  "warnings": [
+    "Section India has 2 of 4 links"
+  ],
+  "usage": [
+    {
+      "step": "select",
+      "model": "claude-opus-5-5",
+      "input_tokens": 47744,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 3248,
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard",
+      "iterations": [
+        {
+          "input_tokens": 47744,
+          "output_tokens": 3248,
+          "cache_read_input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 0
+          },
+          "type": "message",
+          "model": null
+        }
+      ],
+      "output_tokens_details": {
+        "thinking_tokens": 2250
+      }
+    },
+    {
+      "step": "rewrite",
+      "model": "claude-opus-5-5",
+      "input_tokens": 3092,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 2596,
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard",
+      "iterations": [
+        {
+          "input_tokens": 3092,
+          "output_tokens": 2596,
+          "cache_read_input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 0
+          },
+          "type": "message",
+          "model": null
+        }
+      ],
+      "output_tokens_details": {
+        "thinking_tokens": 1800
+      }
+    }
+  ],
+  "date": "2026-10-24",
+  "feeds": [
+    {
+      "source": "Al Jazeera",
+      "ok": true,
+      "items": 25
+    },
+    {
+      "source": "Alt News",
+      "ok": true,
+      "items": 10
+    },
+    {
+      "source": "Article 14",
+      "ok": true,
+      "items": 0
+    },
+    {
+      "source": "BBC Entertainment",
+      "ok": true,
+      "items": 24
+    },
+    {
+      "source": "BBC Football",
+      "ok": true,
+      "items": 78
+    },
+    {
+      "source": "BBC India",
+      "ok": true,
+      "items": 16
+    },
+    {
+      "source": "BBC Sport",
+      "ok": true,
+      "items": 61
+    },
+    {
+      "source": "BBC World",
+      "ok": true,
+      "items": 28
+    },
+    {
+      "source": "Beatroot News (Faye D'Souza)",
+      "ok": false,
+      "error": "HTTP 404"
+    },
+    {
+      "source": "Breaking Points",
+      "ok": true,
+      "items": 15
+    },
+    {
+      "source": "Carbon Brief",
+      "ok": true,
+      "items": 12
+    },
+    {
+      "source": "CJP",
+      "ok": true,
+      "items": 16
+    },
+    {
+      "source": "Democracy Now",
+      "ok": true,
+      "items": 36
+    },
+    {
+      "source": "Dhruv Rathee",
+      "ok": true,
+      "items": 15
+    },
+    {
+      "source": "Drop Site News",
+      "ok": true,
+      "items": 20
+    },
+    {
+      "source": "ESPNcricinfo",
+      "ok": true,
+      "items": 100
+    },
+    {
+      "source": "Faye D'Souza",
+      "ok": true,
+      "items": 15
+    },
+    {
+      "source": "Film Companion",
+      "ok": true,
+      "items": 0
+    },
+    {
+      "source": "Garbage Day",
+      "ok": false,
+      "error": "HTTP 404"
+    },
+    {
+      "source": "Glenn Greenwald",
+      "ok": true,
+      "items": 0
+    },
+    {
+      "source": "GQ India",
+      "ok": false,
+      "error": "HTTP 403"
+    },
+    {
+      "source": "Griha Atul",
+      "ok": true,
+      "items": 15
+    },
+    {
+      "source": "Highsnobiety",
+      "ok": true,
+      "items": 20
+    },
+    {
+      "source": "Hindustan Times",
+      "ok": true,
+      "items": 100
+    },
+    {
+      "source": "Indian Express",
+      "ok": false,
+      "error": "HTTP 403"
+    },
+    {
+      "source": "Indian National Congress",
+      "ok": true,
+      "items": 4
+    },
+    {
+      "source": "Know Your Meme",
+      "ok": true,
+      "items": 3
+    },
+    {
+      "source": "Mint Markets",
+      "ok": true,
+      "items": 35
+    },
+    {
+      "source": "Mojo Story",
+      "ok": false,
+      "error": "HTTP 404"
+    },
+    {
+      "source": "Mongabay India",
+      "ok": true,
+      "items": 20
+    },
+    {
+      "source": "NDTV",
+      "ok": true,
+      "items": 20
+    },
+    {
+      "source": "NPR World",
+      "ok": true,
+      "items": 10
+    },
+    {
+      "source": "Rahul Gandhi",
+      "ok": true,
+      "items": 15
+    },
+    {
+      "source": "Scroll",
+      "ok": true,
+      "items": 100
+    },
+    {
+      "source": "Soompi",
+      "ok": true,
+      "items": 60
+    },
+    {
+      "source": "TechCrunch",
+      "ok": true,
+      "items": 20
+    },
+    {
+      "source": "The Guardian World",
+      "ok": true,
+      "items": 45
+    },
+    {
+      "source": "The Hindu",
+      "ok": true,
+      "items": 60
+    },
+    {
+      "source": "The Intercept",
+      "ok": true,
+      "items": 20
+    },
+    {
+      "source": "The News Minute",
+      "ok": false,
+      "error": "HTTP 404"
+    },
+    {
+      "source": "The Verge",
+      "ok": true,
+      "items": 10
+    },
+    {
+      "source": "The Wire",
+      "ok": true,
+      "items": 0
+    },
+    {
+      "source": "Zeteo",
+      "ok": true,
+      "items": 20
+    }
+  ],
+  "candidates": 382,
+  "picks": {
+    "india": 2,
+    "world": 4,
+    "culture": 3,
+    "sports": 3,
+    "techmoney": 3,
+    "internet": 2
+  },
+  "lead": "INDIA'S BIGGEST IPO EVER: JIO PULLS ₹4.72 LAKH CRORE IN BIDS",
+  "finished": "2026-10-24T13:40:09.331Z",
+  "estimatedCostUsd": 0.3202
+}

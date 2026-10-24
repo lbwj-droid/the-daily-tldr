@@ -1,0 +1,229 @@
+{
+  "date": "2026-10-24",
+  "generated_at": "2026-10-24T13:40:08.595Z",
+  "lead": {
+    "id": "c57506ffe8",
+    "section": "lead",
+    "rank": 0,
+    "headline": "INDIA'S BIGGEST IPO EVER: JIO PULLS ₹4.72 LAKH CRORE IN BIDS",
+    "original_headline": "Mother of all IPOs! Jio Platforms shatters many existing records - Full list here",
+    "url": "https://www.livemint.com/market/stock-market-news/mother-of-all-ipos-jio-platforms-shatters-many-existing-records-full-list-here-11792775064634.html",
+    "source": "Mint Markets",
+    "kind": "article",
+    "thumbnail": "https://www.livemint.com/lm-img/img/2026/10/23/1600x900/logo/JIO_IPO_2_1792779361872_G4RO_1792779371188_LZr3_2f0ad35e-f84b-4674-9d55-9c1a9b26011e_zC8K.png"
+  },
+  "sections": [
+    {
+      "key": "india",
+      "title": "India",
+      "items": [
+        {
+          "id": "2baa4c4d46",
+          "section": "india",
+          "rank": 1,
+          "headline": "Jamia moves classes online on day 13 as students allege admin 'attacked' hunger strikers",
+          "original_headline": "Jamia Millia Islamia shifts classes online on 13th day of students’ protest",
+          "url": "https://scroll.in/latest/1096624/jamia-millia-islamia-shifts-classes-online-on-13th-day-of-students-protest?utm_source=rss&utm_medium=public",
+          "source": "Scroll",
+          "kind": "article",
+          "thumbnail": "https://sc0.blr1.cdn.digitaloceanspaces.com/article/211136-skqitbnikz-1766564365.jpg"
+        },
+        {
+          "id": "2376307e82",
+          "section": "india",
+          "rank": 2,
+          "headline": "Protesters against SIR detained on march to EC headquarters in Delhi",
+          "original_headline": "Delhi: Several protesters detained during march to EC headquarters",
+          "url": "https://scroll.in/latest/1096612/delhi-several-protesters-detained-during-march-to-ec-headquarters?utm_source=rss&utm_medium=public",
+          "source": "Scroll",
+          "kind": "article"
+        }
+      ]
+    },
+    {
+      "key": "world",
+      "title": "World",
+      "items": [
+        {
+          "id": "4ebdb69624",
+          "section": "world",
+          "rank": 1,
+          "headline": "Gunmen kill eight, injure 40 at church funeral in Jordan",
+          "original_headline": "Eight killed and 40 injured after gunmen open fire at church funeral in Jordan",
+          "url": "https://www.theguardian.com/world/2026/oct/24/seven-killed-and-40-injured-after-gunmen-open-fire-at-church-funeral-in-jordan",
+          "source": "The Guardian World",
+          "kind": "article",
+          "thumbnail": "https://i.guim.co.uk/img/media/c5dd22b7faaff144d117160192cbbd75a914bf8f/1009_0_7240_5792/master/7240.jpg?width=140&quality=85&auto=format&fit=max&s=a9b14a6f857dab47a5f734db5d675d46"
+        },
+        {
+          "id": "8d4a6fc5db",
+          "section": "world",
+          "rank": 2,
+          "headline": "Paris shops board up before today's protests",
+          "original_headline": "Shopkeepers in Paris neighbourhoods boarded up their storefronts ahead of today's demonstrations.",
+          "url": "https://www.youtube.com/watch?v=jpJotTRV0DM",
+          "source": "Faye D'Souza",
+          "kind": "video"
+        },
+        {
+          "id": "b30268fe54",
+          "section": "world",
+          "rank": 3,
+          "headline": "Netanyahu orders full West Bank lockdown as Brent crude hits $114",
+          "original_headline": "Netanyahu orders full lockdown of West Bank after shooting; Bombshell report on Kushner’s $2B slush fund; Brent crude hits $114",
+          "url": "https://www.dropsitenews.com/p/netanyahu-west-bank-hebron-kushner-slush-fund-brent-crude-iran-trump",
+          "source": "Drop Site News",
+          "kind": "article"
+        },
+        {
+          "id": "f92969d683",
+          "section": "world",
+          "rank": 4,
+          "headline": "Brazil's election: is the US exporting its worst ideas south?",
+          "original_headline": "The Stakes of Brazil’s Presidential Election",
+          "url": "https://theintercept.com/2026/10/23/brazil-president-election-lula-bolsonaro-meta/",
+          "source": "The Intercept",
+          "kind": "article"
+        }
+      ]
+    },
+    {
+      "key": "culture",
+      "title": "Culture & Entertainment",
+      "items": [
+        {
+          "id": "363eb89e68",
+          "section": "culture",
+          "rank": 1,
+          "headline": "Jisoo drops 'ADDICTED' teasers. Single lands October 30.",
+          "original_headline": "Watch: BLACKPINK’s Jisoo Drops Teasers For New Single “ADDICTED”",
+          "url": "https://www.soompi.com/article/1881082wpp/watch-blackpinks-jisoo-drops-teasers-for-new-single-addicted",
+          "source": "Soompi",
+          "kind": "article",
+          "thumbnail": "https://0.soompi.io/wp-content/uploads/2026/10/24135959/Jisoo.jpg"
+        },
+        {
+          "id": "8597508e5d",
+          "section": "culture",
+          "rank": 2,
+          "headline": "Final Bond screen tests this weekend. Callum Turner, Jack Lowden in the mix?",
+          "original_headline": "Final James Bond screen tests to take place this weekend, reports say",
+          "url": "https://www.bbc.co.uk/news/articles/c50mep10dek7o?at_medium=RSS&at_campaign=rss",
+          "source": "BBC Entertainment",
+          "kind": "article"
+        },
+        {
+          "id": "763df933e3",
+          "section": "culture",
+          "rank": 3,
+          "headline": "Nayeon's 'NA-sty' era loads November 20. Teaser is out.",
+          "original_headline": "Watch: TWICE’s Nayeon Gears Up For Solo Comeback With Teaser For New Single “NA-sty”",
+          "url": "https://www.soompi.com/article/1881049wpp/watch-twices-nayeon-gears-up-for-solo-comeback-with-teaser-for-new-single-na-sty",
+          "source": "Soompi",
+          "kind": "article"
+        }
+      ]
+    },
+    {
+      "key": "sports",
+      "title": "Sports",
+      "items": [
+        {
+          "id": "23f86ce430",
+          "section": "sports",
+          "rank": 1,
+          "headline": "From 70 for 5 to 2-0 up: NZ's butterfingers gift India a thriller",
+          "original_headline": "Tilak, Reddy, Dhir seal thriller for India to go 2-0 up against sloppy New Zealand",
+          "url": "https://www.cricinfo.com/ci/content/story/1559845.html?ex_cid=OTC-RSS",
+          "source": "ESPNcricinfo",
+          "kind": "article",
+          "thumbnail": "http://p.imgci.com/db/PICTURES/CMS/424200/424289.jpg"
+        },
+        {
+          "id": "a8be9269ef",
+          "section": "sports",
+          "rank": 2,
+          "headline": "Mumbai Indians make Pollard head coach for IPL 2027",
+          "original_headline": "Mumbai Indians elevate Pollard to head coach ahead of IPL 2027",
+          "url": "https://www.cricinfo.com/ci/content/story/1559798.html?ex_cid=OTC-RSS",
+          "source": "ESPNcricinfo",
+          "kind": "article"
+        },
+        {
+          "id": "e7686c9f01",
+          "section": "sports",
+          "rank": 3,
+          "headline": "Kompany stable in hospital, recovery will take 'weeks', says Bayern",
+          "original_headline": "Kompany recovery will take 'weeks' as tests continue",
+          "url": "https://www.bbc.co.uk/sport/football/articles/cm2l4vq9k84yo?at_medium=RSS&at_campaign=rss",
+          "source": "BBC Sport",
+          "kind": "article"
+        }
+      ]
+    },
+    {
+      "key": "techmoney",
+      "title": "Tech & Money",
+      "items": [
+        {
+          "id": "f9113fa394",
+          "section": "techmoney",
+          "rank": 1,
+          "headline": "OpenAI pulls its AI off the internet after rogue hacking incidents",
+          "original_headline": "OpenAI now trains its frontier AI models with no internet access",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1018021/openai-training-top-ai-models-no-internet",
+          "source": "The Verge",
+          "kind": "article",
+          "thumbnail": "https://platform.theverge.com/wp-content/uploads/sites/2/2025/02/STK155_OPEN_AI_2025_CVirgiia_B_d6ffc8.jpg?quality=90&strip=all&crop=0%2C10.732984293194%2C100%2C78.534031413613&w=1200"
+        },
+        {
+          "id": "a63af213fc",
+          "section": "techmoney",
+          "rank": 2,
+          "headline": "Starshield throttled for Ukraine's military. Musk's space grip, explained.",
+          "original_headline": "Elon Musk’s dangerous grip on outer space",
+          "url": "https://www.theverge.com/science/1017443/spacex-starlink-ukraine-elon-musk-monopoly",
+          "source": "The Verge",
+          "kind": "article"
+        },
+        {
+          "id": "d3d276c9fc",
+          "section": "techmoney",
+          "rank": 3,
+          "headline": "Silver down ₹56,000/kg from August peak, gold slides too. Bling sale?",
+          "original_headline": "Silver crashes ₹56000/kg from August peak; gold slides 23000/10 grams. What’s driving the selloff in precious metals",
+          "url": "https://www.livemint.com/market/stock-market-news/silver-crashes-rs-56000-kg-from-august-peak-gold-slides-23000-10-grams-what-s-driving-the-selloff-in-precious-metals-11792763090890.html",
+          "source": "Mint Markets",
+          "kind": "article"
+        }
+      ]
+    },
+    {
+      "key": "internet",
+      "title": "Internet & Style",
+      "items": [
+        {
+          "id": "7cac1f9fd9",
+          "section": "internet",
+          "rank": 1,
+          "headline": "H3 Podcast on indefinite hiatus after Hila reveals Ethan Klein's affair",
+          "original_headline": "Ethan Klein Cheating Controversy Explodes Across Social Media",
+          "url": "https://knowyourmeme.com/memes/events/ethan-klein-cheating-controversy-h3-affair-scandal",
+          "source": "Know Your Meme",
+          "kind": "article",
+          "thumbnail": "https://i.kym-cdn.com/entries/icons/mobile/000/057/665/Ethan_Klein_Cheating_Controversy_banner.jpg"
+        },
+        {
+          "id": "0ba5364aec",
+          "section": "internet",
+          "rank": 2,
+          "headline": "Nagi and Pokke, two goats, got a Japan Rail job before you did",
+          "original_headline": "Two Goats Named 'Nagi' And 'Pokke' Have Been Hired To Clear An Overgrown Lot In Japan",
+          "url": "https://knowyourmeme.com/memes/nagi-and-pokke",
+          "source": "Know Your Meme",
+          "kind": "article"
+        }
+      ]
+    }
+  ]
+}
