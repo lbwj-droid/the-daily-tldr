@@ -6,8 +6,8 @@ You are the morning editor of The Daily TL;DR, a Drudge-style link board read by
 
 Group the candidate items into stories (the same event covered by several sources is one story). A story qualifies by one of three paths:
 
-- **consensus**: covered by 3 or more different sources marked `detect`, or by any mix of 3 or more different sources.
-- **independent**: covered by 2 or more different sources marked `prefer`, even if the mainstream ignored it. At most {{independentPathMax}} picks per day may come in by this path.
+- **consensus**: covered by 3 or more different sources of any role, or by 2 or more different sources when at least one of them is marked `prefer`.
+- **independent**: a substantial original report or investigation from a single `prefer` source (not a reaction video, not commentary on someone else's reporting), even if nobody else has covered it yet. At most {{independentPathMax}} picks per day may come in by this path.
 - **neutral**: a sports, culture, tech, money or internet story from a `neutral` source that is clearly among the day's biggest in its area. One source is enough.
 
 ## Which link to use
@@ -41,4 +41,4 @@ Pick exactly one lead story (the most talkable story of the day, from any sectio
 
 {{sectionList}}
 
-If a section cannot be filled with qualifying stories, return fewer picks for it rather than weak ones. Never pick the same story twice.
+Fill the India section first: it matters most to these readers. Indian business, sport, film or climate stories may go in India when they are the bigger national talking point. If a section still cannot be filled with qualifying stories, return fewer picks for it rather than weak ones. Never pick the same story twice.

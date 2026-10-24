@@ -82,6 +82,34 @@ export async function rewriteHeadlines({ client, settings, voice, styleExamples,
   return askJson(client, { model: settings.model, effort: settings.effort, system, user, schema });
 }
 
+// Checks each rewrite against its source text; anything unsupported falls back to the original headline.
+export async function verifyHeadlines({ client, settings, pairs }) {
+  const schema = {
+    type: "object",
+    additionalProperties: false,
+    required: ["results"],
+    properties: {
+      results: {
+        type: "array",
+        items: {
+          type: "object",
+          additionalProperties: false,
+          required: ["item_id", "supported", "problem"],
+          properties: { item_id: { type: "string" }, supported: { type: "boolean" }, problem: { type: "string" } },
+        },
+      },
+    },
+  };
+  const system =
+    "You are a fact-checker for a news headline board. For each item, decide whether every factual claim in the REWRITE is supported by the ORIGINAL headline or the SUMMARY. " +
+    "Jokes, tone, slang and rhetorical questions are fine. Unsupported: added numbers, names, places, dates, causes, motives or events; a changed meaning; a claim stated as fact that the source only reports as an allegation. " +
+    "Set supported=false and name the problem in a few words when anything is unsupported; otherwise supported=true and problem empty.";
+  const user = pairs
+    .map((p) => `ID: ${p.cid}\nORIGINAL: ${p.title}\nSUMMARY: ${p.summary || "(none)"}\nREWRITE: ${p.headline}`)
+    .join("\n\n");
+  return askJson(client, { model: settings.model, effort: "low", system, user, schema });
+}
+
 export function makeClient() {
   return new Anthropic();
 }

@@ -47,16 +47,32 @@ async function get(url, timeoutMs = 15000) {
 export async function resolveYoutube(source, cache) {
   if (source.channelId) return `https://www.youtube.com/feeds/videos.xml?channel_id=${source.channelId}`;
   if (source.user) return `https://www.youtube.com/feeds/videos.xml?user=${source.user}`;
-  const handle = source.handle.replace(/^@/, "");
-  if (!cache[handle]) {
-    const html = await get(`https://www.youtube.com/@${handle}`);
-    const m =
-      html.match(/<link rel="canonical" href="https:\/\/www\.youtube\.com\/channel\/(UC[\w-]{22})"/) ||
-      html.match(/"externalId":"(UC[\w-]{22})"/);
-    if (!m) throw new Error(`could not find a channel ID for @${handle}`);
-    cache[handle] = m[1];
+  // `handles` lists spellings to try in order, for channels that have renamed themselves.
+  const handles = (source.handles || [source.handle]).map((h) => h.replace(/^@/, ""));
+  const key = handles[0];
+  if (!cache[key]) {
+    const tried = [];
+    for (const h of handles) {
+      for (const page of [`https://www.youtube.com/@${h}`, `https://www.youtube.com/c/${h}`]) {
+        try {
+          const html = await get(page);
+          const m =
+            html.match(/<link rel="canonical" href="https:\/\/www\.youtube\.com\/channel\/(UC[\w-]{22})"/) ||
+            html.match(/"externalId":"(UC[\w-]{22})"/);
+          if (m) {
+            cache[key] = m[1];
+            break;
+          }
+          tried.push(`${page} (no channel ID)`);
+        } catch (err) {
+          tried.push(`${page} (${err.message})`);
+        }
+      }
+      if (cache[key]) break;
+    }
+    if (!cache[key]) throw new Error(`could not find the channel: ${tried.join("; ")}`);
   }
-  return `https://www.youtube.com/feeds/videos.xml?channel_id=${cache[handle]}`;
+  return `https://www.youtube.com/feeds/videos.xml?channel_id=${cache[key]}`;
 }
 
 function imageOf(it) {

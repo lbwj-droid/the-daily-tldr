@@ -5,7 +5,7 @@ import { readFile, writeFile, readdir, unlink, mkdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { fetchAll, fetchOgImage, shortId } from "./lib/feeds.mjs";
-import { makeClient, selectStories, rewriteHeadlines } from "./lib/claude.mjs";
+import { makeClient, selectStories, rewriteHeadlines, verifyHeadlines } from "./lib/claude.mjs";
 import { sheetsConfigured, ensureTabs, readRows, writeRows, clearTab, appendRows, toRow } from "../lib/sheets.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -33,6 +33,7 @@ async function main() {
   if (!dryRun) await writeFile(ytCachePath, JSON.stringify(ytCache, null, 2) + "\n");
   report.feeds = health.sort((a, b) => a.source.localeCompare(b.source));
   const failed = health.filter((h) => !h.ok).length;
+  report.emptyFeeds = health.filter((h) => h.ok && h.items === 0).map((h) => h.source);
   if (failed / sources.length > 0.3) report.warnings.push(`${failed} of ${sources.length} feeds failed`);
 
   // 2. Keep recent, unique, linkable candidates.
@@ -90,6 +91,16 @@ async function main() {
     const res = await rewriteHeadlines({ client, settings, voice, styleExamples, picks });
     report.usage.push({ step: "rewrite", model: res.model, ...res.usage });
     rewritten = Object.fromEntries(res.data.headlines.map((h) => [h.item_id, h.headline]));
+
+    const pairs = picks.filter((p) => rewritten[p.cid]).map((p) => ({ ...p, headline: rewritten[p.cid] }));
+    const check = await verifyHeadlines({ client, settings, pairs });
+    report.usage.push({ step: "verify", model: check.model, ...check.usage });
+    report.factCheck = [];
+    for (const r of check.data.results) {
+      if (r.supported || !rewritten[r.item_id]) continue;
+      report.factCheck.push({ rejected: rewritten[r.item_id], original: byCid.get(r.item_id)?.title, problem: r.problem });
+      delete rewritten[r.item_id];
+    }
   }
   const tidy = (h, fallback) => {
     const s = (h || "").replace(/\s*—\s*/g, ": ").replace(/\s+/g, " ").trim();
@@ -144,6 +155,7 @@ async function main() {
     }
   }
   report.picks = Object.fromEntries(edition.sections.map((s) => [s.key, s.items.length]));
+  report.picksDetail = picks.map((p) => ({ section: p.isLead ? "lead" : p.section, path: p.path, story: p.story, source: p.source }));
   report.lead = edition.lead?.headline;
 }
 
@@ -160,7 +172,7 @@ function validatePicks(selection, byCid, settings) {
     const rank = out.filter((o) => !o.isLead && o.section === p.section).length + 1;
     if (!isLead && rank > section.quota) return;
     used.add(item.cid);
-    out.push({ ...item, section: p.section, rank: isLead ? 0 : rank, isLead, helpline: p.helpline, story: p.story });
+    out.push({ ...item, section: p.section, rank: isLead ? 0 : rank, isLead, helpline: p.helpline, story: p.story, path: p.path });
   };
   if (selection.lead) take(selection.lead, true);
   for (const p of selection.picks || []) take(p, false);
