@@ -1,26 +1,26 @@
 {
-  "started": "2026-10-25T04:53:47.665Z",
+  "started": "2026-10-25T05:23:56.602Z",
   "dryRun": false,
   "warnings": [],
   "usage": [
     {
       "step": "select",
       "model": "claude-opus-5-5",
-      "input_tokens": 51742,
+      "input_tokens": 51333,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 3896,
+      "output_tokens": 4425,
       "service_tier": "standard",
       "inference_geo": "global",
       "speed": "standard",
       "iterations": [
         {
-          "input_tokens": 51742,
-          "output_tokens": 3896,
+          "input_tokens": 51333,
+          "output_tokens": 4425,
           "cache_read_input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_creation": {
@@ -32,27 +32,27 @@
         }
       ],
       "output_tokens_details": {
-        "thinking_tokens": 2889
+        "thinking_tokens": 3548
       }
     },
     {
       "step": "rewrite",
       "model": "claude-opus-5-5",
-      "input_tokens": 4425,
+      "input_tokens": 4417,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 2516,
+      "output_tokens": 1974,
       "service_tier": "standard",
       "inference_geo": "global",
       "speed": "standard",
       "iterations": [
         {
-          "input_tokens": 4425,
-          "output_tokens": 2516,
+          "input_tokens": 4417,
+          "output_tokens": 1974,
           "cache_read_input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_creation": {
@@ -64,27 +64,27 @@
         }
       ],
       "output_tokens_details": {
-        "thinking_tokens": 1742
+        "thinking_tokens": 1233
       }
     },
     {
       "step": "verify",
       "model": "claude-opus-5-5",
-      "input_tokens": 3210,
+      "input_tokens": 3003,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 387,
+      "output_tokens": 345,
       "service_tier": "standard",
       "inference_geo": "global",
       "speed": "standard",
       "iterations": [
         {
-          "input_tokens": 3210,
-          "output_tokens": 387,
+          "input_tokens": 3003,
+          "output_tokens": 345,
           "cache_read_input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_creation": {
@@ -332,13 +332,13 @@
     "Chhatron Ki Goonj (INC)",
     "The Wire"
   ],
-  "candidates": 382,
+  "candidates": 377,
   "focusCoverage": {
     "campus": 82
   },
   "factCheck": [],
   "picks": {
-    "campus": 8,
+    "campus": 6,
     "india": 2,
     "world": 2,
     "culture": 2,
@@ -356,107 +356,95 @@
     {
       "section": "campus",
       "path": "independent",
-      "story": "Arundhati Roy on Cockroach Janta Party youth protests",
+      "story": "Arundhati Roy on India's youth protests and crackdown",
       "source": "Democracy Now"
     },
     {
       "section": "campus",
       "path": "independent",
-      "story": "Fact-check: Neha Bora 'Bangladesh-like uprising' claim lacks context",
-      "source": "Alt News"
-    },
-    {
-      "section": "campus",
-      "path": "independent",
-      "story": "Why protesters invoke 1942 against 2026 police crackdown",
+      "story": "Why anti-CEC protesters are invoking 1942 crackdown memories",
       "source": "Scroll"
     },
     {
       "section": "campus",
       "path": "independent",
-      "story": "Jamia moves classes online as student hunger strike continues",
-      "source": "Scroll"
-    },
-    {
-      "section": "campus",
-      "path": "independent",
-      "story": "Anti-SIR protesters detained marching to Election Commission",
+      "story": "Anti-SIR protesters detained marching to Election Commission HQ",
       "source": "Scroll"
     },
     {
       "section": "campus",
       "path": "neutral",
-      "story": "French students demand concrete school action from Macron",
+      "story": "French student protesters demand concrete action from Macron",
       "source": "France 24"
     },
     {
       "section": "india",
-      "path": "independent",
-      "story": "How Arunachal government is choking anti-dam protests",
+      "path": "consensus",
+      "story": "Tear gas at Imphal protest against Manipur killings",
       "source": "Scroll"
     },
     {
       "section": "india",
-      "path": "independent",
-      "story": "Ladakh leaders reject Centre's governance draft over L-G powers",
+      "path": "neutral",
+      "story": "Jio Platforms IPO lists Oct 28 after record subscription",
+      "source": "Mint Markets"
+    },
+    {
+      "section": "world",
+      "path": "consensus",
+      "story": "Brazil runoff: Lula versus Flávio Bolsonaro today",
       "source": "Scroll"
     },
     {
       "section": "world",
       "path": "consensus",
-      "story": "Brazil votes in Lula versus Flavio Bolsonaro runoff",
-      "source": "Scroll"
-    },
-    {
-      "section": "world",
-      "path": "consensus",
-      "story": "Israel razes Hebron homes in West Bank collective punishment",
-      "source": "Zeteo"
+      "story": "Israel displaces thousands in Hebron before election",
+      "source": "France 24"
     },
     {
       "section": "culture",
       "path": "neutral",
-      "story": "BLACKPINK's Jisoo announces new solo single ADDICTED",
+      "story": "BLACKPINK's Jisoo announces new single ADDICTED",
       "source": "Soompi"
     },
     {
       "section": "culture",
       "path": "neutral",
-      "story": "ALPHA DRIVE ONE's Geonwoo sues agency WAKEONE",
+      "story": "tvN responds to Signal Season 2 December premiere",
       "source": "Soompi"
     },
     {
       "section": "sports",
       "path": "neutral",
-      "story": "Tilak, Reddy rescue India to 2-0 lead over NZ",
+      "story": "Tilak Varma leads India comeback to beat New Zealand",
       "source": "ESPNcricinfo"
     },
     {
       "section": "sports",
-      "path": "neutral",
+      "path": "consensus",
       "story": "Aston Villa end Man City's perfect Premier League start",
       "source": "BBC Sport"
     },
     {
       "section": "techmoney",
       "path": "neutral",
-      "story": "Jio Platforms IPO lists Oct 28 after 22x subscription",
+      "story": "SEBI orders Avadhut Sathe academy to refund ₹546 crore",
       "source": "Mint Markets"
     },
     {
       "section": "internet",
       "path": "neutral",
-      "story": "Lil Yachty's yellow Concrete Boys Nike Air Force 1",
+      "story": "Nike Kobe Dunk Low Mamba Eterno announced",
       "source": "Highsnobiety"
     },
     {
       "section": "internet",
       "path": "neutral",
-      "story": "Instant Skateboards drops new Nike SB Air Force 1",
+      "story": "Lil Yachty's yellow Concrete Boys Air Force 1",
       "source": "Highsnobiety"
     }
   ],
-  "lead": "COURT SAYS SIGN THE 'PEACE' BOND. NEHA BORA SAYS NO.",
-  "finished": "2026-10-25T04:55:07.595Z",
-  "estimatedCostUsd": 0.3735
+  "lead": "AISA'S NEHA BORA WON'T SIGN 'KEEP THE PEACE' BOND A DAY AFTER COURT SAYS NO",
+  "finished": "2026-10-25T05:25:15.108Z",
+  "estimatedCostUsd": 0.3699
 }
