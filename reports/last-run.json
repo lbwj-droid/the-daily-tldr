@@ -1,28 +1,26 @@
 {
-  "started": "2026-10-24T13:39:08.386Z",
+  "started": "2026-10-25T04:53:47.665Z",
   "dryRun": false,
-  "warnings": [
-    "Section India has 2 of 4 links"
-  ],
+  "warnings": [],
   "usage": [
     {
       "step": "select",
       "model": "claude-opus-5-5",
-      "input_tokens": 47744,
+      "input_tokens": 51742,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 3248,
+      "output_tokens": 3896,
       "service_tier": "standard",
       "inference_geo": "global",
       "speed": "standard",
       "iterations": [
         {
-          "input_tokens": 47744,
-          "output_tokens": 3248,
+          "input_tokens": 51742,
+          "output_tokens": 3896,
           "cache_read_input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_creation": {
@@ -34,27 +32,27 @@
         }
       ],
       "output_tokens_details": {
-        "thinking_tokens": 2250
+        "thinking_tokens": 2889
       }
     },
     {
       "step": "rewrite",
       "model": "claude-opus-5-5",
-      "input_tokens": 3092,
+      "input_tokens": 4425,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 2596,
+      "output_tokens": 2516,
       "service_tier": "standard",
       "inference_geo": "global",
       "speed": "standard",
       "iterations": [
         {
-          "input_tokens": 3092,
-          "output_tokens": 2596,
+          "input_tokens": 4425,
+          "output_tokens": 2516,
           "cache_read_input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_creation": {
@@ -66,12 +64,58 @@
         }
       ],
       "output_tokens_details": {
-        "thinking_tokens": 1800
+        "thinking_tokens": 1742
+      }
+    },
+    {
+      "step": "verify",
+      "model": "claude-opus-5-5",
+      "input_tokens": 3210,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 387,
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard",
+      "iterations": [
+        {
+          "input_tokens": 3210,
+          "output_tokens": 387,
+          "cache_read_input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 0
+          },
+          "type": "message",
+          "model": null
+        }
+      ],
+      "output_tokens_details": {
+        "thinking_tokens": 0
       }
     }
   ],
-  "date": "2026-10-24",
+  "date": "2026-10-25",
+  "focus": [
+    {
+      "key": "campus",
+      "title": "Campus Watch",
+      "day": 1,
+      "of": 14
+    }
+  ],
   "feeds": [
+    {
+      "source": "AISA",
+      "ok": true,
+      "items": 10,
+      "via": "feed"
+    },
     {
       "source": "Al Jazeera",
       "ok": true,
@@ -83,19 +127,19 @@
       "items": 10
     },
     {
-      "source": "Article 14",
+      "source": "ANSA English",
       "ok": true,
-      "items": 0
+      "items": 100
     },
     {
       "source": "BBC Entertainment",
       "ok": true,
-      "items": 24
+      "items": 28
     },
     {
       "source": "BBC Football",
       "ok": true,
-      "items": 78
+      "items": 73
     },
     {
       "source": "BBC India",
@@ -105,22 +149,17 @@
     {
       "source": "BBC Sport",
       "ok": true,
-      "items": 61
+      "items": 75
     },
     {
       "source": "BBC World",
       "ok": true,
-      "items": 28
-    },
-    {
-      "source": "Beatroot News (Faye D'Souza)",
-      "ok": false,
-      "error": "HTTP 404"
+      "items": 31
     },
     {
       "source": "Breaking Points",
-      "ok": true,
-      "items": 15
+      "ok": false,
+      "error": "HTTP 404"
     },
     {
       "source": "Carbon Brief",
@@ -128,9 +167,15 @@
       "items": 12
     },
     {
-      "source": "CJP",
+      "source": "Chhatron Ki Goonj (INC)",
       "ok": true,
-      "items": 16
+      "items": 0,
+      "via": "page links"
+    },
+    {
+      "source": "Cockroach Janta Party",
+      "ok": false,
+      "error": "HTTP 403"
     },
     {
       "source": "Democracy Now",
@@ -139,8 +184,8 @@
     },
     {
       "source": "Dhruv Rathee",
-      "ok": true,
-      "items": 15
+      "ok": false,
+      "error": "HTTP 404"
     },
     {
       "source": "Drop Site News",
@@ -148,44 +193,39 @@
       "items": 20
     },
     {
+      "source": "Election Commission of India",
+      "ok": false,
+      "error": "HTTP 406"
+    },
+    {
       "source": "ESPNcricinfo",
       "ok": true,
       "items": 100
     },
     {
-      "source": "Faye D'Souza",
-      "ok": true,
-      "items": 15
-    },
-    {
-      "source": "Film Companion",
-      "ok": true,
-      "items": 0
-    },
-    {
-      "source": "Garbage Day",
+      "source": "Faye D'Souza (Beatroot News)",
       "ok": false,
       "error": "HTTP 404"
     },
     {
-      "source": "Glenn Greenwald",
+      "source": "France 24",
       "ok": true,
-      "items": 0
+      "items": 24
     },
     {
-      "source": "GQ India",
+      "source": "Glenn Greenwald",
       "ok": false,
-      "error": "HTTP 403"
+      "error": "HTTP 404"
     },
     {
       "source": "Griha Atul",
-      "ok": true,
-      "items": 15
+      "ok": false,
+      "error": "HTTP 404"
     },
     {
       "source": "Highsnobiety",
       "ok": true,
-      "items": 20
+      "items": 12
     },
     {
       "source": "Hindustan Times",
@@ -193,14 +233,9 @@
       "items": 100
     },
     {
-      "source": "Indian Express",
-      "ok": false,
-      "error": "HTTP 403"
-    },
-    {
       "source": "Indian National Congress",
-      "ok": true,
-      "items": 4
+      "ok": false,
+      "error": "HTTP 404"
     },
     {
       "source": "Know Your Meme",
@@ -223,6 +258,11 @@
       "items": 20
     },
     {
+      "source": "Naman Shrivastava",
+      "ok": false,
+      "error": "HTTP 404"
+    },
+    {
       "source": "NDTV",
       "ok": true,
       "items": 20
@@ -233,9 +273,14 @@
       "items": 10
     },
     {
+      "source": "PIB (Government of India)",
+      "ok": false,
+      "error": "HTTP 403"
+    },
+    {
       "source": "Rahul Gandhi",
-      "ok": true,
-      "items": 15
+      "ok": false,
+      "error": "HTTP 404"
     },
     {
       "source": "Scroll",
@@ -268,11 +313,6 @@
       "items": 20
     },
     {
-      "source": "The News Minute",
-      "ok": false,
-      "error": "HTTP 404"
-    },
-    {
       "source": "The Verge",
       "ok": true,
       "items": 10
@@ -288,16 +328,135 @@
       "items": 20
     }
   ],
+  "emptyFeeds": [
+    "Chhatron Ki Goonj (INC)",
+    "The Wire"
+  ],
   "candidates": 382,
+  "focusCoverage": {
+    "campus": 82
+  },
+  "factCheck": [],
   "picks": {
+    "campus": 8,
     "india": 2,
-    "world": 4,
-    "culture": 3,
-    "sports": 3,
-    "techmoney": 3,
+    "world": 2,
+    "culture": 2,
+    "sports": 2,
+    "techmoney": 1,
     "internet": 2
   },
-  "lead": "INDIA'S BIGGEST IPO EVER: JIO PULLS ₹4.72 LAKH CRORE IN BIDS",
-  "finished": "2026-10-24T13:40:09.331Z",
-  "estimatedCostUsd": 0.3202
+  "picksDetail": [
+    {
+      "section": "lead",
+      "path": "independent",
+      "story": "AISA's Neha Bora refuses to sign peace bond",
+      "source": "Scroll"
+    },
+    {
+      "section": "campus",
+      "path": "independent",
+      "story": "Arundhati Roy on Cockroach Janta Party youth protests",
+      "source": "Democracy Now"
+    },
+    {
+      "section": "campus",
+      "path": "independent",
+      "story": "Fact-check: Neha Bora 'Bangladesh-like uprising' claim lacks context",
+      "source": "Alt News"
+    },
+    {
+      "section": "campus",
+      "path": "independent",
+      "story": "Why protesters invoke 1942 against 2026 police crackdown",
+      "source": "Scroll"
+    },
+    {
+      "section": "campus",
+      "path": "independent",
+      "story": "Jamia moves classes online as student hunger strike continues",
+      "source": "Scroll"
+    },
+    {
+      "section": "campus",
+      "path": "independent",
+      "story": "Anti-SIR protesters detained marching to Election Commission",
+      "source": "Scroll"
+    },
+    {
+      "section": "campus",
+      "path": "neutral",
+      "story": "French students demand concrete school action from Macron",
+      "source": "France 24"
+    },
+    {
+      "section": "india",
+      "path": "independent",
+      "story": "How Arunachal government is choking anti-dam protests",
+      "source": "Scroll"
+    },
+    {
+      "section": "india",
+      "path": "independent",
+      "story": "Ladakh leaders reject Centre's governance draft over L-G powers",
+      "source": "Scroll"
+    },
+    {
+      "section": "world",
+      "path": "consensus",
+      "story": "Brazil votes in Lula versus Flavio Bolsonaro runoff",
+      "source": "Scroll"
+    },
+    {
+      "section": "world",
+      "path": "consensus",
+      "story": "Israel razes Hebron homes in West Bank collective punishment",
+      "source": "Zeteo"
+    },
+    {
+      "section": "culture",
+      "path": "neutral",
+      "story": "BLACKPINK's Jisoo announces new solo single ADDICTED",
+      "source": "Soompi"
+    },
+    {
+      "section": "culture",
+      "path": "neutral",
+      "story": "ALPHA DRIVE ONE's Geonwoo sues agency WAKEONE",
+      "source": "Soompi"
+    },
+    {
+      "section": "sports",
+      "path": "neutral",
+      "story": "Tilak, Reddy rescue India to 2-0 lead over NZ",
+      "source": "ESPNcricinfo"
+    },
+    {
+      "section": "sports",
+      "path": "neutral",
+      "story": "Aston Villa end Man City's perfect Premier League start",
+      "source": "BBC Sport"
+    },
+    {
+      "section": "techmoney",
+      "path": "neutral",
+      "story": "Jio Platforms IPO lists Oct 28 after 22x subscription",
+      "source": "Mint Markets"
+    },
+    {
+      "section": "internet",
+      "path": "neutral",
+      "story": "Lil Yachty's yellow Concrete Boys Nike Air Force 1",
+      "source": "Highsnobiety"
+    },
+    {
+      "section": "internet",
+      "path": "neutral",
+      "story": "Instant Skateboards drops new Nike SB Air Force 1",
+      "source": "Highsnobiety"
+    }
+  ],
+  "lead": "COURT SAYS SIGN THE 'PEACE' BOND. NEHA BORA SAYS NO.",
+  "finished": "2026-10-25T04:55:07.595Z",
+  "estimatedCostUsd": 0.3735
 }
