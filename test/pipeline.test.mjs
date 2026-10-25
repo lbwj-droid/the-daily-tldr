@@ -180,3 +180,16 @@ test("Sheet rows: date cells the Sheet converted to real dates still read as YYY
   assert.equal(rows[2].my_headline, "");
   assert.equal(rows[1]._row, 3);
 });
+
+test("Sheet rows: a deleted heading falls back to the standard column name", () => {
+  const rows = normaliseRows(
+    [
+      ["", "id", "section", "rank", "source", "url", "original_headline", "ai_headline", "my_headline", "status"],
+      ["2026-10-25", "a", "india", 1, "Scroll", "https://e.org/a", "Orig", "AI", "Mine", "hide"],
+    ],
+    "Today",
+  );
+  assert.equal(rows[0].date, "2026-10-25");
+  assert.equal(rows[0].my_headline, "Mine");
+  assert.equal(rows[0].status, "hide");
+});
