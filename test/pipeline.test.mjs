@@ -6,6 +6,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseFeed, clean, extractSiteLinks, discoverFeed } from "../scripts/lib/feeds.mjs";
+import { normaliseRows } from "../lib/sheets.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const src = { name: "Test", role: "prefer" };
@@ -164,4 +165,18 @@ test("website sources: finds an advertised feed, else reads article links and da
   const later = extractSiteLinks(html + '<a href="/news/b">A brand new statement from the student union today</a>', { name: "Site", role: "prefer", url: page }, seen, now + 86400e3);
   assert.equal(later.find((i) => i.url.endsWith("/news/b")).published, "2026-10-26T00:00:00.000Z", "new links dated when first seen");
   assert.equal(later.find((i) => i.url.endsWith("/news/a")).published, "2026-10-23T00:00:00.000Z", "old links keep their first-seen date");
+});
+
+test("Sheet rows: date cells the Sheet converted to real dates still read as YYYY-MM-DD", () => {
+  const rows = normaliseRows([
+    ["Date ", "id", "rank", "my_headline"],
+    ["2026-10-25", "a", 1, " Text date "],
+    [46320, "b", 2, "Real date cell"],
+    ["2026-10-24", "c"],
+  ]);
+  assert.deepEqual(rows.map((r) => r.date), ["2026-10-25", "2026-10-25", "2026-10-24"]);
+  assert.equal(rows[0].my_headline, "Text date");
+  assert.equal(rows[1].rank, "2");
+  assert.equal(rows[2].my_headline, "");
+  assert.equal(rows[1]._row, 3);
 });

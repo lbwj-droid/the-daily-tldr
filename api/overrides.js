@@ -40,8 +40,12 @@ export default async function handler(req, res) {
         pinned: true,
       }));
     const note = desk.find((r) => r.issue_date === date && /^https?:\/\//.test(clean(r.url)));
-    res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=30");
-    return res.status(200).json({ configured: true, rows, pinned, desk: note ? { teaser: clean(note.teaser), url: clean(note.url) } : null });
+    // ?debug=1 lists the dates the Today tab holds, to diagnose edits that do not show.
+    const debug = req.query.debug
+      ? { todayRows: today.length, datesSeen: today.reduce((m, r) => ((m[r.date || "(blank)"] = (m[r.date || "(blank)"] || 0) + 1), m), {}) }
+      : undefined;
+    res.setHeader("Cache-Control", req.query.debug ? "no-store" : "public, s-maxage=60, stale-while-revalidate=30");
+    return res.status(200).json({ configured: true, rows, pinned, desk: note ? { teaser: clean(note.teaser), url: clean(note.url) } : null, debug });
   } catch (err) {
     console.error(err);
     return res.status(200).json({ configured: true, error: "sheet unavailable", ...EMPTY });
