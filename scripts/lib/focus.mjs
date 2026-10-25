@@ -18,20 +18,18 @@ export async function loadFocus(root, today, configPath = path.join(root, "confi
   return { active, regularQuotas: config.regularQuotasWhenFocused || {} };
 }
 
-// Focus sections go first; while any focus is live the regular sections shrink.
+// Focus sections go first, ahead of the regular sections; the issue-wide link budget squeezes everything else.
 export function effectiveSections(regular, focus) {
-  if (!focus.active.length) return regular;
   const focusSections = focus.active.map((f) => ({
     key: f.key,
     title: f.title,
-    quota: f.maxLinks,
+    max: f.maxLinks,
     covers: `the "${f.title}" focus topic, as defined in its brief below`,
     focus: true,
     day: f.day,
     days: f.days,
   }));
-  const shrunk = regular.map((s) => ({ ...s, quota: focus.regularQuotas[s.key] ?? s.quota }));
-  return [...focusSections, ...shrunk];
+  return [...focusSections, ...regular];
 }
 
 export function focusPromptBlock(focus, settings) {
@@ -40,9 +38,9 @@ export function focusPromptBlock(focus, settings) {
     "\n\n## Focus topics (live now)\n",
     "These sections are the editor's showcase for this period. Fill them first, then the regular sections.",
     "A story appears in one section only: a story that fits a focus goes in the focus section, not in India or World. The lead may come from a focus.",
-    `Each focus section takes up to its stated number of links; give fewer on quiet days rather than padding it. Items marked FOCUS-ONLY are older than ${settings.lookbackHours} hours and may be used only in focus sections.`,
+    `Each focus section takes up to its stated number of links; give fewer on quiet weeks rather than padding it. Items marked FOCUS-ONLY are older than this issue's window and may be used only in focus sections.`,
     "Where a focus brief sets a rule that differs from the general rules above, the brief wins for that section only. The Leave out rules always apply.\n",
-    ...focus.active.map((f) => `### ${f.title} (section key: ${f.key}, up to ${f.maxLinks} links, day ${f.day} of ${f.days})\n\n${f.briefText.trim()}\n`),
+    ...focus.active.map((f) => `### ${f.title} (section key: ${f.key}, up to ${f.maxLinks} links, day ${f.day} of ${f.days} of the focus period)\n\n${f.briefText.trim()}\n`),
   ].join("\n");
 }
 

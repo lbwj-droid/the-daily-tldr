@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -45,47 +45,96 @@ test("clean() strips tags and truncates", () => {
   assert.equal(clean("abcdefghij", 5), "abcd…");
 });
 
-test("dry run builds a valid edition from fixtures", () => {
+const settings = JSON.parse(readFileSync(path.join(root, "config", "settings.json"), "utf8"));
+const allItems = (e) => [e.lead, ...e.sections.flatMap((s) => s.items)].filter(Boolean);
+const isHindiTitle = (i) => /[\u0900-\u097F]/.test(i.original_headline || i.headline);
+
+function dryRun({ date = "2026-10-30", inbox, focus, out = mkdtempSync(path.join(tmpdir(), "tldr-")) } = {}) {
   execFileSync("node", [path.join(root, "test", "make-fixtures.mjs")]);
-  const out = mkdtempSync(path.join(tmpdir(), "tldr-"));
-  execFileSync("node", [path.join(root, "scripts", "build-edition.mjs"), "--dry-run", "--out", out]);
-  const index = JSON.parse(readFileSync(path.join(out, "index.json"), "utf8"));
-  const [file] = readdirSync(path.join(out, "editions"));
-  const edition = JSON.parse(readFileSync(path.join(out, "editions", file), "utf8"));
-  const settings = JSON.parse(readFileSync(path.join(root, "config", "settings.json"), "utf8"));
-  assert.equal(index.latest, edition.date);
+  const extra = [];
+  if (inbox) {
+    writeFileSync(path.join(out, "inbox.json"), JSON.stringify(inbox));
+    extra.push("--inbox", path.join(out, "inbox.json"));
+  }
+  if (focus) {
+    writeFileSync(path.join(out, "focus.json"), JSON.stringify(focus));
+    extra.push("--focus", path.join(out, "focus.json"));
+  }
+  execFileSync("node", [path.join(root, "scripts", "build-edition.mjs"), "--dry-run", "--out", out, ...extra], { env: { ...process.env, EDITION_DATE: date } });
+  return {
+    out,
+    edition: JSON.parse(readFileSync(path.join(out, "editions", `${date}.json`), "utf8")),
+    index: JSON.parse(readFileSync(path.join(out, "index.json"), "utf8")),
+  };
+}
+
+test("an issue never exceeds the link limit, repeats nothing and keeps Hindi within its cap", () => {
+  const { edition, index } = dryRun();
+  const items = allItems(edition);
   assert.ok(edition.lead?.url.startsWith("https://"));
-  assert.deepEqual(edition.sections.map((s) => s.key), settings.sections.map((s) => s.key));
-  const ids = [edition.lead, ...edition.sections.flatMap((s) => s.items)].map((i) => i.id);
-  assert.equal(new Set(ids).size, ids.length, "no story appears twice");
-  for (const s of edition.sections) {
-    const quota = settings.sections.find((x) => x.key === s.key).quota;
-    assert.ok(s.items.length <= quota, `${s.key} within quota`);
+  assert.ok(items.length <= settings.maxLinks, `${items.length} links`);
+  assert.equal(new Set(items.map((i) => i.url)).size, items.length, "no link appears twice");
+  assert.ok(items.filter(isHindiTitle).length <= settings.hindiMax, "Hindi cap");
+  assert.equal(edition.publish_at, "2026-10-30T03:30:00.000Z", "released 07:30 Dubai");
+  assert.equal(index.editions[0].publish_at, edition.publish_at);
+  assert.equal(edition.issue, 1);
+  for (const s of edition.sections.filter((x) => !x.focus)) {
+    assert.ok(s.items.length <= settings.sections.find((x) => x.key === s.key).max, `${s.key} within its max`);
   }
 });
 
-test("a live focus gets its own section first and the regular sections shrink", () => {
-  execFileSync("node", [path.join(root, "test", "make-fixtures.mjs")]);
-  const out = mkdtempSync(path.join(tmpdir(), "tldr-focus-"));
-  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata" }).format(new Date());
+test("the editor's Inbox links fill Editor's Picks, can set the lead, and squeeze Claude's share", () => {
+  const inbox = {
+    inbox: [
+      { url: "https://news.example.com/a", my_headline: "Pick A", subscriber: "yes" },
+      { section: "picks", url: "https://news.example.com/b", my_headline: "Pick B", important: "yes" },
+      { section: "picks", url: "https://news.example.com/c", my_headline: "Pick C", for: "Asha" },
+      { section: "picks", url: "https://news.example.com/d", my_headline: "Pick D" },
+      { section: "picks", url: "https://news.example.com/e", my_headline: "Pick E, one too many" },
+      { section: "lead", url: "https://news.example.com/lead", my_headline: "MY LEAD" },
+      { section: "world", url: "https://news.example.com/hormuz", my_headline: "Hormuz, from Dubai" },
+      { issue_date: "2026-12-01", url: "https://news.example.com/later", my_headline: "Not yet" },
+      { url: "https://news.example.com/used", my_headline: "Already used", status: "used 2026-10-26" },
+    ],
+    desk: [{ teaser: "This week's note", url: "https://docs.google.com/document/d/x/view" }],
+  };
+  const { edition } = dryRun({ inbox });
+  const items = allItems(edition);
+  assert.equal(edition.lead.headline, "MY LEAD");
+  assert.deepEqual(edition.desk, { teaser: "This week's note", url: "https://docs.google.com/document/d/x/view" });
+  const picks = edition.sections.find((s) => s.key === "picks");
+  assert.deepEqual(picks.items.map((i) => i.headline), ["Pick A", "Pick B", "Pick C", "Pick D"], "4 picks; the fifth waits");
+  assert.equal(picks.items[0].subscriber, true);
+  assert.equal(picks.items[1].important, true);
+  assert.equal(picks.items[2].for, "asha");
+  assert.equal(edition.sections.find((s) => s.key === "world").items[0].headline, "Hormuz, from Dubai", "editor links lead their section");
+  for (const h of ["Not yet", "Already used", "Pick E, one too many"]) assert.ok(!items.some((i) => i.headline === h), `${h} left out`);
+  assert.ok(items.length <= settings.maxLinks, `${items.length} links`);
+});
+
+test("a live focus gets its own section first; pinned links count towards the limit", () => {
   const config = JSON.parse(readFileSync(path.join(root, "config", "focus.json"), "utf8"));
-  for (const f of config.focuses) Object.assign(f, { enabled: true, start: today });
-  const focusFile = path.join(out, "focus.json");
-  writeFileSync(focusFile, JSON.stringify(config));
-  execFileSync("node", [path.join(root, "scripts", "build-edition.mjs"), "--dry-run", "--out", out, "--focus", focusFile]);
-  const [file] = readdirSync(path.join(out, "editions"));
-  const edition = JSON.parse(readFileSync(path.join(out, "editions", file), "utf8"));
+  for (const f of config.focuses) Object.assign(f, { enabled: true, start: "2026-10-30" });
+  const { edition } = dryRun({ focus: config });
   assert.deepEqual(edition.sections.slice(0, 2).map((s) => s.key), ["campus", "mideast"]);
   assert.equal(edition.sections[0].focus, true);
   assert.equal(edition.sections[0].day, 1);
   const pins = config.focuses.find((f) => f.key === "campus").pins || [];
   pins.forEach((p, n) => assert.equal(edition.sections[0].items[n].pinned, true, "pinned starter links come first"));
-  const all = [edition.lead, ...edition.sections.flatMap((s) => s.items)];
-  assert.ok(all.some((i) => /hunger strike/.test(i.original_headline)), "campus story is on the page");
-  assert.ok(edition.sections.find((s) => s.key === "mideast").items.some((i) => /Hormuz/.test(i.original_headline)), "Hormuz story in its focus");
-  for (const [key, quota] of Object.entries(config.regularQuotasWhenFocused)) {
-    assert.ok(edition.sections.find((s) => s.key === key).items.length <= quota, `${key} shrinks to ${quota}`);
-  }
+  assert.ok(allItems(edition).length <= settings.maxLinks);
+});
+
+test("the archive keeps the last 8 issues and issue numbers keep counting", () => {
+  const out = mkdtempSync(path.join(tmpdir(), "tldr-arch-"));
+  mkdirSync(path.join(out, "editions"));
+  const old = ["2026-09-25", "2026-09-28", "2026-10-02", "2026-10-05", "2026-10-09", "2026-10-12", "2026-10-16", "2026-10-19", "2026-10-23"];
+  for (const d of old) writeFileSync(path.join(out, "editions", `${d}.json`), "{}");
+  writeFileSync(path.join(out, "index.json"), JSON.stringify({ lastIssue: 9, editions: old.map((d, n) => ({ date: d, issue: n + 1 })) }));
+  const { index, edition } = dryRun({ out });
+  assert.equal(edition.issue, 10);
+  assert.equal(readdirSync(path.join(out, "editions")).filter((f) => f.endsWith(".json")).length, 8);
+  assert.equal(index.latest, "2026-10-30");
+  assert.ok(!index.dates.includes("2026-09-25"));
 });
 
 test("an expired or disabled focus leaves the page unchanged", async () => {

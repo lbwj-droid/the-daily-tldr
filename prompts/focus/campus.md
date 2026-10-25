@@ -20,11 +20,11 @@ Out:
 
 ## 2. Contrast and context
 
-One global link a day: current student or youth protests in France or Italy. Compare tactics and the state's response with India's. No historical stories unless the source itself is quoting them.
+When the issue has room, one global link: current student or youth protests in France or Italy. Compare tactics and the state's response with India's. No historical stories unless the source itself is quoting them.
 
 ## 3. Angle
 
-By the end of the two weeks the readers must understand exactly what the students are protesting and what they are fighting for. Rank highest the items that state the demands clearly: explainers, and interviews with movement leaders (Neha Bora; CJP spokespersons Abhijeet Dipke, Saurav Das and Ashutosh Ranka; Rahul Gandhi and the INC; Vishal Dadlani) or with Yogendra Yadav and Prashant Bhushan. Rank lower the items that only show clashes or crowd sizes.
+By the end of the two weeks (four issues) the readers must understand exactly what the students are protesting and what they are fighting for. Rank highest the items that state the demands clearly: explainers, and interviews with movement leaders (Neha Bora; CJP spokespersons Abhijeet Dipke, Saurav Das and Ashutosh Ranka; Rahul Gandhi and the INC; Vishal Dadlani) or with Yogendra Yadav and Prashant Bhushan. Rank lower the items that only show clashes or crowd sizes.
 
 ## 4. Headline tone
 
@@ -42,7 +42,7 @@ For the one France or Italy link, a `detect` or `neutral` source may be linked. 
 
 ## 6. Mix
 
-Up to 5 India links and 1 global link a day. On quiet days give fewer; never pad the section with off-topic stories.
+Up to 3 links an issue, on top of the 2 pinned starter links: mostly India, with one France or Italy link when there is a strong one. On quiet weeks give fewer; never pad the section with off-topic stories.
 
 ## 7. Pinned starter links
 

@@ -1,5 +1,5 @@
 {
-  "_readme": "role: official = a government body or the Election Commission, linked only for its own statement or response; detect = used only to spot the day's big stories, never linked for politics; prefer = linked first wherever it covered a story; neutral = linked for sports, culture, tech, money and internet stories. kind: rss (url), youtube (handle, handles, user or channelId) or site (a web page; uses its advertised feed if any, otherwise reads its article links). tag: short label shown next to the link, used for party channels. Feeds that fail are skipped and listed in reports/last-run.json.",
+  "_readme": "role: official = a government body or the Election Commission, linked only for its own statement or response; detect = used only to spot the day's big stories, never linked for politics; prefer = linked first wherever it covered a story; neutral = linked for sports, culture, tech, money and internet stories. kind: rss (url), youtube (handle, handles, user or channelId) or site (a web page; uses its advertised feed if any, otherwise reads its article links). tag: short label shown next to the link, used for party channels. Feeds that fail are skipped and listed in reports/last-run.json. lang: hi marks a Hindi-language source (at most hindiMax Hindi items per issue, counted with any Hindi-script title).",
   "sources": [
     {
       "name": "BBC World",
@@ -70,7 +70,8 @@
       "name": "Dhruv Rathee",
       "role": "prefer",
       "kind": "youtube",
-      "handle": "dhruvrathee"
+      "handle": "dhruvrathee",
+      "lang": "hi"
     },
     {
       "name": "Griha Atul",
@@ -153,24 +154,6 @@
       "url": "https://www.dropsitenews.com/feed"
     },
     {
-      "name": "ESPNcricinfo",
-      "role": "neutral",
-      "kind": "rss",
-      "url": "https://www.espncricinfo.com/rss/content/story/feeds/0.xml"
-    },
-    {
-      "name": "BBC Sport",
-      "role": "neutral",
-      "kind": "rss",
-      "url": "https://feeds.bbci.co.uk/sport/rss.xml"
-    },
-    {
-      "name": "BBC Football",
-      "role": "neutral",
-      "kind": "rss",
-      "url": "https://feeds.bbci.co.uk/sport/football/rss.xml"
-    },
-    {
       "name": "BBC Entertainment",
       "role": "neutral",
       "kind": "rss",
@@ -181,24 +164,6 @@
       "role": "neutral",
       "kind": "rss",
       "url": "https://www.soompi.com/feed"
-    },
-    {
-      "name": "The Verge",
-      "role": "neutral",
-      "kind": "rss",
-      "url": "https://www.theverge.com/rss/index.xml"
-    },
-    {
-      "name": "TechCrunch",
-      "role": "neutral",
-      "kind": "rss",
-      "url": "https://techcrunch.com/feed/"
-    },
-    {
-      "name": "Mint Markets",
-      "role": "neutral",
-      "kind": "rss",
-      "url": "https://www.livemint.com/rss/markets"
     },
     {
       "name": "Carbon Brief",
@@ -219,12 +184,6 @@
       "url": "https://knowyourmeme.com/newsfeed.rss"
     },
     {
-      "name": "Highsnobiety",
-      "role": "neutral",
-      "kind": "rss",
-      "url": "https://www.highsnobiety.com/feed/"
-    },
-    {
       "name": "Election Commission of India",
       "role": "official",
       "kind": "site",
@@ -237,6 +196,25 @@
       "kind": "rss",
       "url": "https://pib.gov.in/RssMain.aspx?ModId=6&Lang=1&Regid=3",
       "tag": "Official"
+    },
+    {
+      "name": "Meghnerd",
+      "role": "prefer",
+      "kind": "youtube",
+      "handle": "meghnerd"
+    },
+    {
+      "name": "HW News English",
+      "role": "prefer",
+      "kind": "youtube",
+      "handle": "hwnewsenglish"
+    },
+    {
+      "name": "Ravish Kumar",
+      "role": "prefer",
+      "kind": "youtube",
+      "handle": "ravishkumar.official",
+      "lang": "hi"
     }
   ]
 }

@@ -1,25 +1,59 @@
 {
   "siteName": "The Daily TL;DR",
-  "timezone": "Asia/Kolkata",
-  "archiveDays": 14,
-  "lookbackHours": 30,
+  "timezone": "Asia/Dubai",
   "maxItemsPerFeed": 25,
   "model": "claude-opus-5-5",
   "effort": "medium",
   "footerNote": "Clicks are counted so Uncle Lester knows what lands.",
   "helpline": "Need to talk? Tele-MANAS, free and 24x7: call 14416.",
   "sections": [
-    { "key": "india", "title": "India", "quota": 4, "covers": "Indian politics, society, women's safety, India climate and environment" },
-    { "key": "world", "title": "World", "quota": 4, "covers": "Geopolitics, wars and diplomacy, global climate" },
-    { "key": "culture", "title": "Culture & Entertainment", "quota": 3, "covers": "Film, OTT and streaming, music, K-pop, celebrity news" },
-    { "key": "sports", "title": "Sports", "quota": 3, "covers": "Cricket, football, major global competitions" },
-    { "key": "techmoney", "title": "Tech & Money", "quota": 3, "covers": "Technology, AI, startups, markets, personal finance" },
-    { "key": "internet", "title": "Internet & Style", "quota": 2, "covers": "Social media and internet culture, memes, creators, men's fashion" }
+    {
+      "key": "india",
+      "title": "India",
+      "max": 3,
+      "covers": "Indian politics, society, women's safety, education, India climate and environment"
+    },
+    {
+      "key": "world",
+      "title": "World",
+      "max": 2,
+      "covers": "Geopolitics, wars and diplomacy, global climate"
+    },
+    {
+      "key": "culture",
+      "title": "Culture & Entertainment",
+      "max": 2,
+      "covers": "Film, OTT and streaming, music, K-pop, celebrity news, internet and social media culture"
+    }
   ],
   "independentPathMax": 4,
   "paywalledDomains": [
-    "nytimes.com", "wsj.com", "ft.com", "economist.com", "bloomberg.com", "washingtonpost.com",
-    "theinformation.com", "thehindu.com", "hindustantimes.com", "indianexpress.com",
-    "economictimes.indiatimes.com", "business-standard.com", "theken.com", "the-ken.com", "newslaundry.com"
-  ]
+    "nytimes.com",
+    "wsj.com",
+    "ft.com",
+    "economist.com",
+    "bloomberg.com",
+    "washingtonpost.com",
+    "theinformation.com",
+    "thehindu.com",
+    "hindustantimes.com",
+    "indianexpress.com",
+    "economictimes.indiatimes.com",
+    "business-standard.com",
+    "theken.com",
+    "the-ken.com",
+    "newslaundry.com"
+  ],
+  "issueDays": "Monday and Friday",
+  "goLive": "07:30",
+  "archiveIssues": 8,
+  "minLookbackHours": 30,
+  "maxLookbackHours": 120,
+  "maxLinks": 10,
+  "picksMax": 4,
+  "hindiMax": 3,
+  "maxVideoMinutes": 30,
+  "preferVideoMinutes": 20,
+  "picksTitle": "Editor's Picks",
+  "utcOffset": "+04:00"
 }

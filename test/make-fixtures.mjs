@@ -44,16 +44,16 @@ const F = {
   "Breaking Points": youtube([["Krystal and Saagar react to the Geneva talks", "Full segment on the ceasefire talks.", 6]]),
   Zeteo: rss([["The ceasefire deal nobody in Washington wants to explain", "Op-ed on the talks.", 10], ["Tanker traffic through Hormuz slows as insurers raise premiums", "Shipping data shows fewer transits.", 6]]),
   "Drop Site News": rss([["Leaked memo shows aid convoy delays were planned", "Documents obtained by the outlet.", 11]]),
-  ESPNcricinfo: rss([["India level series with last-ball win", "A late six seals it.", 3], ["Star opener ruled out with hamstring strain", "He will miss two Tests.", 6]]),
-  "BBC Football": rss([["Late winner sends holders through to quarter-finals", "Stoppage-time header decides it.", 4]]),
-  "BBC Sport": rss([["Grand Slam champion announces retirement at 31", "Cites injuries.", 9]]),
+  "HW News English": youtube([["India level series with last-ball win", "A late six seals it.", 3], ["Star opener ruled out with hamstring strain", "He will miss two Tests.", 6]]),
+  Meghnerd: youtube([["Late winner sends holders through to quarter-finals", "Stoppage-time header decides it.", 4]]),
+  "Mongabay India": rss([["Grand Slam champion announces retirement at 31", "Cites injuries.", 9]]),
   "BBC Entertainment": rss([["Streaming giant raises prices again", "Basic plan up by 20%.", 5], ["The year's biggest Hindi film crosses 500 crore", "Box office report.", 7], ["Director's cut of cult thriller heads to OTT", "Release date set.", 15]]),
+  "Ravish Kumar": youtube([["रवीश कुमार: छात्रों का आंदोलन", "Hindi explainer one.", 3], ["रवीश कुमार: चुनाव आयोग पर सवाल", "Hindi explainer two.", 5], ["रवीश कुमार: शिक्षा नीति", "Hindi explainer three.", 7], ["रवीश कुमार: पेपर लीक", "Hindi explainer four.", 9]]),
   Soompi: rss([["K-pop group confirms first India tour dates", "Shows in Mumbai and Delhi.", 6]]),
-  "The Verge": rss([["Phone maker drops the charger, the cable and now the box", "Ships in a sleeve.", 4], ["AI assistant can now book your train tickets", "Feature rolls out in India first.", 10]]),
-  TechCrunch: rss([["Indian quick-commerce startup raises $300M", "Valuation doubles.", 8]]),
-  "Mint Markets": rss([["Sensex hits record high on foreign inflows", "Index up 1.2%.", 5]]),
+  "Carbon Brief": rss([["Phone maker drops the charger, the cable and now the box", "Ships in a sleeve.", 4], ["AI assistant can now book your train tickets", "Feature rolls out in India first.", 10]]),
+  "The Wire": rss([["Indian quick-commerce startup raises $300M", "Valuation doubles.", 8]]),
+  "Democracy Now": rss([["Sensex hits record high on foreign inflows", "Index up 1.2%.", 5]]),
   "Know Your Meme": rss([["Why everyone is posting 'NPC morning routine' videos", "The trend explained.", 9], ["The comment section is the new front page", "Platform culture explained.", 13]]),
-  Highsnobiety: rss([["Loafers are back and this time they have a lug sole", "Menswear trend report.", 12], ["The kurta-and-sneakers rule book", "Styling guide.", 18]]),
 };
 
 const SITES = {

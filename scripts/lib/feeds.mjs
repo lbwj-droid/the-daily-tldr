@@ -112,6 +112,7 @@ export function parseFeed(xml, source) {
       source: source.name,
       role: source.role,
       tag: source.tag || "",
+      lang: source.lang || "",
       kind: videoId ? "video" : "article",
       title: clean(text(it.title), 220),
       summary: clean(summary, 260),
@@ -240,6 +241,7 @@ export function extractSiteLinks(html, source, siteSeen, now = Date.now()) {
       source: source.name,
       role: source.role,
       tag: source.tag || "",
+      lang: source.lang || "",
       kind: "article",
       title,
       summary: "",
@@ -257,4 +259,40 @@ export function extractSiteLinks(html, source, siteSeen, now = Date.now()) {
 export function pruneSiteSeen(siteSeen, now = Date.now()) {
   for (const [k, v] of Object.entries(siteSeen)) if (now - Date.parse(v) > 30 * 86400e3) delete siteSeen[k];
   return siteSeen;
+}
+
+export const isHindi = (item) => item.lang === "hi" || /[\u0900-\u097F]/.test(item.title || "");
+
+// Video length in seconds, read from the watch page (YouTube feeds do not carry it). null when unknown.
+export async function fetchVideoSeconds(url) {
+  try {
+    const html = await get(url, 10000);
+    const m = html.match(/"lengthSeconds":"(\d+)"/);
+    return m ? Number(m[1]) : null;
+  } catch {
+    return null;
+  }
+}
+
+// Title, site name and preview image for a link the editor dropped into the Sheet.
+export async function fetchPageMeta(url) {
+  if (/youtube\.com|youtu\.be/.test(url)) {
+    const yt = await fetchYoutubeMeta(url);
+    if (yt) return { title: yt.title, source: yt.source, image: yt.image, kind: "video", url: yt.url };
+  }
+  const host = new URL(url).hostname.replace(/^www\./, "");
+  try {
+    const html = (await get(url, 10000)).slice(0, 300000);
+    const meta = (prop) => {
+      const m =
+        html.match(new RegExp(`<meta[^>]+(?:property|name)=["']${prop}["'][^>]+content=["']([^"']+)["']`, "i")) ||
+        html.match(new RegExp(`<meta[^>]+content=["']([^"']+)["'][^>]+(?:property|name)=["']${prop}["']`, "i"));
+      return m ? clean(m[1]) : "";
+    };
+    const title = meta("og:title") || meta("twitter:title") || clean((html.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1] || "");
+    const image = meta("og:image") || meta("twitter:image");
+    return { title, source: meta("og:site_name") || host, image: image ? new URL(image.replace(/&amp;/g, "&"), url).href : "", kind: "article", url };
+  } catch {
+    return { title: "", source: host, image: "", kind: "article", url };
+  }
 }

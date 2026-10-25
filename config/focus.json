@@ -1,13 +1,5 @@
 {
-  "_readme": "Focus topics: time-boxed showcase sections that appear right under the lead story. A focus is live when enabled is true and today (India time) falls within start + days. While any focus is live, the regular sections shrink to regularQuotasWhenFocused. keywords only decide which older items (up to lookbackHours) are kept as focus candidates; Claude still judges relevance from the brief. sources are extra feeds fetched only while that focus is live, same format as config/sources.json. Pin a link to a focus section from the Sheet: set section to the focus key and status to pin.",
-  "regularQuotasWhenFocused": {
-    "india": 2,
-    "world": 2,
-    "culture": 2,
-    "sports": 2,
-    "techmoney": 1,
-    "internet": 2
-  },
+  "_readme": "Focus topics: time-boxed showcase sections that appear right under the lead story. A focus is live when enabled is true and the issue date (Dubai time) falls within start + days. keywords only decide which older items (up to lookbackHours) are kept as focus candidates; Claude still judges relevance from the brief. sources are extra feeds fetched only while that focus is live, same format as config/sources.json. Pin a link to a focus section from the Sheet: set section to the focus key and status to pin.",
   "focuses": [
     {
       "key": "campus",
@@ -15,7 +7,7 @@
       "enabled": true,
       "start": "2026-10-25",
       "days": 14,
-      "maxLinks": 6,
+      "maxLinks": 3,
       "lookbackHours": 72,
       "brief": "prompts/focus/campus.md",
       "keywords": [

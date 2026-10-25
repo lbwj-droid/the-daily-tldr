@@ -1,4 +1,4 @@
-// The two Claude calls: pick the day's stories, then rewrite their headlines.
+// The Claude calls: pick the issue's stories, rewrite their headlines, then fact-check the rewrites.
 import Anthropic from "@anthropic-ai/sdk";
 
 const FALLBACK_BETA = "server-side-fallback-2026-07-01";
@@ -34,23 +34,30 @@ const pickShape = (sectionKeys) => ({
   },
 });
 
-export async function selectStories({ client, settings, editorial, candidates }) {
-  const keys = settings.sections.map((s) => s.key);
-  const schema = {
-    type: "object",
-    additionalProperties: false,
-    required: ["lead", "picks"],
-    properties: {
-      lead: pickShape(keys),
-      picks: { type: "array", items: pickShape(keys), description: "section picks in rank order within each section; never repeats the lead story" },
-    },
-  };
-  const sectionList = settings.sections.map((s) => `- ${s.key} (${s.title}): ${s.quota} stories. Covers ${s.covers}.`).join("\n");
+// sections: [{key, title, max, covers}] with max already reduced by the editor's own links in that section.
+// budget: total links Claude may pick across all sections (the lead not included). needLead: false when the editor set the lead.
+export async function selectStories({ client, settings, editorial, candidates, sections, budget, needLead, manual, windowText }) {
+  const keys = sections.map((s) => s.key);
+  const picksSchema = { type: "array", items: pickShape(keys), description: "section picks in rank order within each section; never repeats the lead story" };
+  const schema = needLead
+    ? { type: "object", additionalProperties: false, required: ["lead", "picks"], properties: { lead: pickShape(keys), picks: picksSchema } }
+    : { type: "object", additionalProperties: false, required: ["picks"], properties: { picks: picksSchema } };
+  const sectionList = [
+    `This issue has room for ${budget} section links in total${needLead ? ", plus the lead" : " (the editor has chosen the lead himself, so do not pick one)"}. Spread them across the sections below in the order listed, each up to its maximum. Fewer strong links beat a full page of weak ones.`,
+    ...sections.map((s) => `- ${s.key} (${s.title}): up to ${s.max}. Covers ${s.covers}.`),
+  ].join("\n");
   const system = editorial.replaceAll("{{independentPathMax}}", String(settings.independentPathMax)).replaceAll("{{sectionList}}", sectionList);
-  const lines = candidates.map((c) =>
-    [c.cid, c.role, c.source + (c.tag ? ` [${c.tag}]` : "") + (c.kind === "video" ? " (video)" : ""), c.published.slice(0, 16), [c.paywalled && "PAYWALLED", c.focusOnly && "FOCUS-ONLY"].filter(Boolean).join(" "), c.title, c.summary].join(" | "),
-  );
-  const user = `Today is ${settings.today} (India time). Here are ${candidates.length} candidate items, one per line:\nid | role | source | published (UTC) | flags | title | summary\n\n${lines.join("\n")}\n\nApply the editorial rules and return the lead and the section picks.`;
+  const flags = (c) =>
+    [c.paywalled && "PAYWALLED", c.focusOnly && "FOCUS-ONLY", c.hindi && "HINDI", c.kind === "video" && `VIDEO ${c.seconds ? Math.round(c.seconds / 60) + "m" : "?m"}`].filter(Boolean).join(" ");
+  const lines = candidates.map((c) => [c.cid, c.role, c.source + (c.tag ? ` [${c.tag}]` : ""), c.published.slice(0, 16), flags(c), c.title, c.summary].join(" | "));
+  const manualNote = manual.length
+    ? `\n\nThe editor has already placed these links in this issue. Do not pick the same stories again:\n${manual.map((m) => `- ${m.title || m.url}`).join("\n")}`
+    : "";
+  const user =
+    `This issue is dated ${settings.today} (Dubai time) and covers ${windowText}. Here are ${candidates.length} candidate items, one per line:\n` +
+    `id | role | source | published (UTC) | flags | title | summary\n\n${lines.join("\n")}${manualNote}\n\n` +
+    `At most ${settings.hindiMax} picks in total may be flagged HINDI. Prefer videos of ${settings.preferVideoMinutes} minutes or less.\n\n` +
+    `Apply the editorial rules and return ${needLead ? "the lead and " : ""}the section picks.`;
   return askJson(client, { model: settings.model, effort: settings.effort, system, user, schema });
 }
 
@@ -77,7 +84,7 @@ export async function rewriteHeadlines({ client, settings, voice, styleExamples,
       "\n\n## Corrections from the editor (most recent first, these override the starter examples)\n\n| Original | Claude wrote | Editor rewrote it as |\n| --- | --- | --- |\n" +
       styleExamples.map((e) => `| ${e.original_headline} | ${e.ai_headline} | ${e.my_headline} |`).join("\n");
   }
-  const lines = picks.map((p) => `${p.cid} | ${p.isLead ? "LEAD" : p.section} | ${p.source}${p.kind === "video" ? " (video)" : ""} | ${p.title} | ${p.summary}`);
+  const lines = picks.map((p) => `${p.cid} | ${p.isLead ? "LEAD" : p.section} | ${p.source}${p.kind === "video" ? " (video)" : ""} | ${p.title} | ${p.summary || ""}`);
   const user = `Rewrite these ${picks.length} headlines. One line per item:\nid | section | source | original headline | summary\n\n${lines.join("\n")}`;
   return askJson(client, { model: settings.model, effort: settings.effort, system, user, schema });
 }

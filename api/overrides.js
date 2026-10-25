@@ -1,52 +1,49 @@
 // GET /api/overrides?date=YYYY-MM-DD
-// Returns the editor's changes from the Google Sheet for one edition: rewritten headlines,
-// hidden or promoted links, links added by hand, and pinned links. Cached for 5 minutes at the edge.
+// Returns the editor's live changes from the Google Sheet for one issue: every Today row for that date (headline,
+// status, section, rank, important, for), pinned rows from any date, and the Desk note. The page applies them on top of
+// the published issue. Cached for about a minute at the edge.
 import { sheetsConfigured, readRows } from "../lib/sheets.mjs";
 
+const EMPTY = { rows: [], pinned: [], desk: null };
+const clean = (v) => String(v ?? "").trim();
+
 export default async function handler(req, res) {
-  const date = String(req.query.date || "");
+  const date = clean(req.query.date);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return res.status(400).json({ error: "date must be YYYY-MM-DD" });
-  if (!sheetsConfigured()) return res.status(200).json({ configured: false, overrides: {}, added: [], pinned: [] });
+  if (!sheetsConfigured()) return res.status(200).json({ configured: false, ...EMPTY });
 
   try {
-    const all = await readRows("Today");
-    const overrides = {};
-    const added = [];
-    // Pinned rows stay on the page every day, whatever their date, until the status is cleared.
-    const pinned = all
-      .filter((r) => r.status.trim().toLowerCase() === "pin" && /^https?:\/\//.test(r.url) && (r.my_headline || r.ai_headline))
+    const [today, desk] = await Promise.all([readRows("Today"), readRows("Desk").catch(() => [])]);
+    const rows = today
+      .filter((r) => r.date === date && clean(r.status).toLowerCase() !== "pin")
       .map((r) => ({
-        id: r.id || `pin-${r.url}`,
-        section: r.section.trim().toLowerCase(),
-        headline: r.my_headline || r.ai_headline,
-        original_headline: r.original_headline || undefined,
-        url: r.url,
-        source: r.source || new URL(r.url).hostname.replace(/^www\./, ""),
+        id: clean(r.id),
+        url: clean(r.url),
+        section: clean(r.section).toLowerCase(),
+        rank: clean(r.rank),
+        source: clean(r.source),
+        my_headline: clean(r.my_headline),
+        status: clean(r.status).toLowerCase(),
+        important: clean(r.important),
+        for: clean(r.for),
+      }));
+    // Pinned rows stay on the page in every issue, whatever their date, until the status is cleared.
+    const pinned = today
+      .filter((r) => clean(r.status).toLowerCase() === "pin" && /^https?:\/\//.test(clean(r.url)) && (r.my_headline || r.ai_headline))
+      .map((r) => ({
+        id: clean(r.id) || `pin-${clean(r.url)}`,
+        section: clean(r.section).toLowerCase(),
+        headline: clean(r.my_headline) || clean(r.ai_headline),
+        original_headline: clean(r.original_headline) || undefined,
+        url: clean(r.url),
+        source: clean(r.source) || new URL(clean(r.url)).hostname.replace(/^www\./, ""),
         pinned: true,
       }));
-    for (const r of all.filter((x) => x.date === date)) {
-      const status = r.status.trim().toLowerCase();
-      if (status === "pin") continue;
-      if (!r.ai_headline) {
-        // A row the editor typed in: needs at least a link and a headline.
-        if (/^https?:\/\//.test(r.url) && r.my_headline && status !== "hide") {
-          added.push({
-            id: r.id || `add-${added.length + 1}`,
-            section: status === "lead" ? "lead" : r.section.trim().toLowerCase(),
-            headline: r.my_headline,
-            url: r.url,
-            source: r.source || new URL(r.url).hostname.replace(/^www\./, ""),
-            thumbnail: r.thumbnail || undefined,
-          });
-        }
-      } else if (r.my_headline || status) {
-        overrides[r.id] = { headline: r.my_headline || undefined, status: status || undefined };
-      }
-    }
-    res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=600");
-    return res.status(200).json({ configured: true, overrides, added, pinned });
+    const note = desk.find((r) => r.issue_date === date && /^https?:\/\//.test(clean(r.url)));
+    res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=30");
+    return res.status(200).json({ configured: true, rows, pinned, desk: note ? { teaser: clean(note.teaser), url: clean(note.url) } : null });
   } catch (err) {
     console.error(err);
-    return res.status(200).json({ configured: true, error: "sheet unavailable", overrides: {}, added: [], pinned: [] });
+    return res.status(200).json({ configured: true, error: "sheet unavailable", ...EMPTY });
   }
 }
