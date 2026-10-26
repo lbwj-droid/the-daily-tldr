@@ -139,14 +139,25 @@ async function pool(items, limit, fn) {
 }
 
 // Fetches every source. Returns the items plus a per-source health report; a failing feed never stops the run.
-export async function fetchAll(sources, { ytCache, readFixture, siteSeen = {} } = {}) {
+export async function fetchAll(sources, { ytCache, readFixture, siteSeen = {}, youtubeKey } = {}) {
   const health = [];
   const lists = await pool(sources, 8, async (source) => {
+    let apiError = "";
     try {
       if (source.kind === "site") {
         const items = await fetchSite(source, siteSeen, readFixture);
         health.push({ source: source.name, ok: true, items: items.length, via: items.via });
         return items;
+      }
+      // YouTube: the official Data API first (reliable, and it gives video length); the public feed as a fallback.
+      if (source.kind === "youtube" && youtubeKey && !readFixture) {
+        try {
+          const items = await fetchYoutubeApi(source, ytCache, youtubeKey);
+          health.push({ source: source.name, ok: true, items: items.length, via: "YouTube API" });
+          return items;
+        } catch (err) {
+          apiError = String(err.message || err);
+        }
       }
       let xml;
       if (readFixture) xml = await readFixture(source);
@@ -155,10 +166,10 @@ export async function fetchAll(sources, { ytCache, readFixture, siteSeen = {} } 
         xml = await get(url);
       }
       const items = parseFeed(xml, source);
-      health.push({ source: source.name, ok: true, items: items.length });
+      health.push({ source: source.name, ok: true, items: items.length, ...(apiError ? { via: `feed (API failed: ${apiError})` } : {}) });
       return items;
     } catch (err) {
-      health.push({ source: source.name, ok: false, error: String(err.message || err) });
+      health.push({ source: source.name, ok: false, error: String(err.message || err) + (apiError ? `; API: ${apiError}` : "") });
       return [];
     }
   });
@@ -295,4 +306,70 @@ export async function fetchPageMeta(url) {
   } catch {
     return { title: "", source: host, image: "", kind: "article", url };
   }
+}
+
+// ---- YouTube Data API v3 (needs YOUTUBE_API_KEY). About 3 quota units per channel per issue; the free allowance is 10,000 a day.
+const YT_API = "https://www.googleapis.com/youtube/v3";
+
+export function isoDurationSeconds(iso) {
+  const m = String(iso || "").match(/^P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?$/);
+  if (!m) return null;
+  const [, d, h, min, sec] = m.map((x) => Number(x || 0));
+  return d * 86400 + h * 3600 + min * 60 + sec;
+}
+
+async function ytJson(pathAndQuery, key) {
+  return JSON.parse(await get(`${YT_API}/${pathAndQuery}&key=${encodeURIComponent(key)}`, 15000));
+}
+
+async function youtubeChannelId(source, cache, key) {
+  if (source.channelId) return source.channelId;
+  const cacheKey = source.user ? `user:${source.user}` : (source.handles || [source.handle])[0].replace(/^@/, "");
+  if (cache[cacheKey]) return cache[cacheKey];
+  const lookups = source.user ? [`forUsername=${encodeURIComponent(source.user)}`] : (source.handles || [source.handle]).map((h) => `forHandle=${encodeURIComponent("@" + h.replace(/^@/, ""))}`);
+  for (const q of lookups) {
+    const data = await ytJson(`channels?part=id&${q}`, key);
+    if (data.items?.[0]?.id) return (cache[cacheKey] = data.items[0].id);
+  }
+  throw new Error("channel not found through the YouTube API");
+}
+
+// Turns the API's uploads and video details into the same item shape as parseFeed. Exported for tests.
+export function youtubeItemsFromApi(playlist, videos, source) {
+  const details = Object.fromEntries((videos.items || []).map((v) => [v.id, v]));
+  return (playlist.items || [])
+    .map((p) => {
+      const id = p.contentDetails?.videoId || p.snippet?.resourceId?.videoId;
+      const v = details[id];
+      if (!id || !v) return null; // private, deleted or unavailable
+      if (["live", "upcoming"].includes(v.snippet?.liveBroadcastContent)) return null; // no fixed length yet
+      const seconds = isoDurationSeconds(v.contentDetails?.duration);
+      const title = clean(v.snippet?.title || p.snippet?.title || "", 220);
+      const url = `https://www.youtube.com/watch?v=${id}`;
+      return {
+        id: shortId(url),
+        source: source.name,
+        role: source.role,
+        tag: source.tag || "",
+        lang: source.lang || "",
+        kind: "video",
+        title,
+        summary: clean(v.snippet?.description || "", 260),
+        url,
+        published: toIso(p.contentDetails?.videoPublishedAt || v.snippet?.publishedAt),
+        image: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
+        seconds,
+        isShort: (seconds != null && seconds <= 60) || /#shorts?\b/i.test(title),
+      };
+    })
+    .filter(Boolean);
+}
+
+async function fetchYoutubeApi(source, cache, key) {
+  const channelId = await youtubeChannelId(source, cache, key);
+  const uploads = "UU" + channelId.slice(2);
+  const playlist = await ytJson(`playlistItems?part=snippet,contentDetails&maxResults=15&playlistId=${uploads}`, key);
+  const ids = (playlist.items || []).map((p) => p.contentDetails?.videoId).filter(Boolean);
+  const videos = ids.length ? await ytJson(`videos?part=contentDetails,snippet&id=${ids.join(",")}`, key) : { items: [] };
+  return youtubeItemsFromApi(playlist, videos, source);
 }

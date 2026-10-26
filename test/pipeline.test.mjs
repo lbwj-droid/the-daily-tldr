@@ -5,7 +5,7 @@ import { mkdtempSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { parseFeed, clean, extractSiteLinks, discoverFeed } from "../scripts/lib/feeds.mjs";
+import { parseFeed, clean, extractSiteLinks, discoverFeed, isoDurationSeconds, youtubeItemsFromApi } from "../scripts/lib/feeds.mjs";
 import { normaliseRows } from "../lib/sheets.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -192,4 +192,26 @@ test("Sheet rows: a deleted heading falls back to the standard column name", () 
   assert.equal(rows[0].date, "2026-10-25");
   assert.equal(rows[0].my_headline, "Mine");
   assert.equal(rows[0].status, "hide");
+});
+
+test("YouTube API: durations parse, and live, missing and Short videos are handled", () => {
+  assert.equal(isoDurationSeconds("PT14M3S"), 843);
+  assert.equal(isoDurationSeconds("PT1H2M"), 3720);
+  assert.equal(isoDurationSeconds("P0D"), 0);
+  assert.equal(isoDurationSeconds("nonsense"), null);
+  const playlist = { items: ["a", "b", "c", "d"].map((id) => ({ contentDetails: { videoId: `${id}aaaaaaaaaa`, videoPublishedAt: "2026-10-25T10:00:00Z" } })) };
+  const videos = {
+    items: [
+      { id: "aaaaaaaaaaa", snippet: { title: "Explainer", description: "What happened", liveBroadcastContent: "none" }, contentDetails: { duration: "PT18M" } },
+      { id: "baaaaaaaaaa", snippet: { title: "Live now", liveBroadcastContent: "live" }, contentDetails: { duration: "P0D" } },
+      { id: "caaaaaaaaaa", snippet: { title: "Quick take", liveBroadcastContent: "none" }, contentDetails: { duration: "PT45S" } },
+    ],
+  };
+  const items = youtubeItemsFromApi(playlist, videos, { name: "Ch", role: "prefer", lang: "hi" });
+  assert.deepEqual(items.map((i) => i.title), ["Explainer", "Quick take"], "live dropped; unavailable d dropped");
+  assert.equal(items[0].seconds, 1080);
+  assert.equal(items[0].url, "https://www.youtube.com/watch?v=aaaaaaaaaaa");
+  assert.equal(items[0].lang, "hi");
+  assert.equal(items[0].published, "2026-10-25T10:00:00.000Z");
+  assert.equal(items[1].isShort, true, "45-second video treated as a Short");
 });

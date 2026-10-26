@@ -78,7 +78,7 @@ async function main() {
   const readFixture = dryRun ? (s) => readFile(path.join(root, "test", "fixtures", `${shortId(s.name)}.${s.kind === "site" ? "html" : "xml"}`), "utf8") : undefined;
   const siteSeenPath = path.join(root, "config", "site-seen.json");
   const siteSeen = dryRun ? {} : await readFile(siteSeenPath, "utf8").then(JSON.parse).catch(() => ({}));
-  const { items, health } = await fetchAll(sources, { ytCache, readFixture, siteSeen });
+  const { items, health } = await fetchAll(sources, { ytCache, readFixture, siteSeen, youtubeKey: process.env.YOUTUBE_API_KEY });
   if (!dryRun) {
     await writeFile(ytCachePath, JSON.stringify(ytCache, null, 2) + "\n");
     await writeFile(siteSeenPath, JSON.stringify(pruneSiteSeen(siteSeen), null, 2) + "\n");
@@ -114,7 +114,8 @@ async function main() {
   // Videos longer than maxVideoMinutes are dropped; YouTube feeds carry no length, so each watch page is checked.
   if (!dryRun) {
     const videos = candidates.filter((c) => c.kind === "video");
-    await pool(videos, 8, async (v) => (v.seconds = await fetchVideoSeconds(v.url)));
+    // Videos read through the YouTube API already carry their length; only feed-sourced ones need a page check.
+    await pool(videos.filter((v) => v.seconds == null), 8, async (v) => (v.seconds = await fetchVideoSeconds(v.url)));
     const tooLong = videos.filter((v) => v.seconds && v.seconds > settings.maxVideoMinutes * 60);
     report.videosDroppedTooLong = tooLong.length;
     report.videosLengthUnknown = videos.filter((v) => v.seconds == null).length;

@@ -81,6 +81,7 @@ In the repository, go to **Settings → Secrets and variables → Actions** and 
 | `ANTHROPIC_API_KEY` | Your Anthropic API key |
 | `SHEET_ID` | The long ID in the Sheet's URL, between `/d/` and `/edit` |
 | `GOOGLE_SA_KEY` | The entire contents of the service account's JSON key file |
+| `YOUTUBE_API_KEY` | A Google Cloud API key restricted to YouTube Data API v3. YouTube channels are read through the API, with the public feed as a fallback. |
 
 ### 2. Google Sheet and service account
 
@@ -100,6 +101,10 @@ In the repository, go to **Settings → Secrets and variables → Actions** and 
 ### 4. First run
 
 Go to **Actions → Daily edition → Run workflow**. After that it runs on its own every morning.
+
+## Checking the sources
+
+**Actions → Check sources → Run workflow** reads every feed and lists which worked on the run's Summary page. It makes no Claude calls and publishes nothing, so it's free to run after changing `config/sources.json`.
 
 ## Local development
 

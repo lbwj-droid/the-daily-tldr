@@ -10,7 +10,7 @@ In:
 - Protests, marches, detentions and campaigns against the CEC and the Election Commission over the SIR and alleged vote-rigging.
 - Education: the NEP, NEET and other exam leaks, fees, campus crackdowns, and teachers' strikes.
 - Court and judicial hearings on any of the above.
-- The BJP's and the government's response: statements, police action, detentions, legislation. When the Election Commission or a ministry has issued its own statement, link that official statement (sources marked `official`) as one of the India links.
+- The BJP's and the government's response: statements, police action, detentions, legislation. When the Election Commission or a ministry has issued its own statement, prefer an item that quotes or links that statement directly.
 - CJP's "School Thik Karo" (Fix Our Schools) campaign and the INC's "Chhatron Ki Goonj" campaign.
 
 Out:
@@ -32,9 +32,9 @@ The snarky Drudge voice is allowed here, punching up at authorities. Never mock 
 
 ## 5. Sources
 
-Prefer, in this order: interviews with Neha Bora on any channel, and aisa.in; interviews with CJP spokespersons (Abhijeet Dipke, Saurav Das, Ashutosh Ranka) on any channel, and cockroachjantaparty.org; INC, including Rahul Gandhi interviews and rahulgandhi.in/chhatron-ki-goonj; Dhruv Rathee; Griha Atul; Mojo Story; Naman Shrivastava; interviews with Yogendra Yadav or Prashant Bhushan on any channel; coverage of "School Thik Karo" from any of these.
+Prefer, in this order: interviews with Neha Bora on any channel, and aisa.in; interviews with CJP spokespersons (Abhijeet Dipke, Saurav Das, Ashutosh Ranka) on any channel; INC, including Rahul Gandhi interviews; Dhruv Rathee; Griha Atul; Mojo Story; Naman Shrivastava; interviews with Yogendra Yadav or Prashant Bhushan on any channel; coverage of "School Thik Karo" from any of these.
 
-CJP and Neha Bora mostly post on Instagram and X, which this pipeline cannot read, so their voices reach the page through interviews and coverage on the channels above.
+CJP and Neha Bora mostly post on Instagram and X, and the CJP and Chhatron Ki Goonj websites block automated reading, so their voices reach the page through interviews and coverage on the channels above, or through links the editor adds by hand.
 
 For this focus only, a single item from these sources qualifies on its own when it adds new information or explains the demands clearly.
 

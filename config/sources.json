@@ -97,12 +97,6 @@
       "tag": "INC"
     },
     {
-      "name": "The Wire",
-      "role": "prefer",
-      "kind": "rss",
-      "url": "https://thewire.in/rss.xml"
-    },
-    {
       "name": "Scroll",
       "role": "prefer",
       "kind": "rss",
@@ -182,20 +176,6 @@
       "role": "neutral",
       "kind": "rss",
       "url": "https://knowyourmeme.com/newsfeed.rss"
-    },
-    {
-      "name": "Election Commission of India",
-      "role": "official",
-      "kind": "site",
-      "url": "https://www.eci.gov.in/",
-      "tag": "Official"
-    },
-    {
-      "name": "PIB (Government of India)",
-      "role": "official",
-      "kind": "rss",
-      "url": "https://pib.gov.in/RssMain.aspx?ModId=6&Lang=1&Regid=3",
-      "tag": "Official"
     },
     {
       "name": "Meghnerd",
