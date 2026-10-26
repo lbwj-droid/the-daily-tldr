@@ -1,10 +1,28 @@
 {
-  "latest": "2026-10-25",
+  "latest": "2026-10-26",
+  "editions": [
+    {
+      "date": "2026-10-26",
+      "issue": 1,
+      "publish_at": "2026-10-26T03:30:00.000Z",
+      "generated_at": "2026-10-26T05:05:31.403Z"
+    },
+    {
+      "date": "2026-10-25"
+    },
+    {
+      "date": "2026-10-24"
+    }
+  ],
   "dates": [
+    "2026-10-26",
     "2026-10-25",
     "2026-10-24"
   ],
+  "lastIssue": 1,
   "siteName": "The Daily TL;DR",
   "footerNote": "Clicks are counted so Uncle Lester knows what lands.",
-  "helpline": "Need to talk? Tele-MANAS, free and 24x7: call 14416."
+  "helpline": "Need to talk? Tele-MANAS, free and 24x7: call 14416.",
+  "goLive": "07:30",
+  "timezone": "Asia/Dubai"
 }

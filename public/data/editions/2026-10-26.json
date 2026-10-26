@@ -1,0 +1,144 @@
+{
+  "date": "2026-10-26",
+  "issue": 1,
+  "publish_at": "2026-10-26T03:30:00.000Z",
+  "generated_at": "2026-10-26T05:05:31.403Z",
+  "window_hours": 34,
+  "desk": null,
+  "lead": {
+    "id": "c7507fd742",
+    "section": "lead",
+    "rank": 0,
+    "headline": "VUCIC CONCEDES IN SERBIA: NEARLY 70% TURNOUT AFTER 2 YEARS OF STUDENT-LED PROTESTS",
+    "original_headline": "Serbia's Vucic concedes defeat in historic snap election with record turnout",
+    "url": "https://www.france24.com/en/europe/20261025-serbia-s-vucic-concedes-defeat-in-historic-snap-election-with-record-turnout",
+    "source": "France 24",
+    "kind": "article",
+    "thumbnail": "https://s.france24.com/media/display/d8ecce54-d0b7-11f1-b879-bdb9616e85cf/w:1024/p:16x9/AP26298757145534.jpg",
+    "home": "world"
+  },
+  "sections": [
+    {
+      "key": "campus",
+      "title": "Campus Watch",
+      "focus": true,
+      "day": 2,
+      "days": 14,
+      "items": [
+        {
+          "id": "2e808245b5",
+          "section": "campus",
+          "rank": 0,
+          "headline": "Neha Bora on protests, police detention, CEC Gyanesh Kumar and the Modi government",
+          "original_headline": "Neha Bora on protests, police detention, CEC Gyanesh Kumar and the Modi government",
+          "url": "https://www.youtube.com/watch?v=_BsnYa2ZlcA",
+          "source": "The Wire",
+          "kind": "video",
+          "thumbnail": "https://i.ytimg.com/vi/_BsnYa2ZlcA/hqdefault.jpg",
+          "pinned": true
+        },
+        {
+          "id": "3401b2ac72",
+          "section": "campus",
+          "rank": 0,
+          "headline": "Who took the decision to undertake SIR?: Anjali Bhardwaj",
+          "original_headline": "Who took the decision to undertake SIR?: Anjali Bhardwaj",
+          "url": "https://www.youtube.com/watch?v=jzU7WUi6XAU",
+          "source": "Frontline Magazine",
+          "kind": "video",
+          "thumbnail": "https://i.ytimg.com/vi/jzU7WUi6XAU/hqdefault.jpg",
+          "pinned": true
+        },
+        {
+          "id": "2d9c1bd34e",
+          "section": "campus",
+          "rank": 3,
+          "headline": "EC won't name the software flagging SIR errors. 'Trade secrets', apparently.",
+          "original_headline": "EC refuses to name software used to flag SIR errors, cites ‘trade secrets’ RTI exemption: Report",
+          "url": "https://scroll.in/latest/1096632/ec-refuses-to-name-software-used-to-flag-sir-errors-cites-trade-secrets-rti-exemption-report?utm_source=rss&utm_medium=public",
+          "source": "Scroll",
+          "kind": "article"
+        },
+        {
+          "id": "fe14af3f76",
+          "section": "campus",
+          "rank": 4,
+          "headline": "Jamia students want union elections. Two Congress MPs get trespassing cases.",
+          "original_headline": "Two Congress MPs booked on trespassing charges for entering Jamia Millia campus amid protests",
+          "url": "https://scroll.in/latest/1096641/two-congress-mps-booked-for-allegedly-trespassing-into-jamia-milia-campus-amid-protests?utm_source=rss&utm_medium=public",
+          "source": "Scroll",
+          "kind": "article"
+        },
+        {
+          "id": "ce8c498a6d",
+          "section": "campus",
+          "rank": 5,
+          "headline": "France: 400,000+ march over school funding and bills, 1,314 arrested",
+          "original_headline": "France: 1.314 arrested during protests across the country",
+          "url": "https://www.france24.com/en/france-1-314-arrested-during-protests-across-the-country",
+          "source": "France 24",
+          "kind": "article"
+        }
+      ]
+    },
+    {
+      "key": "india",
+      "title": "India",
+      "items": [
+        {
+          "id": "dfab30eb32",
+          "section": "india",
+          "rank": 1,
+          "headline": "Police 'request', Raj Thackeray complies: Adani-Modi documentary deleted",
+          "original_headline": "Raj Thackeray deletes documentary alleging Adani-Modi ties from social media after police ‘request’",
+          "url": "https://scroll.in/latest/1096634/mns-chief-raj-thackeray-deletes-documentary-alleging-close-ties-between-pm-modi-and-gautam-adani?utm_source=rss&utm_medium=public",
+          "source": "Scroll",
+          "kind": "article",
+          "thumbnail": "https://sc0.blr1.cdn.digitaloceanspaces.com/article/202349-pzwxirdetd-1721905761.jpeg"
+        },
+        {
+          "id": "096631ca94",
+          "section": "india",
+          "rank": 2,
+          "headline": "Ex-SC judge's memoir: Chandrachud was 'too deferential' to Centre on judges",
+          "original_headline": "Ex-CJI Chandrachud was ‘too deferential’ to Centre in judicial appointments: Former SC judge",
+          "url": "https://scroll.in/latest/1096629/ex-cji-chandrachud-was-too-deferential-to-centre-in-judicial-appointments-former-sc-judge?utm_source=rss&utm_medium=public",
+          "source": "Scroll",
+          "kind": "article"
+        },
+        {
+          "id": "5827b5fa99",
+          "section": "india",
+          "rank": 3,
+          "headline": "Ladakh leaders bin Centre's draft over L-G superpowers, warn of protests",
+          "original_headline": "Ladakh leaders reject Centre’s governance draft, say it gives overriding powers to L-G, bureaucracy",
+          "url": "https://scroll.in/latest/1096626/ladakh-leaders-reject-centres-governance-draft-say-it-gives-overriding-powers-to-lg-bureaucracy?utm_source=rss&utm_medium=public",
+          "source": "Scroll",
+          "kind": "article"
+        }
+      ]
+    },
+    {
+      "key": "world",
+      "title": "World",
+      "items": [
+        {
+          "id": "e8b858ab98",
+          "section": "world",
+          "rank": 1,
+          "headline": "Lula, nearly 81, wins fourth term. Bolsonaro Jr wants a do-over.",
+          "original_headline": "Brazil's Lula beats odds and seals re-election, rival Bolsonaro demands annulment",
+          "url": "https://www.france24.com/en/americas/20261026-brazil-s-president-lula-da-silva-beats-flavio-bolsonaro-to-win-re-election",
+          "source": "France 24",
+          "kind": "article",
+          "thumbnail": "https://s.france24.com/media/display/d08bd462-d0d0-11f1-ab21-bdb9616e85cf/w:1024/p:16x9/2026-10-25T220534Z-34599975-RC2KAOAZJ6YN-RTRMADP-3-BRAZIL-ELECTION.jpg"
+        }
+      ]
+    },
+    {
+      "key": "culture",
+      "title": "Culture & Entertainment",
+      "items": []
+    }
+  ]
+}

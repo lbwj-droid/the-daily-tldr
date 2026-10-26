@@ -1,26 +1,28 @@
 {
-  "started": "2026-10-25T05:23:56.602Z",
+  "started": "2026-10-26T05:04:38.924Z",
   "dryRun": false,
-  "warnings": [],
+  "warnings": [
+    "15 of 39 feeds failed"
+  ],
   "usage": [
     {
       "step": "select",
       "model": "claude-opus-5-5",
-      "input_tokens": 51333,
+      "input_tokens": 37703,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 4425,
+      "output_tokens": 2151,
       "service_tier": "standard",
       "inference_geo": "global",
       "speed": "standard",
       "iterations": [
         {
-          "input_tokens": 51333,
-          "output_tokens": 4425,
+          "input_tokens": 37703,
+          "output_tokens": 2151,
           "cache_read_input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_creation": {
@@ -32,27 +34,27 @@
         }
       ],
       "output_tokens_details": {
-        "thinking_tokens": 3548
+        "thinking_tokens": 1698
       }
     },
     {
       "step": "rewrite",
       "model": "claude-opus-5-5",
-      "input_tokens": 4417,
+      "input_tokens": 3723,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 1974,
+      "output_tokens": 1654,
       "service_tier": "standard",
       "inference_geo": "global",
       "speed": "standard",
       "iterations": [
         {
-          "input_tokens": 4417,
-          "output_tokens": 1974,
+          "input_tokens": 3723,
+          "output_tokens": 1654,
           "cache_read_input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_creation": {
@@ -64,27 +66,27 @@
         }
       ],
       "output_tokens_details": {
-        "thinking_tokens": 1233
+        "thinking_tokens": 1250
       }
     },
     {
       "step": "verify",
       "model": "claude-opus-5-5",
-      "input_tokens": 3003,
+      "input_tokens": 1759,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 345,
+      "output_tokens": 177,
       "service_tier": "standard",
       "inference_geo": "global",
       "speed": "standard",
       "iterations": [
         {
-          "input_tokens": 3003,
-          "output_tokens": 345,
+          "input_tokens": 1759,
+          "output_tokens": 177,
           "cache_read_input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_creation": {
@@ -100,12 +102,14 @@
       }
     }
   ],
-  "date": "2026-10-25",
+  "date": "2026-10-26",
+  "issue": 1,
+  "lookbackHours": 34,
   "focus": [
     {
       "key": "campus",
       "title": "Campus Watch",
-      "day": 1,
+      "day": 2,
       "of": 14
     }
   ],
@@ -134,12 +138,7 @@
     {
       "source": "BBC Entertainment",
       "ok": true,
-      "items": 28
-    },
-    {
-      "source": "BBC Football",
-      "ok": true,
-      "items": 73
+      "items": 30
     },
     {
       "source": "BBC India",
@@ -147,14 +146,9 @@
       "items": 16
     },
     {
-      "source": "BBC Sport",
-      "ok": true,
-      "items": 75
-    },
-    {
       "source": "BBC World",
       "ok": true,
-      "items": 31
+      "items": 32
     },
     {
       "source": "Breaking Points",
@@ -180,7 +174,7 @@
     {
       "source": "Democracy Now",
       "ok": true,
-      "items": 36
+      "items": 33
     },
     {
       "source": "Dhruv Rathee",
@@ -196,11 +190,6 @@
       "source": "Election Commission of India",
       "ok": false,
       "error": "HTTP 406"
-    },
-    {
-      "source": "ESPNcricinfo",
-      "ok": true,
-      "items": 100
     },
     {
       "source": "Faye D'Souza (Beatroot News)",
@@ -223,14 +212,14 @@
       "error": "HTTP 404"
     },
     {
-      "source": "Highsnobiety",
-      "ok": true,
-      "items": 12
-    },
-    {
       "source": "Hindustan Times",
       "ok": true,
       "items": 100
+    },
+    {
+      "source": "HW News English",
+      "ok": false,
+      "error": "HTTP 404"
     },
     {
       "source": "Indian National Congress",
@@ -240,12 +229,12 @@
     {
       "source": "Know Your Meme",
       "ok": true,
-      "items": 3
+      "items": 5
     },
     {
-      "source": "Mint Markets",
-      "ok": true,
-      "items": 35
+      "source": "Meghnerd",
+      "ok": false,
+      "error": "HTTP 404"
     },
     {
       "source": "Mojo Story",
@@ -283,6 +272,11 @@
       "error": "HTTP 404"
     },
     {
+      "source": "Ravish Kumar",
+      "ok": false,
+      "error": "HTTP 500"
+    },
+    {
       "source": "Scroll",
       "ok": true,
       "items": 100
@@ -291,11 +285,6 @@
       "source": "Soompi",
       "ok": true,
       "items": 60
-    },
-    {
-      "source": "TechCrunch",
-      "ok": true,
-      "items": 20
     },
     {
       "source": "The Guardian World",
@@ -313,11 +302,6 @@
       "items": 20
     },
     {
-      "source": "The Verge",
-      "ok": true,
-      "items": 10
-    },
-    {
       "source": "The Wire",
       "ok": true,
       "items": 0
@@ -332,119 +316,78 @@
     "Chhatron Ki Goonj (INC)",
     "The Wire"
   ],
-  "candidates": 377,
+  "videosDroppedTooLong": 0,
+  "videosLengthUnknown": 0,
+  "candidates": 262,
   "focusCoverage": {
-    "campus": 82
+    "campus": 73
+  },
+  "budget": {
+    "maxLinks": 10,
+    "editorLinks": 0,
+    "pinned": 2,
+    "claudeLinks": 7,
+    "claudeLead": true
   },
   "factCheck": [],
+  "links": 10,
   "picks": {
-    "campus": 6,
-    "india": 2,
-    "world": 2,
-    "culture": 2,
-    "sports": 2,
-    "techmoney": 1,
-    "internet": 2
+    "campus": 5,
+    "india": 3,
+    "world": 1,
+    "culture": 0
   },
   "picksDetail": [
     {
       "section": "lead",
-      "path": "independent",
-      "story": "AISA's Neha Bora refuses to sign peace bond",
+      "path": "consensus",
+      "story": "Serbia's student movement topples Vučić in record-turnout election",
+      "source": "France 24"
+    },
+    {
+      "section": "campus",
+      "path": "consensus",
+      "story": "EC refuses to name SIR software, cites trade secrets",
       "source": "Scroll"
     },
     {
       "section": "campus",
-      "path": "independent",
-      "story": "Arundhati Roy on India's youth protests and crackdown",
-      "source": "Democracy Now"
-    },
-    {
-      "section": "campus",
-      "path": "independent",
-      "story": "Why anti-CEC protesters are invoking 1942 crackdown memories",
+      "path": "consensus",
+      "story": "Congress MPs booked for entering Jamia amid student union protest",
       "source": "Scroll"
     },
     {
       "section": "campus",
-      "path": "independent",
-      "story": "Anti-SIR protesters detained marching to Election Commission HQ",
-      "source": "Scroll"
-    },
-    {
-      "section": "campus",
-      "path": "neutral",
-      "story": "French student protesters demand concrete action from Macron",
+      "path": "consensus",
+      "story": "France: 1,300 arrested as cost-of-living and school protests spread",
       "source": "France 24"
     },
     {
       "section": "india",
       "path": "consensus",
-      "story": "Tear gas at Imphal protest against Manipur killings",
+      "story": "Raj Thackeray deletes Modi-Adani documentary after police request",
       "source": "Scroll"
     },
     {
       "section": "india",
-      "path": "neutral",
-      "story": "Jio Platforms IPO lists Oct 28 after record subscription",
-      "source": "Mint Markets"
+      "path": "consensus",
+      "story": "Justice Kaul memoir says Chandrachud too deferential to Centre",
+      "source": "Scroll"
     },
     {
-      "section": "world",
-      "path": "consensus",
-      "story": "Brazil runoff: Lula versus Flávio Bolsonaro today",
+      "section": "india",
+      "path": "independent",
+      "story": "Ladakh leaders reject Centre's governance draft, threaten protests",
       "source": "Scroll"
     },
     {
       "section": "world",
       "path": "consensus",
-      "story": "Israel displaces thousands in Hebron before election",
+      "story": "Lula wins fourth term; Bolsonaro demands result be annulled",
       "source": "France 24"
-    },
-    {
-      "section": "culture",
-      "path": "neutral",
-      "story": "BLACKPINK's Jisoo announces new single ADDICTED",
-      "source": "Soompi"
-    },
-    {
-      "section": "culture",
-      "path": "neutral",
-      "story": "tvN responds to Signal Season 2 December premiere",
-      "source": "Soompi"
-    },
-    {
-      "section": "sports",
-      "path": "neutral",
-      "story": "Tilak Varma leads India comeback to beat New Zealand",
-      "source": "ESPNcricinfo"
-    },
-    {
-      "section": "sports",
-      "path": "consensus",
-      "story": "Aston Villa end Man City's perfect Premier League start",
-      "source": "BBC Sport"
-    },
-    {
-      "section": "techmoney",
-      "path": "neutral",
-      "story": "SEBI orders Avadhut Sathe academy to refund ₹546 crore",
-      "source": "Mint Markets"
-    },
-    {
-      "section": "internet",
-      "path": "neutral",
-      "story": "Nike Kobe Dunk Low Mamba Eterno announced",
-      "source": "Highsnobiety"
-    },
-    {
-      "section": "internet",
-      "path": "neutral",
-      "story": "Lil Yachty's yellow Concrete Boys Air Force 1",
-      "source": "Highsnobiety"
     }
   ],
-  "lead": "AISA'S NEHA BORA WON'T SIGN 'KEEP THE PEACE' BOND A DAY AFTER COURT SAYS NO",
-  "finished": "2026-10-25T05:25:15.108Z",
-  "estimatedCostUsd": 0.3699
+  "lead": "VUCIC CONCEDES IN SERBIA: NEARLY 70% TURNOUT AFTER 2 YEARS OF STUDENT-LED PROTESTS",
+  "finished": "2026-10-26T05:05:31.993Z",
+  "estimatedCostUsd": 0.2524
 }
