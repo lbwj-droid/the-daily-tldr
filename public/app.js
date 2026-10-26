@@ -79,6 +79,7 @@
         all.push(item);
       }
       if (row.my_headline) item.headline = row.my_headline;
+      if (safeUrl(row.thumbnail)) item.thumbnail = row.thumbnail;
       if (row.status === "hide") item.hidden = true;
       var target = row.section === "editors" || row.section === "editorspicks" ? "picks" : row.section;
       if ((row.status === "lead" || target === "lead") && !item.isLead) promoted = item;
@@ -179,12 +180,16 @@
     }
 
     var desk = (ov && ov.desk) || edition.desk;
-    if (desk && safeUrl(desk.url)) {
+    if (desk && (safeUrl(desk.url) || desk.teaser)) {
       var box = el("section", { class: "desk", "aria-label": "Notes from the news desk" });
       box.appendChild(el("h2", null, "Notes from the news desk"));
-      var dl = el("a", { href: desk.url, target: "_blank", rel: "noopener" }, desk.teaser || "Read this issue's notes");
-      dl.addEventListener("click", function () { track({ section: "desk", headline: desk.teaser, url: desk.url }, edition.date); });
-      box.appendChild(dl);
+      if (safeUrl(desk.url)) {
+        var dl = el("a", { href: desk.url, target: "_blank", rel: "noopener" }, desk.teaser || "Read this issue's notes");
+        dl.addEventListener("click", function () { track({ section: "desk", headline: desk.teaser, url: desk.url }, edition.date); });
+        box.appendChild(dl);
+      } else {
+        box.appendChild(el("p", null, desk.teaser));
+      }
       page.appendChild(box);
     }
 
