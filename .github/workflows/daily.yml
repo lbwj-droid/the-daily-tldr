@@ -12,6 +12,10 @@ on:
         description: "Issue date (YYYY-MM-DD, Dubai). Leave blank for today."
         required: false
         default: ""
+      if_missing:
+        description: "Only build if this issue does not exist yet (used by the Vercel trigger)."
+        required: false
+        default: "false"
 
 permissions:
   contents: write
@@ -32,19 +36,28 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Skip if this issue already exists (backup start only)
+      # Starts: Vercel Cron at about 05:00-06:00 Dubai (api/cron-issue.js), plus GitHub's own schedule as a backup.
+      # Every automatic start stops at once if the issue already exists; a manual "Run workflow" always rebuilds.
+      - name: Skip if this issue already exists (automatic starts only)
         id: check
         env:
           INPUT_DATE: ${{ github.event.inputs.date }}
           EVENT: ${{ github.event_name }}
+          IF_MISSING: ${{ github.event.inputs.if_missing }}
         run: |
           DATE="$INPUT_DATE"
           [ -z "$DATE" ] && DATE=$(TZ=Asia/Dubai date +%F)
           if ! [[ "$DATE" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then echo "Date must be YYYY-MM-DD"; exit 1; fi
           echo "date=$DATE" >> "$GITHUB_OUTPUT"
-          if [ "$EVENT" = "schedule" ] && [ -f "public/data/editions/$DATE.json" ]; then
-            echo "Issue $DATE already published; nothing to do."
-            echo "skip=true" >> "$GITHUB_OUTPUT"
+          if [ "$EVENT" = "schedule" ] || [ "$IF_MISSING" = "true" ]; then
+            DAY=$(TZ=Asia/Dubai date +%a)
+            if [ "$DAY" != "Mon" ] && [ "$DAY" != "Fri" ]; then
+              echo "Started late, on $DAY in Dubai: not an issue day; nothing to do."
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+            elif [ -f "public/data/editions/$DATE.json" ]; then
+              echo "Issue $DATE already published; nothing to do."
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+            fi
           fi
 
       - run: npm ci

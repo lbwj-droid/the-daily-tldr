@@ -4,7 +4,7 @@ A Drudge-style link board for five readers aged 19 to 25 in India. Two issues a 
 
 ## How an issue is made
 
-1. **05:37 Dubai, Monday and Friday** (`.github/workflows/daily.yml`). A backup start at 06:37 does nothing if the issue already exists.
+1. **About 05:00 to 06:00 Dubai, Monday and Friday:** Vercel Cron calls `api/cron-issue.js`, which starts the GitHub workflow (`.github/workflows/daily.yml`). GitHub's own schedule (05:37 and 06:37) is a backup, because it can start hours late. Automatic starts do nothing if the issue already exists, or if it's no longer Monday or Friday in Dubai. Vercel needs `GH_DISPATCH_TOKEN`: a fine-grained GitHub token with Actions read and write on this repository only.
 2. `scripts/build-edition.mjs`:
    - reads your **Inbox** and **Desk** tabs
    - fetches the feeds in `config/sources.json` for the days since the previous issue
