@@ -312,9 +312,9 @@ async function collectManual(inboxRows, deskRows, sections, settings) {
     else if (section === "picks") out.picks.push(item);
     else (out.bySection[section] ||= []).push(item);
   }
-  const desk = deskRows.find((r) => (r.issue_date === today || (!r.issue_date && !String(r.status || "").trim())) && /^https?:\/\//.test(String(r.url || "").trim()));
+  const desk = deskRows.find((r) => (r.issue_date === today || (!r.issue_date && !String(r.status || "").trim())) && (String(r.teaser || "").trim() || /^https?:\/\//.test(String(r.url || "").trim())));
   if (desk) {
-    out.desk = { teaser: String(desk.teaser || "").trim(), url: String(desk.url).trim() };
+    out.desk = { teaser: String(desk.teaser || "").trim(), url: String(desk.url || "").trim() || undefined };
     out.deskRow = desk;
   }
   return out;

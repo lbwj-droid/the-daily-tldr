@@ -1,6 +1,6 @@
 // GET /api/overrides?date=YYYY-MM-DD
 // Returns the editor's live changes from the Google Sheet for one issue: every Today row for that date (headline,
-// status, section, rank, important, for), pinned rows from any date, and the Desk note. The page applies them on top of
+// status, section, rank, important, for, thumbnail), pinned rows from any date, and the Desk note. The page applies them on top of
 // the published issue. Cached for about a minute at the edge.
 import { sheetsConfigured, readRows } from "../lib/sheets.mjs";
 
@@ -26,6 +26,7 @@ export default async function handler(req, res) {
         status: clean(r.status).toLowerCase(),
         important: clean(r.important),
         for: clean(r.for),
+        thumbnail: clean(r.thumbnail),
       }));
     // Pinned rows stay on the page in every issue, whatever their date, until the status is cleared.
     const pinned = today
@@ -37,15 +38,18 @@ export default async function handler(req, res) {
         original_headline: clean(r.original_headline) || undefined,
         url: clean(r.url),
         source: clean(r.source) || new URL(clean(r.url)).hostname.replace(/^www\./, ""),
+        thumbnail: clean(r.thumbnail) || undefined,
         pinned: true,
       }));
-    const note = desk.find((r) => r.issue_date === date && /^https?:\/\//.test(clean(r.url)));
+    // The Desk note for this issue: a row dated for it, or an undated row not yet used. A link is optional; without
+    // one the teaser shows as plain text.
+    const note = desk.find((r) => (r.issue_date === date || (!clean(r.issue_date) && !clean(r.status))) && (clean(r.teaser) || /^https?:\/\//.test(clean(r.url))));
     // ?debug=1 lists the dates the Today tab holds, to diagnose edits that do not show.
     const debug = req.query.debug
       ? { todayRows: today.length, datesSeen: today.reduce((m, r) => ((m[r.date || "(blank)"] = (m[r.date || "(blank)"] || 0) + 1), m), {}) }
       : undefined;
     res.setHeader("Cache-Control", req.query.debug ? "no-store" : "public, s-maxage=60, stale-while-revalidate=30");
-    return res.status(200).json({ configured: true, rows, pinned, desk: note ? { teaser: clean(note.teaser), url: clean(note.url) } : null, debug });
+    return res.status(200).json({ configured: true, rows, pinned, desk: note ? { teaser: clean(note.teaser), url: clean(note.url) || undefined } : null, debug });
   } catch (err) {
     console.error(err);
     return res.status(200).json({ configured: true, error: "sheet unavailable", ...EMPTY });
