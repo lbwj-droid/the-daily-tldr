@@ -4,7 +4,7 @@
     {
       "key": "campus",
       "title": "Campus Watch",
-      "enabled": true,
+      "enabled": false,
       "start": "2026-10-25",
       "days": 14,
       "maxLinks": 3,

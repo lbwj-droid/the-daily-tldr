@@ -195,6 +195,27 @@
       "kind": "youtube",
       "handle": "ravishkumar.official",
       "lang": "hi"
+    },
+    {
+      "name": "AISA",
+      "role": "prefer",
+      "kind": "site",
+      "url": "https://www.aisa.in"
+    },
+    {
+      "name": "Naman Shrivastava",
+      "role": "prefer",
+      "kind": "youtube",
+      "handles": [
+        "namanshrivastava",
+        "NamanShrivastava"
+      ]
+    },
+    {
+      "name": "France 24",
+      "role": "neutral",
+      "kind": "rss",
+      "url": "https://www.france24.com/en/rss"
     }
   ]
 }

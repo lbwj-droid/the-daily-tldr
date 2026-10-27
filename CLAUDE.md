@@ -11,12 +11,15 @@ A Drudge-style link board that Lester (the editor, Dubai) runs for his five nibl
 - Build brief and decision log (Claude Doc): https://claude.ai/artifact/S6g9mcKaNm1dW4cnjCDYJe
 - Repository: lbwj-droid/the-daily-tldr (GitHub account lbwj-droid is Lester's)
 
-## How an issue is made (current, version 2 from 26 Oct 2026)
+## How an issue is made (current, version 3 from 27 Oct 2026)
 
 - **Monday and Friday.** Vercel Cron (`api/cron-issue.js`, 01:00 UTC hour) starts the GitHub workflow `daily.yml` (named "Issue") with `if_missing=true`. GitHub's own cron (05:37 and 06:37 Dubai) is only a backup. Automatic starts skip if the issue exists or if it is no longer Mon/Fri in Dubai. A manual "Run workflow" always rebuilds.
 - Issues are built early and shown to readers from **07:30 Dubai** (`publish_at`).
-- **At most 10 links per issue**, counting the lead, Lester's Inbox links and pinned links. Claude fills the rest.
-- Sections: Notes from the news desk (only if a Desk row exists), lead, Editor's Picks (Lester, up to 4), any live focus (Campus Watch until 7 Nov 2026), India (max 3), World (max 2), Culture & Entertainment (max 2).
+- **At most 10 links per issue**, counting the lead, Lester's Inbox links and pinned links. Claude fills the rest, but always keeps at least 1 India link, so a very full Inbox can push the total past 10. World gives way first. Fewer than 10 is normal; empty places are not refilled.
+- **Lead: Lester picks it** (Inbox `section=lead`, or `status=lead` in Today) for about two months from 27 Oct 2026. If he hasn't, Claude picks one as a backup and he can replace it from the preview.
+- Sections: Notes from the news desk (only if a Desk row exists), lead, Editor's Picks (Lester's Inbox links, usually 4, up to 9), India (Claude, max 2), World (Claude, max 2).
+- **India** is general India news ranked by `prompts/india.md` (the former Campus Watch priorities: explainers and movement interviews first), until Lester says to shift. **World** is major geopolitics, leaving out Israel, Gaza, Lebanon, Iran and Hormuz; Lester may swap in his own link there.
+- Campus Watch (focus) was ended early on 27 Oct 2026 and its 2 pinned links dropped; its sources AISA, Naman Shrivastava and France 24 moved into `config/sources.json`.
 - Three Claude Opus 5.5 calls per issue: select, rewrite headlines, fact-check (unsupported rewrites fall back to the original headline). About $0.25 to $0.50 an issue.
 - Sources: `config/sources.json`; focus topics: `config/focus.json` and `prompts/focus/*.md`; editorial rules: `prompts/editorial.md`; headline voice: `prompts/voice.md`.
 - YouTube is read through the YouTube Data API (`YOUTUBE_API_KEY`); the public channel feeds returned 404 for every channel on 26 Oct 2026 and are only a fallback.
@@ -35,7 +38,7 @@ A Drudge-style link board that Lester (the editor, Dubai) runs for his five nibl
 - At most **3 Hindi items** per issue: Dhruv Rathee and Ravish Kumar are tagged Hindi, plus any Hindi-script title. Lester's own links are exempt.
 - YouTube videos over 30 minutes are dropped; prefer 20 minutes or less.
 - "CJP" always means the **Cockroach Janta Party** (spokespersons Abhijeet Dipke, Saurav Das, Ashutosh Ranka), never Citizens for Justice and Peace.
-- Sports, Tech & Money and Internet & Style sections are off for 6 months from Oct 2026; Lester covers them by hand through the Inbox.
+- Sports, Tech & Money and Internet & Style sections are off for 6 months from Oct 2026; Culture & Entertainment is off from 27 Oct 2026 until Lester turns it back on. He covers them by hand through the Inbox.
 - Israel & Hormuz Watch focus is built but stays **off**; Lester covers it by hand.
 - Paywalled newsletter links: Lester uses gift/share links; `subscriber=yes` shows a [subscriber] tag.
 - Readers are told clicks are counted (footer). The footer names "Uncle Lester"; he lives in Dubai, so leave political framing to him.
@@ -66,5 +69,5 @@ A Drudge-style link board that Lester (the editor, Dubai) runs for his five nibl
 ## Open items (as of 26 Oct 2026)
 
 - Reminder scheduled for Wed 28 Oct, 9am Dubai: review Monday's issue (run report, Campus Watch coverage, Hindi count, cost) and ask for the niblings' feedback.
-- Campus Watch ends 7 Nov 2026; the page reverts automatically.
+- Lester will say when the India section should shift away from the student-movement priorities (`prompts/india.md`).
 - Masthead still says "THE DAILY TL;DR" although issues are twice weekly; Lester has not decided whether to rename it.
