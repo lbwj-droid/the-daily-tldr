@@ -216,6 +216,15 @@
       "role": "neutral",
       "kind": "rss",
       "url": "https://www.france24.com/en/rss"
+    },
+    {
+      "name": "Peek TV",
+      "role": "prefer",
+      "kind": "youtube",
+      "handles": [
+        "peektvofficial",
+        "PeekTVOfficial"
+      ]
     }
   ]
 }

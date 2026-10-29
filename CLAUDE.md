@@ -66,8 +66,9 @@ A Drudge-style link board that Lester (the editor, Dubai) runs for his five nibl
 - Workflow: build on a branch, run `npm test` (all tests must pass), check visually with Playwright when the page changes, then merge to `main` once Lester has approved the change. Never commit secrets.
 - Ask before anything irreversible or that changes what readers see in a way he hasn't approved.
 
-## Open items (as of 26 Oct 2026)
+## Open items (as of 29 Oct 2026)
 
-- Reminder scheduled for Wed 28 Oct, 9am Dubai: review Monday's issue (run report, Campus Watch coverage, Hindi count, cost) and ask for the niblings' feedback.
+- Reader feedback (28 Oct): very positive; the one-stop format is the most valued thing. Request: at least one must-know AI item per issue. Lester wants to curate a series of short primers with Claude (LLM basics, first principles: what they can and can't rely on). Format not yet decided.
+- Peek TV (YouTube @peektvofficial) added as a `prefer` source on 29 Oct; language not yet checked (Hindi-script titles are counted towards the Hindi cap automatically).
 - Lester will say when the India section should shift away from the student-movement priorities (`prompts/india.md`).
 - Masthead still says "THE DAILY TL;DR" although issues are twice weekly; Lester has not decided whether to rename it.
