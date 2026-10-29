@@ -128,9 +128,10 @@ async function main() {
   const byCid = new Map(candidates.map((c) => [c.cid, c]));
 
   // 4. The link budget: maxLinks in total, counting the lead, the editor's links and pinned starter links.
+  // Claude always keeps at least one section link (India first), even when the editor's links fill the issue.
   const pinCount = focus.active.reduce((n, f) => n + (f.pins || []).length, 0);
   const needLead = !manual.lead;
-  const budget = Math.max(0, settings.maxLinks - manual.all.length - pinCount - (needLead ? 1 : 0));
+  const budget = Math.max(1, settings.maxLinks - manual.all.length - pinCount - (needLead ? 1 : 0));
   const caps = sections.map((s) => ({ ...s, max: Math.max(0, s.max - (manual.bySection[s.key] || []).length) })).filter((s) => s.max > 0);
   report.budget = { maxLinks: settings.maxLinks, editorLinks: manual.all.length, pinned: pinCount, claudeLinks: budget, claudeLead: needLead };
   if (manual.all.length + pinCount > settings.maxLinks) report.warnings.push(`The editor's links and pinned links (${manual.all.length + pinCount}) exceed the ${settings.maxLinks}-link limit; all were kept`);
@@ -140,7 +141,7 @@ async function main() {
   let selection = { picks: [] };
   if (dryRun) selection = heuristicSelect(candidates, caps, focus, needLead);
   else if (budget > 0 || needLead) {
-    const editorial = (await readFile(path.join(root, "prompts", "editorial.md"), "utf8")) + focusPromptBlock(focus, settings);
+    const editorial = (await readFile(path.join(root, "prompts", "editorial.md"), "utf8")) + focusPromptBlock(focus, settings) + (await sectionBriefs(sections));
     const res = await selectStories({ client, settings, editorial, candidates, sections: caps, budget, needLead, manual: manual.all, windowText });
     report.usage.push({ step: "select", model: res.model, ...res.usage });
     selection = res.data;
@@ -151,7 +152,7 @@ async function main() {
   const toRewrite = [...picks, ...manual.all.filter((m) => !m.headline && m.title)];
   let rewritten = {};
   if (!dryRun && toRewrite.length) {
-    const voice = (await readFile(path.join(root, "prompts", "voice.md"), "utf8")) + focusToneBlock(focus);
+    const voice = (await readFile(path.join(root, "prompts", "voice.md"), "utf8")) + focusToneBlock(focus) + (await sectionBriefs(sections, true));
     const res = await rewriteHeadlines({ client, settings, voice, styleExamples, picks: toRewrite });
     report.usage.push({ step: "rewrite", model: res.model, ...res.usage });
     rewritten = Object.fromEntries(res.data.headlines.map((h) => [h.item_id, h.headline]));
@@ -342,8 +343,23 @@ function validatePicks(selection, byCid, settings, caps, budget, needLead) {
     out.push({ ...item, section: p.section, rank: isLead ? 0 : rank, isLead, helpline: p.helpline, story: p.story, path: p.path });
   };
   if (needLead && selection.lead) take(selection.lead, true);
-  for (const p of selection.picks || []) take(p, false);
+  // Sections fill in their listed order (India before World), so a tight budget squeezes the later sections first.
+  const order = (p) => caps.findIndex((s) => s.key === p.section);
+  for (const p of [...(selection.picks || [])].sort((a, b) => order(a) - order(b))) take(p, false);
   return out;
+}
+
+// The briefs of regular sections that have one (settings.sections[].brief), for the select prompt; toneOnly keeps
+// just each brief's Tone part, for the headline prompt.
+async function sectionBriefs(sections, toneOnly = false) {
+  const out = [];
+  for (const s of sections.filter((x) => x.brief)) {
+    let text = (await readFile(path.join(root, s.brief), "utf8")).trim();
+    if (toneOnly) text = (text.split(/^## Tone\s*$/m)[1] || "").trim();
+    if (text) out.push(`### ${s.title} (section ${s.key})\n\n${text}`);
+  }
+  if (!out.length) return "";
+  return (toneOnly ? "\n\n## Section tone\n\nThese rules apply to that section's items only.\n\n" : "\n\n## Section briefs\n\nEach brief steers its own section only. The Leave out rules always apply.\n\n") + out.join("\n\n");
 }
 
 // Dry-run stand-in for Claude: sorts candidates into sections by source and keywords, within the same caps.

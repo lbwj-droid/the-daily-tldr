@@ -10,20 +10,15 @@
     {
       "key": "india",
       "title": "India",
-      "max": 3,
-      "covers": "Indian politics, society, women's safety, education, India climate and environment"
+      "max": 2,
+      "brief": "prompts/india.md",
+      "covers": "general India news: politics, society, education and exams, the Election Commission, courts, women's safety, climate; ranked by the India brief below"
     },
     {
       "key": "world",
       "title": "World",
       "max": 2,
-      "covers": "Geopolitics, wars and diplomacy, global climate"
-    },
-    {
-      "key": "culture",
-      "title": "Culture & Entertainment",
-      "max": 2,
-      "covers": "Film, OTT and streaming, music, K-pop, celebrity news, internet and social media culture"
+      "covers": "major geopolitics: wars, diplomacy, elections and shifts of power between and within major states. Leave out Israel, Gaza, the West Bank, Lebanon, Iran and the Strait of Hormuz: the editor covers those by hand"
     }
   ],
   "independentPathMax": 4,
@@ -50,7 +45,7 @@
   "minLookbackHours": 30,
   "maxLookbackHours": 120,
   "maxLinks": 10,
-  "picksMax": 4,
+  "picksMax": 9,
   "hindiMax": 3,
   "maxVideoMinutes": 30,
   "preferVideoMinutes": 20,

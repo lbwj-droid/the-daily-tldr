@@ -91,7 +91,7 @@ test("the editor's Inbox links fill Editor's Picks, can set the lead, and squeez
       { section: "picks", url: "https://news.example.com/b", my_headline: "Pick B", important: "yes" },
       { section: "picks", url: "https://news.example.com/c", my_headline: "Pick C", for: "Asha" },
       { section: "picks", url: "https://news.example.com/d", my_headline: "Pick D" },
-      { section: "picks", url: "https://news.example.com/e", my_headline: "Pick E, one too many" },
+      { section: "picks", url: "https://news.example.com/e", my_headline: "Pick E, a fifth" },
       { section: "lead", url: "https://news.example.com/lead", my_headline: "MY LEAD" },
       { section: "world", url: "https://news.example.com/hormuz", my_headline: "Hormuz, from Dubai" },
       { issue_date: "2026-12-01", url: "https://news.example.com/later", my_headline: "Not yet" },
@@ -104,13 +104,29 @@ test("the editor's Inbox links fill Editor's Picks, can set the lead, and squeez
   assert.equal(edition.lead.headline, "MY LEAD");
   assert.deepEqual(edition.desk, { teaser: "This week's note", url: "https://docs.google.com/document/d/x/view" });
   const picks = edition.sections.find((s) => s.key === "picks");
-  assert.deepEqual(picks.items.map((i) => i.headline), ["Pick A", "Pick B", "Pick C", "Pick D"], "4 picks; the fifth waits");
+  assert.deepEqual(picks.items.map((i) => i.headline), ["Pick A", "Pick B", "Pick C", "Pick D", "Pick E, a fifth"], "more than 4 picks are fine");
   assert.equal(picks.items[0].subscriber, true);
   assert.equal(picks.items[1].important, true);
   assert.equal(picks.items[2].for, "asha");
   assert.equal(edition.sections.find((s) => s.key === "world").items[0].headline, "Hormuz, from Dubai", "editor links lead their section");
-  for (const h of ["Not yet", "Already used", "Pick E, one too many"]) assert.ok(!items.some((i) => i.headline === h), `${h} left out`);
+  for (const h of ["Not yet", "Already used"]) assert.ok(!items.some((i) => i.headline === h), `${h} left out`);
   assert.ok(items.length <= settings.maxLinks, `${items.length} links`);
+});
+
+test("when the editor fills the issue, Claude keeps one India link and drops World first", () => {
+  const inbox = { inbox: [{ section: "lead", url: "https://news.example.com/lead", my_headline: "MY LEAD" }], desk: [] };
+  for (const n of [1, 2, 3, 4, 5, 6, 7, 8, 9]) inbox.inbox.push({ url: `https://news.example.com/p${n}`, my_headline: `Pick ${n}` });
+  const { edition } = dryRun({ inbox });
+  assert.equal(edition.sections.find((s) => s.key === "picks").items.length, 9);
+  assert.equal(edition.sections.find((s) => s.key === "india").items.length, 1);
+  assert.ok(!edition.sections.find((s) => s.key === "world")?.items.length, "World gives way first");
+});
+
+test("Culture is off; India and World take up to 2 each, and Campus Watch has ended", () => {
+  const { edition } = dryRun();
+  assert.deepEqual(edition.sections.map((s) => s.key).filter((k) => k !== "picks"), ["india", "world"]);
+  for (const s of edition.sections.filter((x) => x.key !== "picks")) assert.ok(s.items.length <= 2, `${s.key}: ${s.items.length}`);
+  assert.ok(edition.lead, "Claude picks a lead when the editor has not");
 });
 
 test("a live focus gets its own section first; pinned links count towards the limit", () => {

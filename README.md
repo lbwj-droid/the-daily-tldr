@@ -25,7 +25,7 @@ A Drudge-style link board for five readers aged 19 to 25 in India. Two issues a 
 | Column | Meaning |
 | --- | --- |
 | `issue_date` | Blank means the next issue. A future date holds the row until that issue. |
-| `section` | Blank means Editor's Picks (up to 4 an issue). Also `lead`, `campus`, `india`, `world` or `culture`. |
+| `section` | Blank means Editor's Picks (usually 4 an issue, up to 9). Also `lead`, `india` or `world`. |
 | `url` | Required. Use a newsletter's gift or share link where it has one. |
 | `my_headline` | Optional. If blank, Claude writes one from the article's title. |
 | `important` | `yes` shows the headline in blue. |
@@ -47,7 +47,7 @@ A Drudge-style link board for five readers aged 19 to 25 in India. Two issues a 
 
 ## Focus topics (showcase sections)
 
-A focus is a time-boxed section shown under the lead, for example "Campus Watch, Week 1 of 2". Several can run at once.
+A focus is a time-boxed section shown under the lead, for example "Campus Watch, Week 1 of 2". Several can run at once. None is live at present: Campus Watch ended on 27 Oct 2026 and its priorities now steer the India section through `prompts/india.md` (a section brief, set with `brief` in `config/settings.json`).
 
 1. Write the brief: copy `prompts/focus/_TEMPLATE.md` (or edit `campus.md` / `mideast.md`) and fill in its 7 parts.
 2. In `config/focus.json`, set the focus's `enabled` to `true`, plus its `start` date, `days`, `maxLinks` and any extra `sources`.
