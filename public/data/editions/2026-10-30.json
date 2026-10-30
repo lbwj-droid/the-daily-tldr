@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-30",
+  "issue": 2,
+  "publish_at": "2026-10-30T03:30:00.000Z",
+  "generated_at": "2026-10-30T01:16:12.106Z",
+  "window_hours": 98,
+  "desk": null,
+  "lead": {
+    "id": "5b34fc005b",
+    "section": "lead",
+    "rank": 0,
+    "headline": "NEHA BORA WANTS 'REGIME CHANGE', BLAMES GODI MEDIA FOR HATE IN INDIA",
+    "original_headline": "Why Neha Bora wants ‘regime change’",
+    "url": "https://scroll.in/video/1096739/why-neha-bora-wants-regime-change?utm_source=rss&utm_medium=public",
+    "source": "Scroll",
+    "kind": "article",
+    "thumbnail": "https://sc0.blr1.cdn.digitaloceanspaces.com/article/216343-fwscqtcdmz-1793272149.jpeg",
+    "home": "india"
+  },
+  "sections": [
+    {
+      "key": "india",
+      "title": "India",
+      "items": [
+        {
+          "id": "3a696dc65a",
+          "section": "india",
+          "rank": 1,
+          "headline": "Yogendra Yadav: why do existing voters need a first-timer's Form 6?",
+          "original_headline": "\"This Is ILLEGAL If..\" | Yogendra Yadav's BIG TAKE On Form 6 & Supreme Court Hearing | EC | SIR",
+          "url": "https://www.youtube.com/watch?v=4_1VRWUTJoE",
+          "source": "Mojo Story",
+          "kind": "video",
+          "thumbnail": "https://i.ytimg.com/vi/4_1VRWUTJoE/hqdefault.jpg"
+        },
+        {
+          "id": "42050027e7",
+          "section": "india",
+          "rank": 2,
+          "headline": "Hunger strike pays off: Jamia sets timeline to restore students' union",
+          "original_headline": "Jamia Sets Timeline for Students’ Union Restoration After Hunger Strike Over Elections",
+          "url": "https://www.youtube.com/watch?v=fjTRMFcuZPM",
+          "source": "Peek TV",
+          "kind": "video"
+        }
+      ]
+    },
+    {
+      "key": "world",
+      "title": "World",
+      "items": [
+        {
+          "id": "d4b9929504",
+          "section": "world",
+          "rank": 1,
+          "headline": "Student-led movement ousts Vucic. Serbia's strongman era ends!",
+          "original_headline": "Serbia's Student-Led Movement Ousts Strongman Aleksander Vučić in Shock Election Result",
+          "url": "http://www.democracynow.org/2026/10/26/serbia_aleksandar_vucic",
+          "source": "Democracy Now",
+          "kind": "article",
+          "thumbnail": "https://www.democracynow.org/images/story/54/84054/w320/SEG2-Serbia-Celebrations-1.jpg"
+        },
+        {
+          "id": "eadaa071cc",
+          "section": "world",
+          "rank": 2,
+          "headline": "Lula bags record fourth term, beats Bolsonaro Jr by 4 million votes",
+          "original_headline": "Brazil: Lula Wins Stunning Upset Over Flávio Bolsonaro in Blow to Far Right & Trump",
+          "url": "http://www.democracynow.org/2026/10/26/brazil_election_lula_beats_bolsonaro",
+          "source": "Democracy Now",
+          "kind": "article"
+        }
+      ]
+    }
+  ]
+}

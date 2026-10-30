@@ -1,6 +1,12 @@
 {
-  "latest": "2026-10-26",
+  "latest": "2026-10-30",
   "editions": [
+    {
+      "date": "2026-10-30",
+      "issue": 2,
+      "publish_at": "2026-10-30T03:30:00.000Z",
+      "generated_at": "2026-10-30T01:16:12.106Z"
+    },
     {
       "date": "2026-10-26",
       "issue": 1,
@@ -15,11 +21,12 @@
     }
   ],
   "dates": [
+    "2026-10-30",
     "2026-10-26",
     "2026-10-25",
     "2026-10-24"
   ],
-  "lastIssue": 1,
+  "lastIssue": 2,
   "siteName": "The Daily TL;DR",
   "footerNote": "Clicks are counted so Uncle Lester knows what lands.",
   "helpline": "Need to talk? Tele-MANAS, free and 24x7: call 14416.",

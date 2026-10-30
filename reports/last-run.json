@@ -1,28 +1,26 @@
 {
-  "started": "2026-10-26T05:04:38.924Z",
+  "started": "2026-10-30T01:15:27.165Z",
   "dryRun": false,
-  "warnings": [
-    "15 of 39 feeds failed"
-  ],
+  "warnings": [],
   "usage": [
     {
       "step": "select",
       "model": "claude-opus-5-5",
-      "input_tokens": 37703,
+      "input_tokens": 56370,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 2151,
+      "output_tokens": 1027,
       "service_tier": "standard",
       "inference_geo": "global",
       "speed": "standard",
       "iterations": [
         {
-          "input_tokens": 37703,
-          "output_tokens": 2151,
+          "input_tokens": 56370,
+          "output_tokens": 1027,
           "cache_read_input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_creation": {
@@ -34,27 +32,27 @@
         }
       ],
       "output_tokens_details": {
-        "thinking_tokens": 1698
+        "thinking_tokens": 746
       }
     },
     {
       "step": "rewrite",
       "model": "claude-opus-5-5",
-      "input_tokens": 3723,
+      "input_tokens": 2141,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 1654,
+      "output_tokens": 1037,
       "service_tier": "standard",
       "inference_geo": "global",
       "speed": "standard",
       "iterations": [
         {
-          "input_tokens": 3723,
-          "output_tokens": 1654,
+          "input_tokens": 2141,
+          "output_tokens": 1037,
           "cache_read_input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_creation": {
@@ -66,27 +64,27 @@
         }
       ],
       "output_tokens_details": {
-        "thinking_tokens": 1250
+        "thinking_tokens": 789
       }
     },
     {
       "step": "verify",
       "model": "claude-opus-5-5",
-      "input_tokens": 1759,
+      "input_tokens": 1301,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 177,
+      "output_tokens": 114,
       "service_tier": "standard",
       "inference_geo": "global",
       "speed": "standard",
       "iterations": [
         {
-          "input_tokens": 1759,
-          "output_tokens": 177,
+          "input_tokens": 1301,
+          "output_tokens": 114,
           "cache_read_input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_creation": {
@@ -102,23 +100,15 @@
       }
     }
   ],
-  "date": "2026-10-26",
-  "issue": 1,
-  "lookbackHours": 34,
-  "focus": [
-    {
-      "key": "campus",
-      "title": "Campus Watch",
-      "day": 2,
-      "of": 14
-    }
-  ],
+  "date": "2026-10-30",
+  "issue": 2,
+  "lookbackHours": 98,
+  "focus": [],
   "feeds": [
     {
       "source": "AISA",
-      "ok": true,
-      "items": 10,
-      "via": "feed"
+      "ok": false,
+      "error": "fetch failed"
     },
     {
       "source": "Al Jazeera",
@@ -131,29 +121,25 @@
       "items": 10
     },
     {
-      "source": "ANSA English",
-      "ok": true,
-      "items": 100
-    },
-    {
       "source": "BBC Entertainment",
       "ok": true,
-      "items": 30
+      "items": 26
     },
     {
       "source": "BBC India",
       "ok": true,
-      "items": 16
+      "items": 18
     },
     {
       "source": "BBC World",
       "ok": true,
-      "items": 32
+      "items": 28
     },
     {
       "source": "Breaking Points",
-      "ok": false,
-      "error": "HTTP 404"
+      "ok": true,
+      "items": 15,
+      "via": "YouTube API"
     },
     {
       "source": "Carbon Brief",
@@ -161,25 +147,15 @@
       "items": 12
     },
     {
-      "source": "Chhatron Ki Goonj (INC)",
-      "ok": true,
-      "items": 0,
-      "via": "page links"
-    },
-    {
-      "source": "Cockroach Janta Party",
-      "ok": false,
-      "error": "HTTP 403"
-    },
-    {
       "source": "Democracy Now",
       "ok": true,
-      "items": 33
+      "items": 35
     },
     {
       "source": "Dhruv Rathee",
-      "ok": false,
-      "error": "HTTP 404"
+      "ok": true,
+      "items": 15,
+      "via": "YouTube API"
     },
     {
       "source": "Drop Site News",
@@ -187,14 +163,10 @@
       "items": 20
     },
     {
-      "source": "Election Commission of India",
-      "ok": false,
-      "error": "HTTP 406"
-    },
-    {
       "source": "Faye D'Souza (Beatroot News)",
-      "ok": false,
-      "error": "HTTP 404"
+      "ok": true,
+      "items": 15,
+      "via": "YouTube API"
     },
     {
       "source": "France 24",
@@ -203,13 +175,15 @@
     },
     {
       "source": "Glenn Greenwald",
-      "ok": false,
-      "error": "HTTP 404"
+      "ok": true,
+      "items": 15,
+      "via": "YouTube API"
     },
     {
       "source": "Griha Atul",
-      "ok": false,
-      "error": "HTTP 404"
+      "ok": true,
+      "items": 15,
+      "via": "YouTube API"
     },
     {
       "source": "Hindustan Times",
@@ -218,28 +192,32 @@
     },
     {
       "source": "HW News English",
-      "ok": false,
-      "error": "HTTP 404"
+      "ok": true,
+      "items": 15,
+      "via": "YouTube API"
     },
     {
       "source": "Indian National Congress",
-      "ok": false,
-      "error": "HTTP 404"
+      "ok": true,
+      "items": 15,
+      "via": "YouTube API"
     },
     {
       "source": "Know Your Meme",
       "ok": true,
-      "items": 5
+      "items": 6
     },
     {
       "source": "Meghnerd",
-      "ok": false,
-      "error": "HTTP 404"
+      "ok": true,
+      "items": 15,
+      "via": "YouTube API"
     },
     {
       "source": "Mojo Story",
-      "ok": false,
-      "error": "HTTP 404"
+      "ok": true,
+      "items": 15,
+      "via": "YouTube API"
     },
     {
       "source": "Mongabay India",
@@ -248,8 +226,9 @@
     },
     {
       "source": "Naman Shrivastava",
-      "ok": false,
-      "error": "HTTP 404"
+      "ok": true,
+      "items": 15,
+      "via": "YouTube API"
     },
     {
       "source": "NDTV",
@@ -262,19 +241,22 @@
       "items": 10
     },
     {
-      "source": "PIB (Government of India)",
-      "ok": false,
-      "error": "HTTP 403"
+      "source": "Peek TV",
+      "ok": true,
+      "items": 15,
+      "via": "YouTube API"
     },
     {
       "source": "Rahul Gandhi",
-      "ok": false,
-      "error": "HTTP 404"
+      "ok": true,
+      "items": 15,
+      "via": "YouTube API"
     },
     {
       "source": "Ravish Kumar",
-      "ok": false,
-      "error": "HTTP 500"
+      "ok": true,
+      "items": 15,
+      "via": "YouTube API"
     },
     {
       "source": "Scroll",
@@ -302,92 +284,62 @@
       "items": 20
     },
     {
-      "source": "The Wire",
-      "ok": true,
-      "items": 0
-    },
-    {
       "source": "Zeteo",
       "ok": true,
       "items": 20
     }
   ],
-  "emptyFeeds": [
-    "Chhatron Ki Goonj (INC)",
-    "The Wire"
-  ],
-  "videosDroppedTooLong": 0,
+  "emptyFeeds": [],
+  "videosDroppedTooLong": 9,
   "videosLengthUnknown": 0,
-  "candidates": 262,
-  "focusCoverage": {
-    "campus": 73
-  },
+  "candidates": 398,
+  "focusCoverage": {},
   "budget": {
     "maxLinks": 10,
     "editorLinks": 0,
-    "pinned": 2,
-    "claudeLinks": 7,
+    "pinned": 0,
+    "claudeLinks": 9,
     "claudeLead": true
   },
   "factCheck": [],
-  "links": 10,
+  "links": 5,
   "picks": {
-    "campus": 5,
-    "india": 3,
-    "world": 1,
-    "culture": 0
+    "india": 2,
+    "world": 2
   },
   "picksDetail": [
     {
       "section": "lead",
       "path": "consensus",
-      "story": "Serbia's student movement topples Vučić in record-turnout election",
-      "source": "France 24"
-    },
-    {
-      "section": "campus",
-      "path": "consensus",
-      "story": "EC refuses to name SIR software, cites trade secrets",
-      "source": "Scroll"
-    },
-    {
-      "section": "campus",
-      "path": "consensus",
-      "story": "Congress MPs booked for entering Jamia amid student union protest",
-      "source": "Scroll"
-    },
-    {
-      "section": "campus",
-      "path": "consensus",
-      "story": "France: 1,300 arrested as cost-of-living and school protests spread",
-      "source": "France 24"
-    },
-    {
-      "section": "india",
-      "path": "consensus",
-      "story": "Raj Thackeray deletes Modi-Adani documentary after police request",
+      "story": "Neha Bora explains student movement's 'regime change' demand",
       "source": "Scroll"
     },
     {
       "section": "india",
       "path": "consensus",
-      "story": "Justice Kaul memoir says Chandrachud too deferential to Centre",
-      "source": "Scroll"
+      "story": "Yogendra Yadav on SIR Form 6 Supreme Court hearing",
+      "source": "Mojo Story"
     },
     {
       "section": "india",
-      "path": "independent",
-      "story": "Ladakh leaders reject Centre's governance draft, threaten protests",
-      "source": "Scroll"
+      "path": "consensus",
+      "story": "Jamia sets students' union timeline after hunger strike",
+      "source": "Peek TV"
     },
     {
       "section": "world",
       "path": "consensus",
-      "story": "Lula wins fourth term; Bolsonaro demands result be annulled",
-      "source": "France 24"
+      "story": "Serbia's student-led movement ousts strongman Vučić",
+      "source": "Democracy Now"
+    },
+    {
+      "section": "world",
+      "path": "consensus",
+      "story": "Lula beats Flávio Bolsonaro for record fourth term",
+      "source": "Democracy Now"
     }
   ],
-  "lead": "VUCIC CONCEDES IN SERBIA: NEARLY 70% TURNOUT AFTER 2 YEARS OF STUDENT-LED PROTESTS",
-  "finished": "2026-10-26T05:05:31.993Z",
-  "estimatedCostUsd": 0.2524
+  "lead": "NEHA BORA WANTS 'REGIME CHANGE', BLAMES GODI MEDIA FOR HATE IN INDIA",
+  "finished": "2026-10-30T01:16:12.941Z",
+  "estimatedCostUsd": 0.2828
 }
