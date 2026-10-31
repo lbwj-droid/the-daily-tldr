@@ -84,7 +84,11 @@
         all.push(item);
       }
       if (row.my_headline) item.headline = row.my_headline;
-      if (safeUrl(row.thumbnail)) { item.thumbnail = row.thumbnail; item.sheetImage = true; }
+      // The build copies each link's own image into the Sheet; only an image the editor typed in shows on any link.
+      if (safeUrl(row.thumbnail)) {
+        if (row.thumbnail !== item.thumbnail) item.sheetImage = true;
+        item.thumbnail = row.thumbnail;
+      }
       if (row.status === "hide") item.hidden = true;
       var target = sectionKey(row.section);
       if ((row.status === "lead" || target === "lead") && !item.isLead) promoted = item;
