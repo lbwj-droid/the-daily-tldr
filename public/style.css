@@ -89,6 +89,7 @@ main { max-width: 1120px; margin: 0 auto; }
 .headline { color: var(--link); font: 700 18px/1.28 var(--mono); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 .headline:visited { color: var(--visited); }
 .headline.important, .headline.important:visited { color: var(--important); }
+.new { font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--lead); }
 .imp { font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--important); }
 .for { font-weight: 700; color: var(--lead); }
 .tag.sub { color: var(--muted); }
