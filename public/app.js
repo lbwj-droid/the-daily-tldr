@@ -59,10 +59,15 @@
   function merge(edition, ov) {
     var sections = edition.sections;
     var keys = sections.map(function (s) { return s.key; });
-    var homeOf = function (item) {
-      if (item.home && keys.indexOf(item.home) >= 0) return item.home;
-      var regular = sections.filter(function (s) { return !s.focus && !s.editor; })[0] || sections[0];
-      return regular ? regular.key : null;
+    // A section typed in the Sheet matches a section key or title ("World", "editor's picks"); anything else, such as a
+    // section that is switched off, goes to Editor's Picks.
+    var sectionKey = function (v) {
+      var want = String(v || "").toLowerCase().replace(/[^a-z]/g, "");
+      if (!want) return "";
+      if (want === "lead") return "lead";
+      if (want.indexOf("editor") === 0 || want === "picks" || want === "pick") return "picks";
+      var hit = sections.filter(function (s) { return s.key === want || s.title.toLowerCase().replace(/[^a-z]/g, "") === want; })[0];
+      return hit ? hit.key : "picks";
     };
     var all = [];
     if (edition.lead) { edition.lead.isLead = true; all.push(edition.lead); }
@@ -79,9 +84,9 @@
         all.push(item);
       }
       if (row.my_headline) item.headline = row.my_headline;
-      if (safeUrl(row.thumbnail)) item.thumbnail = row.thumbnail;
+      if (safeUrl(row.thumbnail)) { item.thumbnail = row.thumbnail; item.sheetImage = true; }
       if (row.status === "hide") item.hidden = true;
-      var target = row.section === "editors" || row.section === "editorspicks" ? "picks" : row.section;
+      var target = sectionKey(row.section);
       if ((row.status === "lead" || target === "lead") && !item.isLead) promoted = item;
       else if (item.isLead && target && target !== "lead") demoteLead = target;
       else if (target && target !== "lead") item.section = target;
@@ -90,26 +95,26 @@
       item.for = slug(row.for) || undefined;
     });
 
-    // The lead: a promoted link replaces it, and the old lead goes back to its own section.
+    // The lead: a promoted link replaces it, and the replaced lead leaves the page (to keep it, give it a section in the
+    // Sheet).
     var lead = edition.lead;
     if (lead && lead.hidden) lead = null;
     if (demoteLead && lead) { lead.isLead = false; lead.section = demoteLead; lead = null; }
     if (promoted) {
-      if (lead) { lead.isLead = false; lead.section = homeOf(lead); }
+      if (lead) { lead.isLead = false; lead.hidden = true; }
       promoted.isLead = true;
       lead = promoted;
     }
 
-    // Rebuild the sections from the merged links: pinned first, then by rank.
+    // Rebuild the sections from the merged links: pinned first, then by rank. An image set in the Sheet shows on any link.
     var bucket = {};
     all.forEach(function (i) {
       if (i.isLead || i.hidden) return;
-      var key = i.section;
+      var key = keys.indexOf(i.section) < 0 ? "picks" : i.section;
       if (key === "picks" && keys.indexOf("picks") < 0) {
         sections.unshift({ key: "picks", title: "Editor's Picks", editor: true, items: [] });
         keys.unshift("picks");
       }
-      if (keys.indexOf(key) < 0) key = homeOf(i);
       (bucket[key] = bucket[key] || []).push(i);
     });
     ((ov && ov.pinned) || []).forEach(function (p) {
@@ -210,7 +215,7 @@
       if (s.focus && s.day) h.appendChild(el("span", { class: "day" }, "Week " + Math.ceil(s.day / 7) + " of " + Math.ceil(s.days / 7)));
       sec.appendChild(h);
       var ul = el("ul");
-      items.forEach(function (item, n) { ul.appendChild(itemNode(item, edition.date, n === 0, false)); });
+      items.forEach(function (item, n) { ul.appendChild(itemNode(item, edition.date, n === 0 || item.sheetImage, false)); });
       sec.appendChild(ul);
       (s.focus || s.editor ? top : grid).appendChild(sec);
     });

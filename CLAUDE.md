@@ -28,7 +28,7 @@ A Drudge-style link board that Lester (the editor, Dubai) runs for his five nibl
 
 - **Inbox**: links for the next issue; mandatory. Columns `issue_date, section, url, my_headline, important, for, subscriber, status`. Blank section = Editor's Picks. `section=lead` replaces the lead. `for=<nickname>` shows the link only to that reader. The build writes `used <date>` in status.
 - **Desk**: `issue_date, teaser, url, status`. The url (a Google Doc shared "anyone with the link") is optional; without it the teaser shows as plain text. A blank issue_date means the next issue.
-- **Today**: one row per published link. Live edits within about a minute: `my_headline`, `status` (`hide`, `lead`, `pin`), `section`, `rank`, `important`, `for`, `thumbnail` (image URL; shows on the lead and the first link of each section). Edits to links no longer in the issue do nothing.
+- **Today**: one row per published link. Live edits within about a minute: `my_headline`, `status` (`hide`, `lead`, `pin`), `section`, `rank`, `important`, `for`, `thumbnail` (image URL set here shows on any link). `section` accepts a key or a title ("world", "Editor's Picks"); a section that is off or unknown (e.g. "culture & entertainment") goes to Editor's Picks. When Lester's lead replaces Claude's backup lead, the backup leaves the page (give its row a section to keep it). Edits to links no longer in the issue do nothing.
 - Style tab collects Lester's headline rewrites as examples for Claude; Clicks tab logs reader clicks.
 
 ## Editorial decisions (do not change without asking Lester)
