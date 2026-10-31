@@ -80,7 +80,7 @@
       var item = all.filter(function (i) { return (row.id && i.id === row.id) || (row.url && i.url === row.url); })[0];
       if (!item) {
         if (!safeUrl(row.url) || !row.my_headline || row.status === "hide") return;
-        item = { id: row.id || "add-" + ++added, url: row.url, headline: row.my_headline, source: row.source || new URL(row.url).hostname.replace(/^www\./, ""), section: "picks", rank: 99 };
+        item = { added: true, id: row.id || "add-" + ++added, url: row.url, headline: row.my_headline, source: row.source || new URL(row.url).hostname.replace(/^www\./, ""), section: "picks", rank: 99 };
         all.push(item);
       }
       if (row.my_headline) item.headline = row.my_headline;
@@ -135,6 +135,25 @@
     return edition;
   }
 
+  // NEW marks links the editor added in the Sheet after the issue was built, until this phone has shown them once.
+  // The seen list is read once per page load, so a link stays NEW while it is on screen. Preview always shows it.
+  var seenAtLoad = {};
+  var readSeen = function (date) {
+    try { return JSON.parse(localStorage.getItem("seen-" + date) || "[]"); } catch (e) { return []; }
+  };
+  var isNew = function (item, date) {
+    if (!item.added) return false;
+    if (preview) return true;
+    if (!seenAtLoad[date]) seenAtLoad[date] = readSeen(date);
+    return seenAtLoad[date].indexOf(item.url) < 0;
+  };
+  var markSeen = function (items, date) {
+    if (preview) return;
+    var seen = readSeen(date);
+    items.forEach(function (i) { if (i.added && seen.indexOf(i.url) < 0) seen.push(i.url); });
+    try { localStorage.setItem("seen-" + date, JSON.stringify(seen)); } catch (e) {}
+  };
+
   // Personal links (the "for" column) show only on that reader's page; preview shows them all.
   var visible = function (i) { return i && (!i.for || preview || i.for === reader); };
 
@@ -151,6 +170,7 @@
     wrap.appendChild(a);
 
     var meta = el("div", { class: "meta" });
+    if (isNew(item, date)) meta.appendChild(el("span", { class: "new" }, "New"));
     if (item.pinned) meta.appendChild(el("span", { class: "pin" }, "Start here"));
     if (item.important && !isLead) meta.appendChild(el("span", { class: "imp" }, "Important"));
     if (item.for) meta.appendChild(el("span", { class: "for" }, preview ? "For " + item.for : "Just for you"));
@@ -223,6 +243,7 @@
     page.appendChild(grid);
 
     var all = [edition.lead].concat.apply([], edition.sections.map(function (s) { return s.items; })).filter(visible);
+    markSeen(all, edition.date);
     $("helpline").hidden = !all.some(function (i) { return i.helpline; });
     $("helpline").textContent = index.helpline || "";
     $("footnote").textContent = index.footerNote || "";
