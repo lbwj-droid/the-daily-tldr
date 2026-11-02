@@ -1,0 +1,79 @@
+{
+  "date": "2026-11-02",
+  "issue": 3,
+  "publish_at": "2026-11-02T03:30:00.000Z",
+  "generated_at": "2026-11-02T01:15:53.502Z",
+  "window_hours": 78,
+  "desk": null,
+  "lead": {
+    "id": "b970f1418c",
+    "section": "lead",
+    "rank": 0,
+    "headline": "320,000 FRENCH MARCH OVER LIVING COSTS, THIRD WEEKEND RUNNING",
+    "original_headline": "France reports largely peaceful protests",
+    "url": "https://www.france24.com/en/france-reports-largely-peaceful-protests",
+    "source": "France 24",
+    "kind": "article",
+    "thumbnail": "https://s.france24.com/media/display/c12466ee-d605-11f1-83e3-695cb59fade5/w:1024/p:16x9/EN-20261101-150107-150436-CS.jpg",
+    "home": "world"
+  },
+  "sections": [
+    {
+      "key": "india",
+      "title": "India",
+      "items": [
+        {
+          "id": "aafc6e2486",
+          "section": "india",
+          "rank": 1,
+          "headline": "Someone explain this to me...",
+          "original_headline": "BJP has started practicing being in opposition 🤣",
+          "url": "https://www.youtube.com/watch?v=fLi-jVIQ5LU",
+          "source": "meghnerd",
+          "kind": "video",
+          "thumbnail": "https://i.ytimg.com/vi/fLi-jVIQ5LU/hqdefault.jpg",
+          "manual": true
+        },
+        {
+          "id": "7f1fac583b",
+          "section": "india",
+          "rank": 2,
+          "headline": "Godi media = Fake News",
+          "original_headline": "168K views · 12K reactions | For years, Newsclick was branded as “China-funded” and accused of anti-national activities based on an alleged illegal foreign funding case. Now, the Delhi High Court has quashed that case, calling it a malicious and arbitrary abuse of power with no incriminating evidence found. Who answers for the jail time, raids, lost careers, and damaged reputations? Should there be accountability for authorities who pursued a case that has now been struck down? Was this investigation about national security, or silencing critical journalism? The debate is far from over. | Peek TV",
+          "url": "https://www.facebook.com/share/v/19VKcqR9oy/",
+          "source": "facebook.com",
+          "kind": "article",
+          "manual": true
+        }
+      ]
+    },
+    {
+      "key": "world",
+      "title": "World",
+      "items": [
+        {
+          "id": "ef7eab1ea2",
+          "section": "world",
+          "rank": 1,
+          "headline": "Israel elections: a quick primer",
+          "original_headline": "Israeli Election, Explained",
+          "url": "https://www.youtube.com/watch?v=rdBTVj_IZEc",
+          "source": "FRONTLINE PBS | Official",
+          "kind": "video",
+          "thumbnail": "https://i.ytimg.com/vi/rdBTVj_IZEc/hqdefault.jpg",
+          "manual": true
+        },
+        {
+          "id": "b9b2aff05e",
+          "section": "world",
+          "rank": 2,
+          "headline": "Dems' chosen one Haley Stevens endorses a Republican to tank El-Sayed. Unity, apparently.",
+          "original_headline": "BREAKING: Haley Stevens Endorses Republican in Final Attempt to Tank Abdul El-Sayed",
+          "url": "https://zeteo.com/p/breaking-haley-stevens-endorses-republican",
+          "source": "Zeteo",
+          "kind": "article"
+        }
+      ]
+    }
+  ]
+}
