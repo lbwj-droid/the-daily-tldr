@@ -132,7 +132,9 @@ async function main() {
   const pinCount = focus.active.reduce((n, f) => n + (f.pins || []).length, 0);
   const needLead = !manual.lead;
   const budget = Math.max(1, settings.maxLinks - manual.all.length - pinCount - (needLead ? 1 : 0));
-  const caps = sections.map((s) => ({ ...s, max: Math.max(0, s.max - (manual.bySection[s.key] || []).length) })).filter((s) => s.max > 0);
+  // Section maxima are Claude's own quota: the editor's links placed in India or World come on top of it, and only the
+  // issue-wide budget squeezes Claude's share.
+  const caps = sections.filter((s) => s.max > 0);
   report.budget = { maxLinks: settings.maxLinks, editorLinks: manual.all.length, pinned: pinCount, claudeLinks: budget, claudeLead: needLead };
   if (manual.all.length + pinCount > settings.maxLinks) report.warnings.push(`The editor's links and pinned links (${manual.all.length + pinCount}) exceed the ${settings.maxLinks}-link limit; all were kept`);
 

@@ -122,6 +122,15 @@ test("when the editor fills the issue, Claude keeps one India link and drops Wor
   assert.ok(!edition.sections.find((s) => s.key === "world")?.items.length, "World gives way first");
 });
 
+test("the editor's links placed in India or World do not use up Claude's quota there", () => {
+  const inbox = { inbox: ["a", "b"].map((n) => ({ section: "india", url: `https://news.example.com/${n}`, my_headline: `Mine ${n}` })).concat([{ section: "world", url: "https://news.example.com/w", my_headline: "Mine w" }]), desk: [] };
+  const { edition } = dryRun({ inbox });
+  const india = edition.sections.find((s) => s.key === "india").items;
+  assert.equal(india.filter((i) => i.manual).length, 2);
+  assert.equal(india.filter((i) => !i.manual).length, 2, "Claude still adds 2 India links");
+  assert.ok(allItems(edition).length <= settings.maxLinks);
+});
+
 test("Culture is off; India and World take up to 2 each, and Campus Watch has ended", () => {
   const { edition } = dryRun();
   assert.deepEqual(edition.sections.map((s) => s.key).filter((k) => k !== "picks"), ["india", "world"]);
