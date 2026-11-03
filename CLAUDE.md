@@ -21,7 +21,7 @@ A Drudge-style link board that Lester (the editor, Dubai) runs for his five nibl
 - **India** is general India news ranked by `prompts/india.md` (the former Campus Watch priorities: explainers and movement interviews first), until Lester says to shift. **World** is major geopolitics, leaving out Israel, Gaza, Lebanon, Iran and Hormuz; Lester may swap in his own link there.
 - Campus Watch (focus) was ended early on 27 Oct 2026 and its 2 pinned links dropped; its sources AISA, Naman Shrivastava and France 24 moved into `config/sources.json`.
 - Three Claude Opus 5.5 calls per issue: select, rewrite headlines, fact-check (unsupported rewrites fall back to the original headline). About $0.25 to $0.50 an issue.
-- Sources: `config/sources.json`; focus topics: `config/focus.json` and `prompts/focus/*.md`; editorial rules: `prompts/editorial.md`; headline voice: `prompts/voice.md`.
+- Sources: the Sheet's **Sources** tab is the only master list (from 3 Nov 2026); `config/sources.json` is a copy each build saves, used only if the Sheet is unreadable or the tab is empty. Focus topics: `config/focus.json` and `prompts/focus/*.md`; editorial rules: `prompts/editorial.md`; headline voice: `prompts/voice.md`.
 - YouTube is read through the YouTube Data API (`YOUTUBE_API_KEY`); the public channel feeds returned 404 for every channel on 26 Oct 2026 and are only a fallback.
 
 ## Lester's Google Sheet (curation)
@@ -29,6 +29,7 @@ A Drudge-style link board that Lester (the editor, Dubai) runs for his five nibl
 - **Inbox**: links for the next issue; mandatory. Columns `issue_date, section, url, my_headline, important, for, subscriber, status`. Blank section = Editor's Picks. `section=lead` replaces the lead. `for=<nickname>` shows the link only to that reader. The build writes `used <date>` in status.
 - **Desk**: `issue_date, teaser, url, status`. The url (a Google Doc shared "anyone with the link") is optional; without it the teaser shows as plain text. A blank issue_date means the next issue.
 - **Today**: one row per published link. Live edits within about a minute: `my_headline`, `status` (`hide`, `lead`, `pin`), `section`, `rank`, `important`, `for`, `thumbnail` (image URL set here shows on any link). `section` accepts a key or a title ("world", "Editor's Picks"); a section that is off or unknown (e.g. "culture & entertainment") goes to Editor's Picks. When Lester's lead replaces Claude's backup lead, the backup leaves the page (give its row a section to keep it). Edits to links no longer in the issue do nothing. A row added here after the build (a link not in the issue) gets a red NEW label until that reader's phone has shown it once (stored in the browser; preview always shows it). Changing the `url` of an existing row does not change the link: hide the old row and add a new one.
+- **Sources**: `name, link, role (prefer/neutral/detect/official), language (English/Hindi), tag, status (on/off), notes`; builds and Check sources write `last_checked, items, error`. Read at build time only. Bad rows are skipped and named in the error column and run warnings.
 - Style tab collects Lester's headline rewrites as examples for Claude; Clicks tab logs reader clicks.
 
 ## Editorial decisions (do not change without asking Lester)

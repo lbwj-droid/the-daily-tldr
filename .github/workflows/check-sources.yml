@@ -1,6 +1,7 @@
 name: Check sources
 
-# Manual only. Reads every feed and lists what worked on the run's Summary page. No Claude calls, nothing published.
+# Manual only. Reads every source in the Sheet's Sources tab, lists what worked on the run's Summary page and writes
+# each source's health into the tab. No Claude calls, nothing published.
 on:
   workflow_dispatch: {}
 
@@ -21,3 +22,5 @@ jobs:
       - run: node scripts/check-sources.mjs
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          SHEET_ID: ${{ secrets.SHEET_ID }}
+          GOOGLE_SA_KEY: ${{ secrets.GOOGLE_SA_KEY }}
