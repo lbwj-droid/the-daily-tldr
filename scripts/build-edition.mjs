@@ -10,6 +10,7 @@ import { fileURLToPath } from "node:url";
 import { fetchAll, fetchOgImage, fetchYoutubeMeta, fetchVideoSeconds, fetchPageMeta, isHindi, shortId, pruneSiteSeen } from "./lib/feeds.mjs";
 import { makeClient, selectStories, rewriteHeadlines, verifyHeadlines } from "./lib/claude.mjs";
 import { loadFocus, effectiveSections, focusPromptBlock, focusToneBlock } from "./lib/focus.mjs";
+import { loadSources, writeSourceHealth, saveCopy } from "./lib/sources.mjs";
 import { sheetsConfigured, ensureTabs, readRows, writeRows, clearTab, appendRows, toRow, columnOf, TABS } from "../lib/sheets.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -25,13 +26,20 @@ const readJson = async (p) => JSON.parse(await readFile(path.join(root, p), "utf
 const localDate = (tz, d = new Date()) => new Intl.DateTimeFormat("en-CA", { timeZone: tz }).format(d);
 const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
 const usedMark = (date) => `used ${date}`;
+const dubaiTime = (settings) => new Intl.DateTimeFormat("en-CA", { timeZone: settings.timezone, dateStyle: "short", timeStyle: "short", hour12: false }).format(new Date()).replace(",", "");
 
 const report = { started: new Date().toISOString(), dryRun, warnings: [], usage: [] };
 
 async function main() {
   const settings = await readJson("config/settings.json");
-  const { sources: regularSources } = await readJson("config/sources.json");
   settings.today = process.env.EDITION_DATE || localDate(settings.timezone);
+  const useSheets = !dryRun && sheetsConfigured();
+  // Sources come from the Sheet's Sources tab (the master list), or from the saved copy if the Sheet cannot be read.
+  const sourceList = await loadSources(root, { useSheets });
+  const regularSources = sourceList.sources;
+  report.sourcesFrom = sourceList.from;
+  report.warnings.push(...sourceList.warnings);
+  if (sourceList.notes.length) report.notes = [...(report.notes || []), ...sourceList.notes];
   report.date = settings.today;
 
   // The issue window runs from the previous issue to now, so a Monday issue covers the weekend.
@@ -52,7 +60,6 @@ async function main() {
   const sources = [...regularSources, ...focus.active.flatMap((f) => (f.sources || []).map((s) => ({ ...s, focus: f.key })))];
 
   // 1. The editor's links and notes for this issue (Sheet Inbox and Desk tabs).
-  const useSheets = !dryRun && sheetsConfigured();
   let todayRows = [];
   let inboxRows = [];
   let deskRows = [];
@@ -69,7 +76,7 @@ async function main() {
     const fixture = JSON.parse(await readFile(inboxPath, "utf8"));
     inboxRows = (fixture.inbox || []).map((r, n) => ({ status: "", ...r, _row: n + 2 }));
     deskRows = (fixture.desk || []).map((r, n) => ({ status: "", ...r, _row: n + 2 }));
-  } else if (!dryRun) report.notes = ["Google Sheet not configured yet (SHEET_ID / GOOGLE_SA_KEY missing); issue published without it"];
+  } else if (!dryRun) report.notes = [...(report.notes || []), "Google Sheet not configured yet (SHEET_ID / GOOGLE_SA_KEY missing); issue published without it"];
   const manual = await collectManual(inboxRows, deskRows, sections, settings);
 
   // 2. Fetch every feed.
@@ -84,6 +91,14 @@ async function main() {
     await writeFile(siteSeenPath, JSON.stringify(pruneSiteSeen(siteSeen), null, 2) + "\n");
   }
   report.feeds = health.sort((a, b) => a.source.localeCompare(b.source));
+  if (sourceList.from !== "copy") {
+    await saveCopy(root, sourceList.all);
+    try {
+      await writeSourceHealth(sourceList.rows, health, dubaiTime(settings));
+    } catch (err) {
+      report.warnings.push(`Could not write source health to the Sheet: ${err.message}`);
+    }
+  }
   const failed = health.filter((h) => !h.ok).length;
   report.emptyFeeds = health.filter((h) => h.ok && h.items === 0).map((h) => h.source);
   if (failed / sources.length > 0.3) report.warnings.push(`${failed} of ${sources.length} feeds failed`);

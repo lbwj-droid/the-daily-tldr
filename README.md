@@ -7,7 +7,7 @@ A Drudge-style link board for five readers aged 19 to 25 in India. Two issues a 
 1. **About 05:00 to 06:00 Dubai, Monday and Friday:** Vercel Cron calls `api/cron-issue.js`, which starts the GitHub workflow (`.github/workflows/daily.yml`). GitHub's own schedule (05:37 and 06:37) is a backup, because it can start hours late. Automatic starts do nothing if the issue already exists, or if it's no longer Monday or Friday in Dubai. Vercel needs `GH_DISPATCH_TOKEN`: a fine-grained GitHub token with Actions read and write on this repository only.
 2. `scripts/build-edition.mjs`:
    - reads your **Inbox** and **Desk** tabs
-   - fetches the feeds in `config/sources.json` for the days since the previous issue
+   - fetches the sources listed in the Sheet's Sources tab for the days since the previous issue
    - drops YouTube videos longer than 30 minutes
    - asks Claude to fill whatever room is left under the 10-link limit (at most 3 Hindi items), using `prompts/editorial.md`
    - rewrites and fact-checks the headlines
@@ -64,7 +64,7 @@ Give each reader `https://the-daily-tldr.vercel.app/?r=<name>`. Each of them ope
 
 | To change | Edit |
 | --- | --- |
-| Sources | `config/sources.json`. Roles: `detect`, `prefer`, `neutral`, or `official` (linked only for that body's own statement). Kinds: `rss`, `youtube`, or `site` (any web page: its feed if it has one, otherwise its article links, dated by when first seen) |
+| Sources | The Sheet's **Sources** tab (master list): `name, link, role, language, tag, status, notes`; each build fills `last_checked, items, error`. Paste a YouTube channel link (youtube.com/@name), an RSS feed or any web page as the link. `status` off keeps a source listed but unread. `config/sources.json` is a copy saved by each build, used only if the Sheet cannot be read. Roles: `detect`, `prefer`, `neutral`, or `official` (linked only for that body's own statement). Kinds: `rss`, `youtube`, or `site` (any web page: its feed if it has one, otherwise its article links, dated by when first seen) |
 | Sections and their maximums, link limit, Hindi cap, video length, schedule times, model | `config/settings.json` (the schedule itself is in `.github/workflows/daily.yml`) |
 | What gets picked or excluded | `prompts/editorial.md` |
 | Headline voice and starter examples | `prompts/voice.md` |
@@ -104,7 +104,7 @@ Go to **Actions → Daily edition → Run workflow**. After that it runs on its 
 
 ## Checking the sources
 
-**Actions → Check sources → Run workflow** reads every feed and lists which worked on the run's Summary page. It makes no Claude calls and publishes nothing, so it's free to run after changing `config/sources.json`.
+**Actions → Check sources → Run workflow** reads every feed and lists which worked on the run's Summary page. It also writes each source's health into the Sources tab. It makes no Claude calls and publishes nothing, so it's free to run after adding a source.
 
 ## Local development
 
