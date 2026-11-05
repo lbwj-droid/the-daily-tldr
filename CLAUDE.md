@@ -19,7 +19,7 @@ A Drudge-style link board that Lester (the editor, Dubai) runs for his five nibl
 - **Lead: Lester picks it** (Inbox `section=lead`, or `status=lead` in Today) for about two months from 27 Oct 2026. If he hasn't, Claude picks one as a backup and he can replace it from the preview.
 - Sections: Notes from the news desk (only if a Desk row exists), lead, Editor's Picks (Lester's Inbox links, usually 4, up to 9), India (Claude, max 2), World (Claude, max 2). Lester's Inbox links tagged `india` or `world` sit at the top of that section on top of Claude's 2 (fixed 2 Nov 2026: before, they used up Claude's places and Issue 3 had only 5 links).
 - **India** is general India news ranked by `prompts/india.md` (the former Campus Watch priorities: explainers and movement interviews first), until Lester says to shift. **World** is major geopolitics, leaving out Israel, Gaza, Lebanon, Iran and Hormuz; Lester may swap in his own link there.
-- Campus Watch (focus) was ended early on 27 Oct 2026 and its 2 pinned links dropped; its sources AISA, Naman Shrivastava and France 24 moved into `config/sources.json`.
+- Campus Watch (focus) was ended early on 27 Oct 2026 and its 2 pinned links dropped; its sources AISA, Naman Shrivastava and France 24 moved into the main source list.
 - Three Claude Opus 5.5 calls per issue: select, rewrite headlines, fact-check (unsupported rewrites fall back to the original headline). About $0.25 to $0.50 an issue.
 - Sources: the Sheet's **Sources** tab is the only master list (from 3 Nov 2026); `config/sources.json` is a copy each build saves, used only if the Sheet is unreadable or the tab is empty. Focus topics: `config/focus.json` and `prompts/focus/*.md`; editorial rules: `prompts/editorial.md`; headline voice: `prompts/voice.md`.
 - YouTube is read through the YouTube Data API (`YOUTUBE_API_KEY`); the public channel feeds returned 404 for every channel on 26 Oct 2026 and are only a fallback.
@@ -68,9 +68,12 @@ A Drudge-style link board that Lester (the editor, Dubai) runs for his five nibl
 - Workflow: build on a branch, run `npm test` (all tests must pass), check visually with Playwright when the page changes, then merge to `main` once Lester has approved the change. Never commit secrets.
 - Ask before anything irreversible or that changes what readers see in a way he hasn't approved.
 
-## Open items (as of 29 Oct 2026)
+## Open items (as of 5 Nov 2026)
 
-- Reader feedback (28 Oct): very positive; the one-stop format is the most valued thing. Request: at least one must-know AI item per issue. Lester wants to curate a series of short primers with Claude (LLM basics, first principles: what they can and can't rely on). Format not yet decided.
-- Peek TV (YouTube @peektvofficial) added as a `prefer` source on 29 Oct; language not yet checked (Hindi-script titles are counted towards the Hindi cap automatically).
-- Lester will say when the India section should shift away from the student-movement priorities (`prompts/india.md`).
-- Masthead still says "THE DAILY TL;DR" although issues are twice weekly; Lester has not decided whether to rename it.
+Full background, timeline, reader feedback and the options already offered: `docs/history.md`. Read it before a strategy discussion.
+
+- Google Drive API was being enabled on 5 Nov (Cloud project 130820231305); confirm with `/api/media?id=1Yk6E9i3gYtCIPSZaaXNxmqV_Lm9l3GOb&debug=1` showing `"served": "yes…"`.
+- AI slot and primers: proposal made (one-link slot under Editor's Picks; primers as Drive Docs pages); Lester's three answers pending.
+- Access control: no login yet; `for` links are readable in the public data files. Options offered (per-reader keys recommended); Lester undecided.
+- Next: Lester wants a fresh session to develop the curation strategy from his week of conversations with the niblings.
+- Peek TV language unchecked. India brief stays until Lester shifts it. Masthead name undecided.
