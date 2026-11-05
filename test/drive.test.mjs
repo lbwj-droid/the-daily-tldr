@@ -53,6 +53,7 @@ const fakeRes = () => {
   r.send = (b) => ((r.body = b), r);
   r.end = () => r;
   r.redirect = (c, l) => ((r.code = c), (r.location = l), r);
+  r.json = (b) => ((r.body = b), r);
   return r;
 };
 
@@ -69,6 +70,12 @@ test("/api/media serves images from the uploads folder only, resized by Drive", 
     const outside = fakeRes();
     await media({ query: { id: OUTSIDE } }, outside);
     assert.equal(outside.code, 404, "a file outside the folder is refused");
+    const why = fakeRes();
+    await media({ query: { id: OUTSIDE, debug: "1" } }, why);
+    assert.equal(why.body.inUploadsFolder, false);
+    const good = fakeRes();
+    await media({ query: { id: IMG, debug: "1" } }, good);
+    assert.match(good.body.served, /^yes/);
     const doc = fakeRes();
     await media({ query: { id: DOCID } }, doc);
     assert.equal(doc.code, 404, "a Doc is not an image");
