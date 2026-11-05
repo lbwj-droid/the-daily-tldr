@@ -23,6 +23,18 @@
   var yes = function (v) { return /^(y|yes|true|1|x)$/i.test(String(v || "").trim()); };
   var slug = function (v) { return String(v || "").toLowerCase().replace(/[^a-z0-9-]/g, ""); };
   var safeUrl = function (u) { return /^https?:\/\//i.test(u || "") ? u : null; };
+  // Links to the editor's "TL;DR uploads" Drive folder: a Google Doc opens as a page on this site, and any other Drive
+  // file (an image) is served by /api/media, so it also works as a thumbnail.
+  var driveId = function (u) {
+    var m = String(u || "").match(/^https:\/\/(?:drive|docs)\.google\.com\/(?:.*?\/d\/([\w-]{20,})|.*?[?&]id=([\w-]{20,}))/);
+    return m ? m[1] || m[2] : "";
+  };
+  var siteLink = function (u) {
+    var id = driveId(u);
+    if (!id) return safeUrl(u);
+    return /docs\.google\.com\/document\//.test(u) ? "/p/" + id : "/api/media?id=" + id;
+  };
+  var imageSrc = function (u) { return driveId(u) ? "/api/media?id=" + driveId(u) : safeUrl(u); };
   var linkTo = function (date) {
     var q = new URLSearchParams();
     if (date) q.set("d", date);
@@ -163,13 +175,14 @@
 
   function itemNode(item, date, withImage, isLead) {
     var wrap = el(isLead ? "div" : "li");
-    var url = safeUrl(item.url);
-    if (withImage && safeUrl(item.thumbnail)) {
-      var img = el("img", { src: item.thumbnail, alt: "", loading: isLead ? "eager" : "lazy", referrerpolicy: "no-referrer" });
+    var url = siteLink(item.url);
+    if (withImage && imageSrc(item.thumbnail)) {
+      var img = el("img", { src: imageSrc(item.thumbnail), alt: "", loading: isLead ? "eager" : "lazy", referrerpolicy: "no-referrer" });
       img.onerror = function () { img.remove(); };
       wrap.appendChild(img);
     }
-    var a = el("a", { class: "headline" + (item.important && !isLead ? " important" : ""), href: url || "#", target: "_blank", rel: "noopener" }, item.headline);
+    var internal = url && url.charAt(0) === "/";
+    var a = el("a", { class: "headline" + (item.important && !isLead ? " important" : ""), href: url || "#", target: internal ? null : "_blank", rel: internal ? null : "noopener" }, item.headline);
     a.addEventListener("click", function () { track(item, date); });
     wrap.appendChild(a);
 
@@ -213,7 +226,8 @@
       var box = el("section", { class: "desk", "aria-label": "Notes from the news desk" });
       box.appendChild(el("h2", null, "Notes from the news desk"));
       if (safeUrl(desk.url)) {
-        var dl = el("a", { href: desk.url, target: "_blank", rel: "noopener" }, desk.teaser || "Read this issue's notes");
+        var deskUrl = siteLink(desk.url);
+        var dl = el("a", { href: deskUrl, target: deskUrl.charAt(0) === "/" ? null : "_blank", rel: "noopener" }, desk.teaser || "Read this issue's notes");
         dl.addEventListener("click", function () { track({ section: "desk", headline: desk.teaser, url: desk.url }, edition.date); });
         box.appendChild(dl);
       } else {

@@ -113,3 +113,15 @@ main { max-width: 1120px; margin: 0 auto; }
 .foot { max-width: 1120px; margin: 0 auto; padding: 22px 0 36px; text-align: center; font: 13px/1.5 var(--sans); color: var(--muted); }
 .helpline { background: var(--help-bg); color: var(--ink); padding: 10px 12px; border-radius: 6px; }
 .hint b { color: var(--ink); }
+
+.docpage { max-width: 680px; margin: 0 auto; padding: 8px 0 40px; }
+.docpage h1 { font: 700 clamp(24px, 6vw, 34px)/1.15 var(--mono); margin: 12px 0 18px; }
+.docpage article { font: 17px/1.6 var(--sans); }
+.docpage article h1, .docpage article h2, .docpage article h3 { font-family: var(--mono); line-height: 1.2; margin: 1.4em 0 0.5em; }
+.docpage article a { color: var(--important); }
+.docpage article img { max-width: 100%; height: auto; border-radius: 4px; }
+.docpage article table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; }
+.docpage article td, .docpage article th { border: 1px solid var(--rule); padding: 6px 8px; }
+.docpage article blockquote { margin: 1em 0; padding-left: 14px; border-left: 4px solid var(--rule); color: var(--muted); }
+.docpage .back { font: 600 14px/1.4 var(--sans); }
+.docpage .back a { color: var(--muted); }
