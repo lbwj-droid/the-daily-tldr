@@ -25,6 +25,7 @@ A Drudge-style link board for five readers aged 19 to 25 in India. Two issues a 
 | Column | Meaning |
 | --- | --- |
 | `issue_date` | Blank means the next issue. A future date holds the row until that issue. |
+| `thumbnail` | Optional image link for this item. A Drive share link of an image in the "TL;DR uploads" folder works. |
 | `section` | Blank means Editor's Picks (usually 4 an issue, up to 9). Also `lead`, `india` or `world`. |
 | `url` | Required. Use a newsletter's gift or share link where it has one. |
 | `my_headline` | Optional. If blank, Claude writes one from the article's title. |

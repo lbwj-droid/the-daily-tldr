@@ -11,6 +11,7 @@ import { fetchAll, fetchOgImage, fetchYoutubeMeta, fetchVideoSeconds, fetchPageM
 import { makeClient, selectStories, rewriteHeadlines, verifyHeadlines } from "./lib/claude.mjs";
 import { loadFocus, effectiveSections, focusPromptBlock, focusToneBlock } from "./lib/focus.mjs";
 import { loadSources, writeSourceHealth, saveCopy } from "./lib/sources.mjs";
+import { driveFileId, fileInFolder } from "../lib/drive.mjs";
 import { sheetsConfigured, ensureTabs, readRows, writeRows, clearTab, appendRows, toRow, columnOf, TABS } from "../lib/sheets.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -212,6 +213,8 @@ async function main() {
     tag: p.tag || undefined,
     kind: p.kind,
     thumbnail: p.thumb || undefined,
+    // An image the editor chose shows wherever the link sits, not only on the first link of a section.
+    sheetImage: p.manual && p.thumb ? true : undefined,
     helpline: p.helpline || undefined,
     important: p.important || undefined,
     for: p.for || undefined,
@@ -304,7 +307,14 @@ async function collectManual(inboxRows, deskRows, sections, settings) {
       continue;
     }
     const url = String(r.url).trim();
-    const meta = dryRun ? { title: r.title || "", source: new URL(url).hostname.replace(/^www\./, ""), image: "", kind: /youtube/.test(url) ? "video" : "article", url } : await fetchPageMeta(url);
+    // A Google Doc from the uploads folder is the editor's own page: its Doc title is the headline unless he wrote one.
+    const own = !dryRun && driveFileId(url) ? await fileInFolder(driveFileId(url)) : null;
+    const meta = dryRun
+      ? { title: r.title || "", source: new URL(url).hostname.replace(/^www\./, ""), image: "", kind: /youtube/.test(url) ? "video" : "article", url }
+      : own
+        ? { title: "", ownTitle: own.name, source: settings.siteName, image: "", kind: "article", url }
+        : await fetchPageMeta(url);
+    const thumbnail = /^https?:\/\//.test(String(r.thumbnail || "").trim()) ? String(r.thumbnail).trim() : "";
     const yes = (v) => /^(y|yes|true|1|x)$/i.test(String(v || "").trim());
     const item = {
       cid: `m${++n}`,
@@ -314,8 +324,9 @@ async function collectManual(inboxRows, deskRows, sections, settings) {
       summary: "",
       source: meta.source,
       kind: meta.kind,
-      image: meta.image,
-      headline: String(r.my_headline || "").trim() || (meta.title ? "" : meta.source),
+      image: thumbnail || meta.image,
+      thumb: thumbnail || undefined,
+      headline: String(r.my_headline || "").trim() || meta.ownTitle || (meta.title ? "" : meta.source),
       important: yes(r.important),
       for: String(r.for || "").trim().toLowerCase().replace(/[^a-z0-9-]/g, "") || undefined,
       subscriber: yes(r.subscriber),

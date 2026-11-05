@@ -36,5 +36,11 @@
       "path": "/api/cron-issue",
       "schedule": "0 1 * * 1,5"
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/p/:id",
+      "destination": "/api/doc?id=:id"
+    }
   ]
 }
