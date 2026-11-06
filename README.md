@@ -26,6 +26,7 @@ A Drudge-style link board for five readers aged 19 to 25 in India. Two issues a 
 | --- | --- |
 | `issue_date` | Blank means the next issue. A future date holds the row until that issue. |
 | `thumbnail` | Optional image link for this item. A Drive share link of an image in the "TL;DR uploads" folder works. |
+| `arc` | Optional story arc (column J): a name from the Arcs tab, or `none`. Blank lets Claude tag it. |
 | `section` | Blank means Editor's Picks (usually 4 an issue, up to 9). Also `lead`, `india` or `world`. |
 | `url` | Required. Use a newsletter's gift or share link where it has one. |
 | `my_headline` | Optional. If blank, Claude writes one from the article's title. |
@@ -57,6 +58,28 @@ A focus is a time-boxed section shown under the lead, for example "Campus Watch,
 
 Each run's `reports/last-run.json` shows `focusCoverage`: how many candidate stories matched each focus in that issue's window. Use it to check whether `maxLinks` is realistic.
 
+## Story arcs pilot (from November 2026)
+
+The running storylines every link is attached to, so a new headline lands on a story the readers already know. Plan and reasoning: the "Daily TL;DR: hyper-curation working notes" Claude Doc. Nothing changes on the page until the **Arcs** tab has at least one active arc.
+
+**Arcs tab**: the first build with arcs (9 Nov 2026) fills it from `config/arcs-seed.json`; after that, edit the Sheet only.
+
+| Column | Meaning |
+| --- | --- |
+| `arc` | Short name shown as the label, for example `Exam paper leaks`. At most 40 characters. |
+| `side` | `india` or `world` |
+| `status` | `active` (or blank): Claude tags links to it. `watch`: kept, not looked for. `closed`: retired. At most 8 active. |
+| `so_far` | One line, shown when a reader taps the label: "The story so far". |
+| `notes` | Yours. |
+| `links`, `clicks`, `last_link` | Written by each build, over the last 4 issues. |
+
+- Claude tags every link with an arc, or none (at most 1 per issue: the period's biggest story), or `new` ("New story to watch", at most 1).
+- Your own links: type the arc in the Inbox `arc` column (column J), `none` to keep it out, or leave it blank for Claude to tag. In the Today tab, the `arc` column (column N) changes or clears a label live.
+- **Recap**: every 4th issue counted from the first issue with arcs, a box above the lead says what changed on each arc over the last 4 issues, with one "Test yourself" question (tap for the answer). One extra Claude call. Check it in the preview.
+- **Questions**: a "? Ask" button under each link (shown once arcs exist). Questions land in the **Questions** tab with the reader's name. Answer one per issue in the Desk note and write `answered` in its `status`.
+- **Pilot tab**: each build adds a row for its issue; type your curation minutes in `minutes`.
+- At each recap, `reports/last-run.json` has `arcReport`: links and clicks per arc, clicks on arc links versus other links, questions, and your logged minutes.
+
 ## Personal links for readers
 
 Give each reader `https://the-daily-tldr.vercel.app/?r=<name>`. Each of them opens it in Safari, taps **Share → Add to Home Screen**, and the icon keeps their name. The Clicks tab then shows who clicked what. The page footer tells readers that clicks are counted.
@@ -66,7 +89,7 @@ Give each reader `https://the-daily-tldr.vercel.app/?r=<name>`. Each of them ope
 | To change | Edit |
 | --- | --- |
 | Sources | The Sheet's **Sources** tab (master list): `name, link, role, language, tag, status, notes`; each build fills `last_checked, items, error`. Paste a YouTube channel link (youtube.com/@name), an RSS feed or any web page as the link. `status` off keeps a source listed but unread. `config/sources.json` is a copy saved by each build, used only if the Sheet cannot be read. Roles: `detect`, `prefer`, `neutral`, or `official` (linked only for that body's own statement). Kinds: `rss`, `youtube`, or `site` (any web page: its feed if it has one, otherwise its article links, dated by when first seen) |
-| Sections and their maximums, link limit, Hindi cap, video length, schedule times, model | `config/settings.json` (the schedule itself is in `.github/workflows/daily.yml`) |
+| Sections and their maximums (India 2, AI & Society 1, World 2), link limit, Hindi cap, video length, schedule times, model | `config/settings.json` (the schedule itself is in `.github/workflows/daily.yml`) |
 | What gets picked or excluded | `prompts/editorial.md` |
 | Headline voice and starter examples | `prompts/voice.md` |
 | Focus topics | `config/focus.json` and `prompts/focus/*.md` |

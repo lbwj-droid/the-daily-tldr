@@ -21,27 +21,39 @@ async function askJson(client, { model, effort, system, user, schema }) {
   return { data: JSON.parse(textOut), usage: msg.usage, model: msg.model };
 }
 
-const pickShape = (sectionKeys) => ({
+// arcNames: the active story arcs; when given, every pick also names its arc ("none", "new" or an arc name).
+const pickShape = (sectionKeys, arcNames) => ({
   type: "object",
   additionalProperties: false,
-  required: ["item_id", "section", "story", "path", "helpline"],
+  required: ["item_id", "section", "story", "path", "helpline", ...(arcNames ? ["arc"] : [])],
   properties: {
     item_id: { type: "string", description: "id of the single candidate item to link to" },
     section: { type: "string", enum: sectionKeys },
     story: { type: "string", description: "five to ten words naming the story" },
     path: { type: "string", enum: ["consensus", "independent", "neutral"] },
     helpline: { type: "boolean", description: "true only for kept suicide-related items" },
+    ...(arcNames ? { arc: { type: "string", enum: [...arcNames, "new", "none"], description: "the story arc this item moves forward" } } : {}),
   },
 });
 
 // sections: [{key, title, max, covers}] with max already reduced by the editor's own links in that section.
 // budget: total links Claude may pick across all sections (the lead not included). needLead: false when the editor set the lead.
-export async function selectStories({ client, settings, editorial, candidates, sections, budget, needLead, manual, windowText }) {
+// arcs: the active story arcs [{name}] (empty: no arc tagging). Then editor_arcs tags the editor's own links too.
+export async function selectStories({ client, settings, editorial, candidates, sections, budget, needLead, manual, windowText, arcs = [] }) {
   const keys = sections.map((s) => s.key);
-  const picksSchema = { type: "array", items: pickShape(keys), description: "section picks in rank order within each section; never repeats the lead story" };
-  const schema = needLead
-    ? { type: "object", additionalProperties: false, required: ["lead", "picks"], properties: { lead: pickShape(keys), picks: picksSchema } }
-    : { type: "object", additionalProperties: false, required: ["picks"], properties: { picks: picksSchema } };
+  const arcNames = arcs.length ? arcs.map((a) => a.name) : null;
+  const picksSchema = { type: "array", items: pickShape(keys, arcNames), description: "section picks in rank order within each section; never repeats the lead story" };
+  const properties = { ...(needLead ? { lead: pickShape(keys, arcNames) } : {}), picks: picksSchema };
+  const required = [...(needLead ? ["lead"] : []), "picks"];
+  if (arcNames && manual.length) {
+    properties.editor_arcs = {
+      type: "array",
+      description: "the arc of each of the editor's own links, by its number in the list",
+      items: { type: "object", additionalProperties: false, required: ["link", "arc"], properties: { link: { type: "integer" }, arc: { type: "string", enum: [...arcNames, "none"] } } },
+    };
+    required.push("editor_arcs");
+  }
+  const schema = { type: "object", additionalProperties: false, required, properties };
   const sectionList = [
     `This issue has room for ${budget} section links in total${needLead ? ", plus the lead" : " (the editor has chosen the lead himself, so do not pick one)"}. Spread them across the sections below in the order listed, each up to its maximum. Fewer strong links beat a full page of weak ones.`,
     ...sections.map((s) => `- ${s.key} (${s.title}): up to ${s.max}. Covers ${s.covers}.`),
@@ -51,7 +63,7 @@ export async function selectStories({ client, settings, editorial, candidates, s
     [c.paywalled && "PAYWALLED", c.focusOnly && "FOCUS-ONLY", c.hindi && "HINDI", c.kind === "video" && `VIDEO ${c.seconds ? Math.round(c.seconds / 60) + "m" : "?m"}`].filter(Boolean).join(" ");
   const lines = candidates.map((c) => [c.cid, c.role, c.source + (c.tag ? ` [${c.tag}]` : ""), c.published.slice(0, 16), flags(c), c.title, c.summary].join(" | "));
   const manualNote = manual.length
-    ? `\n\nThe editor has already placed these links in this issue. Do not pick the same stories again:\n${manual.map((m) => `- ${m.title || m.url}`).join("\n")}`
+    ? `\n\nThe editor has already placed these links in this issue. Do not pick the same stories again:\n${manual.map((m, n) => `${n + 1}. ${m.headline || m.title || m.url}`).join("\n")}`
     : "";
   const user =
     `This issue is dated ${settings.today} (Dubai time) and covers ${windowText}. Here are ${candidates.length} candidate items, one per line:\n` +
@@ -113,6 +125,46 @@ export async function verifyHeadlines({ client, settings, pairs }) {
     "Set supported=false and name the problem in a few words when anything is unsupported; otherwise supported=true and problem empty.";
   const user = pairs
     .map((p) => `ID: ${p.cid}\nORIGINAL: ${p.title}\nSUMMARY: ${p.summary || "(none)"}\nREWRITE: ${p.headline}`)
+    .join("\n\n");
+  return askJson(client, { model: settings.model, effort: "low", system, user, schema });
+}
+
+// The fortnightly recap: for each arc, what changed over the last issues (from their headlines only), and one recall
+// question with its answer.
+export async function writeRecap({ client, settings, arcs, links }) {
+  const schema = {
+    type: "object",
+    additionalProperties: false,
+    required: ["arcs"],
+    properties: {
+      arcs: {
+        type: "array",
+        items: {
+          type: "object",
+          additionalProperties: false,
+          required: ["arc", "changed", "question", "answer"],
+          properties: {
+            arc: { type: "string", enum: arcs.map((a) => a.name) },
+            changed: { type: "string", description: "two or three short sentences: what moved on this storyline in these issues" },
+            question: { type: "string", description: "one recall question a reader who followed the links can answer" },
+            answer: { type: "string", description: "the answer, a few words" },
+          },
+        },
+      },
+    },
+  };
+  const system =
+    "You write the fortnightly recap of The Daily TL;DR, a news link board for five readers aged 19 to 25 in India. The aim is that they remember a handful of big running stories. " +
+    "For each story arc that has links below, write what changed in two or three short, plain sentences, then one recall question with a short answer. " +
+    "Use only facts stated in the headlines and original headlines given. Add no names, numbers, dates, causes or events they do not contain; report allegations as allegations. " +
+    "The question tests the most important development, not trivia, and its answer is in the headlines. No em dashes. Skip arcs with no links.";
+  const user = arcs
+    .map((a) => {
+      const mine = links.filter((l) => l.arc === a.name);
+      if (!mine.length) return "";
+      return `ARC: ${a.name}\nSO FAR (the editor's summary, background only): ${a.so_far || "(none)"}\n${mine.map((l) => `- ${l.date} | ${l.source} | ${l.headline} | original: ${l.original}`).join("\n")}`;
+    })
+    .filter(Boolean)
     .join("\n\n");
   return askJson(client, { model: settings.model, effort: "low", system, user, schema });
 }

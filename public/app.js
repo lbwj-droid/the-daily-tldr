@@ -68,6 +68,15 @@
 
   // Applies the Sheet on top of the published issue: headlines, hide, lead, section and rank moves, important, for,
   // rows typed in by hand, and pinned rows.
+  // The arc as the issue spells it, "new" for a possible new storyline, or undefined.
+  function arcName(edition, value) {
+    var v = String(value || "").trim().toLowerCase();
+    if (!v || v === "none" || v === "-") return undefined;
+    if (v === "new" || v === "new story to watch") return "new";
+    var hit = (edition.arcs || []).filter(function (a) { return a.name.toLowerCase() === v; })[0];
+    return hit ? hit.name : undefined;
+  }
+
   function merge(edition, ov) {
     var sections = edition.sections;
     var keys = sections.map(function (s) { return s.key; });
@@ -109,6 +118,8 @@
       if (row.rank !== "" && !isNaN(Number(row.rank))) item.rank = Number(row.rank);
       item.important = yes(row.important);
       item.for = slug(row.for) || undefined;
+      // The arc column: a name from the Arcs tab, "new", or blank (no label).
+      if (row.arc !== undefined) item.arc = arcName(edition, row.arc);
     });
 
     // The lead: a promoted link replaces it, and the replaced lead leaves the page (to keep it, give it a section in the
@@ -173,7 +184,67 @@
   // Personal links (the "for" column) show only on that reader's page; preview shows them all.
   var visible = function (i) { return i && (!i.for || preview || i.for === reader); };
 
-  function itemNode(item, date, withImage, isLead) {
+  // The arc label under a link: tapping it shows the arc's "story so far" line.
+  function arcNode(item, edition, wrap) {
+    if (item.arc === "new") return el("span", { class: "arc new-arc" }, "New story to watch");
+    var arc = (edition.arcs || []).filter(function (a) { return a.name === item.arc; })[0];
+    if (!arc) return null;
+    if (!arc.so_far) return el("span", { class: "arc" }, arc.name);
+    var btn = el("button", { class: "arc", type: "button", "aria-expanded": "false" }, arc.name);
+    var line = el("p", { class: "so-far", hidden: "" });
+    line.appendChild(el("b", null, "The story so far: "));
+    line.appendChild(document.createTextNode(arc.so_far));
+    btn.addEventListener("click", function () {
+      line.hidden = !line.hidden;
+      btn.setAttribute("aria-expanded", String(!line.hidden));
+    });
+    wrap.soFar = line;
+    return btn;
+  }
+
+  // The "?" button: a one-line question about this link, stored in the Questions tab for Uncle Lester.
+  function askNode(item, date, wrap) {
+    var btn = el("button", { class: "ask", type: "button", "aria-expanded": "false", "aria-label": "Ask a question about this story" }, "? Ask");
+    var form = el("form", { class: "ask-form", hidden: "" });
+    var box = el("textarea", { rows: "2", maxlength: "500", placeholder: "What would you like Uncle Lester to explain?", "aria-label": "Your question" });
+    var send = el("button", { type: "submit" }, "Send");
+    var note = el("p", { class: "ask-note", "aria-live": "polite" });
+    form.appendChild(box);
+    form.appendChild(send);
+    form.appendChild(note);
+    btn.addEventListener("click", function () {
+      form.hidden = !form.hidden;
+      btn.setAttribute("aria-expanded", String(!form.hidden));
+      if (!form.hidden) box.focus();
+    });
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var q = box.value.trim();
+      if (q.length < 2) return;
+      send.disabled = true;
+      note.textContent = "Sending…";
+      fetch("/api/question", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ r: reader, date: date, section: item.section, headline: item.headline, url: item.url, question: q }),
+      })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); })
+        .then(function () {
+          box.value = "";
+          box.hidden = true;
+          send.hidden = true;
+          note.textContent = "Sent. Uncle Lester answers questions in the next issues.";
+        })
+        .catch(function () {
+          send.disabled = false;
+          note.textContent = "Couldn't send. Try again in a minute.";
+        });
+    });
+    wrap.askForm = form;
+    return btn;
+  }
+
+  function itemNode(item, date, withImage, isLead, edition) {
     var wrap = el(isLead ? "div" : "li");
     var url = siteLink(item.url);
     if (withImage && imageSrc(item.thumbnail)) {
@@ -193,7 +264,10 @@
     if (item.for) meta.appendChild(el("span", { class: "for" }, preview ? "For " + item.for : "Just for you"));
     if (item.tag) meta.appendChild(el("span", { class: "tag" }, "[" + item.tag + "]"));
     if (item.subscriber) meta.appendChild(el("span", { class: "tag sub" }, "[subscriber]"));
+    var arc = item.arc ? arcNode(item, edition, wrap) : null;
+    if (arc) meta.appendChild(arc);
     meta.appendChild(el("span", null, (item.kind === "video" ? "▶ Video · " : "") + (item.source || "")));
+    var ask = (edition.arcs || []).length ? askNode(item, date, wrap) : null;
     if (item.original_headline && item.original_headline !== item.headline) {
       var btn = el("button", { class: "orig", type: "button", "aria-expanded": "false" }, "orig");
       var orig = el("p", { class: "original", hidden: "" }, "Original: “" + item.original_headline + "”");
@@ -203,11 +277,15 @@
         btn.setAttribute("aria-expanded", String(open));
       });
       meta.appendChild(btn);
+      if (ask) meta.appendChild(ask);
       wrap.appendChild(meta);
       wrap.appendChild(orig);
     } else {
+      if (ask) meta.appendChild(ask);
       wrap.appendChild(meta);
     }
+    if (wrap.soFar) wrap.appendChild(wrap.soFar);
+    if (wrap.askForm) wrap.appendChild(wrap.askForm);
     return wrap;
   }
 
@@ -238,9 +316,35 @@
       page.appendChild(box);
     }
 
+    // The fortnightly recap: what changed on each story arc, and one question to test yourself (tap for the answer).
+    if (edition.recap && edition.recap.arcs && edition.recap.arcs.length) {
+      var rc = el("section", { class: "recap", "aria-labelledby": "h-recap" });
+      rc.appendChild(el("h2", { id: "h-recap" }, "The last two weeks, in brief"));
+      edition.recap.arcs.forEach(function (r) {
+        var block = el("div", { class: "recap-arc" });
+        block.appendChild(el("h3", null, r.arc));
+        block.appendChild(el("p", null, r.changed));
+        var q = el("p", { class: "recap-q" });
+        q.appendChild(el("b", null, "Test yourself: "));
+        q.appendChild(document.createTextNode(r.question + " "));
+        var reveal = el("button", { class: "reveal", type: "button", "aria-expanded": "false" }, "Show answer");
+        var answer = el("span", { class: "recap-a", hidden: "" }, r.answer);
+        reveal.addEventListener("click", function () {
+          answer.hidden = false;
+          reveal.hidden = true;
+          reveal.setAttribute("aria-expanded", "true");
+        });
+        q.appendChild(reveal);
+        q.appendChild(answer);
+        block.appendChild(q);
+        rc.appendChild(block);
+      });
+      page.appendChild(rc);
+    }
+
     if (visible(edition.lead)) {
       var lead = el("section", { class: "lead", "aria-label": "Top story" });
-      lead.appendChild(itemNode(edition.lead, edition.date, true, true));
+      lead.appendChild(itemNode(edition.lead, edition.date, true, true, edition));
       page.appendChild(lead);
     }
 
@@ -255,7 +359,7 @@
       if (s.focus && s.day) h.appendChild(el("span", { class: "day" }, "Week " + Math.ceil(s.day / 7) + " of " + Math.ceil(s.days / 7)));
       sec.appendChild(h);
       var ul = el("ul");
-      items.forEach(function (item, n) { ul.appendChild(itemNode(item, edition.date, n === 0 || item.sheetImage, false)); });
+      items.forEach(function (item, n) { ul.appendChild(itemNode(item, edition.date, n === 0 || item.sheetImage, false, edition)); });
       sec.appendChild(ul);
       (s.focus || s.editor ? top : grid).appendChild(sec);
     });

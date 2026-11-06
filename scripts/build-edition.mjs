@@ -3,12 +3,14 @@
 // and sync the Google Sheet.
 // Usage: node scripts/build-edition.mjs [--dry-run] [--out <dir>] [--focus <focus.json>] [--inbox <inbox.json>]
 //   --dry-run  reads test/fixtures instead of the internet and skips Claude and Sheets.
-//   --inbox    with --dry-run: a JSON file {"inbox": [...], "desk": [...]} standing in for the Sheet's Inbox and Desk tabs.
+//   --inbox    with --dry-run: a JSON file {"inbox": [...], "desk": [...], "arcs": [...], "clicks": [...], "questions": [...]}
+//              standing in for the Sheet's tabs of those names.
 import { readFile, writeFile, readdir, unlink, mkdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { fetchAll, fetchOgImage, fetchYoutubeMeta, fetchVideoSeconds, fetchPageMeta, isHindi, shortId, pruneSiteSeen } from "./lib/feeds.mjs";
-import { makeClient, selectStories, rewriteHeadlines, verifyHeadlines } from "./lib/claude.mjs";
+import { makeClient, selectStories, rewriteHeadlines, verifyHeadlines, writeRecap } from "./lib/claude.mjs";
+import { parseArcs, matchArc, recapDue, arcLinks, arcReport, heuristicRecap, arcsPromptBlock, NEW_ARC } from "./lib/arcs.mjs";
 import { loadFocus, effectiveSections, focusPromptBlock, focusToneBlock } from "./lib/focus.mjs";
 import { loadSources, writeSourceHealth, saveCopy } from "./lib/sources.mjs";
 import { driveFileId, fileInFolder } from "../lib/drive.mjs";
@@ -65,6 +67,10 @@ async function main() {
   let inboxRows = [];
   let deskRows = [];
   let styleExamples = [];
+  let arcRows = [];
+  let clickRows = [];
+  let questionRows = [];
+  let pilotRows = [];
   if (useSheets) {
     try {
       await ensureTabs();
@@ -73,12 +79,39 @@ async function main() {
     } catch (err) {
       report.warnings.push(`Google Sheet read failed: ${err.message}`);
     }
+    // The pilot tabs are optional: a failure here leaves the issue as it would be without story arcs.
+    try {
+      [arcRows, clickRows, questionRows, pilotRows] = await Promise.all(["Arcs", "Clicks", "Questions", "Pilot"].map((t) => readRows(t).catch(() => [])));
+    } catch (err) {
+      report.warnings.push(`Could not read the Arcs, Clicks, Questions or Pilot tab: ${err.message}`);
+    }
   } else if (dryRun && inboxPath) {
     const fixture = JSON.parse(await readFile(inboxPath, "utf8"));
-    inboxRows = (fixture.inbox || []).map((r, n) => ({ status: "", ...r, _row: n + 2 }));
-    deskRows = (fixture.desk || []).map((r, n) => ({ status: "", ...r, _row: n + 2 }));
+    const rows = (list) => (list || []).map((r, n) => ({ status: "", ...r, _row: n + 2 }));
+    inboxRows = rows(fixture.inbox);
+    deskRows = rows(fixture.desk);
+    arcRows = rows(fixture.arcs);
+    clickRows = rows(fixture.clicks);
+    questionRows = rows(fixture.questions);
   } else if (!dryRun) report.notes = [...(report.notes || []), "Google Sheet not configured yet (SHEET_ID / GOOGLE_SA_KEY missing); issue published without it"];
-  const manual = await collectManual(inboxRows, deskRows, sections, settings);
+
+  // The first time (no issue built with arcs yet and an empty Arcs tab), the tab is filled from config/arcs-seed.json.
+  if (useSheets && !index?.arcsSince && !arcRows.some((r) => String(r.arc || "").trim())) {
+    try {
+      arcRows = await seedArcs();
+      if (arcRows.length) report.notes = [...(report.notes || []), `Arcs tab filled with ${arcRows.length} starting arcs from config/arcs-seed.json`];
+    } catch (err) {
+      report.warnings.push(`Could not fill the Arcs tab from config/arcs-seed.json: ${err.message}`);
+    }
+  }
+
+  // Story arcs (Sheet Arcs tab). With no active arc the issue is built exactly as before.
+  const arcConfig = { maxActive: 8, maxOffArc: 1, recapEvery: 4, ...(settings.arcs || {}) };
+  const arcs = parseArcs(arcRows, arcConfig.maxActive);
+  report.warnings.push(...arcs.warnings);
+  const arcsSince = index?.arcsSince || (arcs.active.length ? issue : null);
+  report.arcs = { active: arcs.active.map((a) => a.name), since: arcsSince };
+  const manual = await collectManual(inboxRows, deskRows, sections, settings, arcs.known);
 
   // 2. Fetch every feed.
   const ytCachePath = path.join(root, "config", "youtube-ids.json");
@@ -157,14 +190,19 @@ async function main() {
   // 5. Pick the stories.
   const client = dryRun ? null : makeClient();
   let selection = { picks: [] };
-  if (dryRun) selection = heuristicSelect(candidates, caps, focus, needLead);
+  if (dryRun) selection = heuristicSelect(candidates, caps, focus, needLead, arcs.active);
   else if (budget > 0 || needLead) {
-    const editorial = (await readFile(path.join(root, "prompts", "editorial.md"), "utf8")) + focusPromptBlock(focus, settings) + (await sectionBriefs(sections));
-    const res = await selectStories({ client, settings, editorial, candidates, sections: caps, budget, needLead, manual: manual.all, windowText });
+    const editorial = (await readFile(path.join(root, "prompts", "editorial.md"), "utf8")) + focusPromptBlock(focus, settings) + (await sectionBriefs(sections)) + arcsPromptBlock(arcs.active, arcConfig.maxOffArc);
+    const res = await selectStories({ client, settings, editorial, candidates, sections: caps, budget, needLead, manual: manual.all, windowText, arcs: arcs.active });
     report.usage.push({ step: "select", model: res.model, ...res.usage });
     selection = res.data;
   }
-  const picks = validatePicks(selection, byCid, settings, caps, budget, needLead);
+  const picks = validatePicks(selection, byCid, settings, caps, budget, needLead, arcs.active);
+  // The editor's links without an arc of his own take the arc Claude tagged them with.
+  for (const t of selection.editor_arcs || []) {
+    const m = manual.all[t.link - 1];
+    if (m && m.arc === undefined) m.arc = matchArc(t.arc, arcs.active);
+  }
 
   // 6. Rewrite headlines (Claude's picks, plus the editor's links that came without a headline), then fact-check them.
   const toRewrite = [...picks, ...manual.all.filter((m) => !m.headline && m.title)];
@@ -185,6 +223,7 @@ async function main() {
       delete rewritten[r.item_id];
     }
   }
+  const plain = (t, max) => String(t || "").replace(/\s*—\s*/g, ": ").replace(/\s+/g, " ").trim().slice(0, max);
   const tidy = (h, fallback) => {
     const s = (h || "").replace(/\s*—\s*/g, ": ").replace(/\s+/g, " ").trim();
     return s && s.length <= 120 ? s : fallback;
@@ -220,6 +259,7 @@ async function main() {
     for: p.for || undefined,
     subscriber: p.subscriber || undefined,
     manual: p.manual || undefined,
+    arc: p.arc || undefined,
   });
   const autoLead = picks.find((p) => p.isLead);
   const leadSource = manual.lead || autoLead;
@@ -242,6 +282,8 @@ async function main() {
     lead: leadSource ? { ...toItem(leadSource, "lead", 0), home: leadSource.section !== "lead" ? leadSource.section : undefined } : null,
     sections: [],
   };
+  // Every arc is listed (with its "story so far" line), so a label the editor types in the Today tab later also works.
+  if (arcs.known.length) edition.arcs = arcs.known.filter((a) => a.status !== "closed").map((a) => ({ name: a.name, side: a.side || undefined, so_far: a.so_far || undefined }));
   for (const s of allSections) {
     const list = s.key === "picks" ? manual.picks : sectionItems(s.key);
     edition.sections.push({
@@ -264,13 +306,40 @@ async function main() {
 
   const linkCount = (edition.lead ? 1 : 0) + edition.sections.reduce((n, s) => n + s.items.length, 0);
   report.links = linkCount;
-  const retained = await publish(edition, settings, index);
+  const allLinks = [edition.lead, ...edition.sections.flatMap((s) => s.items)].filter(Boolean);
+  report.arcLinks = Object.fromEntries([...arcs.active.map((a) => a.name), NEW_ARC, "none"].map((k) => [k, allLinks.filter((i) => (i.arc || "none") === k).length]));
+
+  // The fortnightly recap and the per-arc report, over this issue and the ones before it in the recap period.
+  const period = arcs.known.length ? await recentEditions(edition, arcConfig.recapEvery) : [];
+  if (arcs.active.length && recapDue(issue, arcsSince, arcConfig.recapEvery)) {
+    const links = arcLinks(period).filter((l) => arcs.active.some((a) => a.name === l.arc));
+    try {
+      let recap;
+      if (dryRun) recap = heuristicRecap(arcs.active, links);
+      else if (links.length) {
+        const res = await writeRecap({ client, settings, arcs: arcs.active, links });
+        report.usage.push({ step: "recap", model: res.model, ...res.usage });
+        recap = res.data;
+      }
+      const kept = (recap?.arcs || []).filter((r) => links.some((l) => l.arc === r.arc) && r.changed && r.question && r.answer);
+      if (kept.length) edition.recap = { issues: period.map((e) => e.date).sort(), arcs: kept.map((r) => ({ arc: r.arc, changed: plain(r.changed, 400), question: plain(r.question, 200), answer: plain(r.answer, 160) })) };
+    } catch (err) {
+      report.warnings.push(`Recap skipped: ${err.message}`);
+    }
+  }
+  if (arcs.known.length) {
+    report.arcReport = arcReport(arcs.known, period, clickRows, questionRows);
+    if (edition.recap) report.arcReport.pilotMinutes = pilotRows.filter((r) => report.arcReport.issues.includes(r.issue_date)).map((r) => ({ issue_date: r.issue_date, minutes: r.minutes, notes: r.notes || undefined }));
+  }
+  const retained = await publish(edition, settings, index, arcsSince);
 
   // 9. Mirror the issue into the Sheet and mark the editor's rows as used.
   if (useSheets) {
     try {
       await syncToday(todayRows, edition, retained);
       await markUsed(manual, settings.today);
+      if (report.arcReport) await writeArcReport(arcs.known, report.arcReport);
+      if (arcsSince) await logPilot(pilotRows, edition);
     } catch (err) {
       report.warnings.push(`Google Sheet write failed: ${err.message}`);
     }
@@ -282,7 +351,8 @@ async function main() {
 }
 
 // Reads the Inbox and Desk rows due for this issue and turns them into items (title, source and image fetched from the link).
-async function collectManual(inboxRows, deskRows, sections, settings) {
+// knownArcs: the Arcs tab's arcs; an Inbox arc the tab does not name is ignored with a warning.
+async function collectManual(inboxRows, deskRows, sections, settings, knownArcs = []) {
   const today = settings.today;
   const due = (r) => {
     const status = String(r.status || "").trim();
@@ -334,6 +404,12 @@ async function collectManual(inboxRows, deskRows, sections, settings) {
       section,
       isLead: section === "lead",
     };
+    // An arc typed in the Inbox wins; "none" keeps the link out of every arc; blank lets Claude tag it.
+    const typedArc = String(r.arc || "").trim();
+    if (typedArc) {
+      item.arc = matchArc(typedArc, knownArcs);
+      if (!item.arc && !/^(none|-)$/i.test(typedArc)) out.warnings.push(`Inbox row ${r._row}: arc "${typedArc}" is not in the Arcs tab; link shown without an arc`);
+    }
     if (!item.headline && !item.title) out.warnings.push(`Inbox row ${r._row}: could not read a title for ${url}; add my_headline`);
     out.all.push(item);
     out.usedRows.push(r);
@@ -349,7 +425,7 @@ async function collectManual(inboxRows, deskRows, sections, settings) {
   return out;
 }
 
-function validatePicks(selection, byCid, settings, caps, budget, needLead) {
+function validatePicks(selection, byCid, settings, caps, budget, needLead, arcs = []) {
   const used = new Set();
   const out = [];
   let independent = 0;
@@ -368,7 +444,7 @@ function validatePicks(selection, byCid, settings, caps, budget, needLead) {
     if (!isLead && p.path === "independent" && !section.focus) independent++;
     if (item.hindi) hindi++;
     used.add(item.cid);
-    out.push({ ...item, section: p.section, rank: isLead ? 0 : rank, isLead, helpline: p.helpline, story: p.story, path: p.path });
+    out.push({ ...item, section: p.section, rank: isLead ? 0 : rank, isLead, helpline: p.helpline, story: p.story, path: p.path, arc: matchArc(p.arc, arcs) || undefined });
   };
   if (needLead && selection.lead) take(selection.lead, true);
   // Sections fill in their listed order (India before World), so a tight budget squeezes the later sections first.
@@ -391,7 +467,7 @@ async function sectionBriefs(sections, toneOnly = false) {
 }
 
 // Dry-run stand-in for Claude: sorts candidates into sections by source and keywords, within the same caps.
-function heuristicSelect(candidates, caps, focus, needLead) {
+function heuristicSelect(candidates, caps, focus, needLead, arcs = []) {
   const neutralSection = { "BBC Entertainment": "culture", Soompi: "culture", "Know Your Meme": "culture", "Carbon Brief": "world", "Mongabay India": "india" };
   const indiaWords = /india|delhi|mumbai|modi|bjp|congress|rahul|kerala|bihar|tamil|karnataka|maharashtra|rupee|lok sabha|data bill|data protection|exam|metro|night-bus/i;
   const pool = candidates.filter((c) => c.role !== "detect" && !c.paywalled);
@@ -405,8 +481,14 @@ function heuristicSelect(candidates, caps, focus, needLead) {
   const picks = pool
     .map((c) => ({ item_id: c.cid, section: sectionFor(c), story: c.title.slice(0, 60), path: "consensus", helpline: false }))
     .filter((p) => p.section);
+  // Arcs: an item whose title shares a word of 4+ letters with an arc's name belongs to that arc.
+  for (const p of picks) {
+    const c = candidates.find((x) => x.cid === p.item_id);
+    const words = (s) => s.toLowerCase().split(/[^a-z]+/).filter((w) => w.length >= 4);
+    p.arc = arcs.find((a) => words(a.name).some((w) => words(c.title).includes(w)))?.name || "none";
+  }
   const lead = needLead ? picks.find((p) => p.section === "india") || picks[0] : null;
-  return { lead, picks: picks.filter((p) => p !== lead && keys.has(p.section)) };
+  return { lead, picks: picks.filter((p) => p !== lead && keys.has(p.section)), editor_arcs: [] };
 }
 
 async function pool(items, limit, fn) {
@@ -417,7 +499,7 @@ async function pool(items, limit, fn) {
 }
 
 // Writes the issue and index.json, keeping the last archiveIssues issues. Returns the dates kept.
-async function publish(edition, settings, index) {
+async function publish(edition, settings, index, arcsSince) {
   const editionsDir = path.join(outDir, "editions");
   await mkdir(editionsDir, { recursive: true });
   await writeFile(path.join(editionsDir, `${edition.date}.json`), JSON.stringify(edition, null, 2) + "\n");
@@ -435,6 +517,8 @@ async function publish(edition, settings, index) {
         editions: list,
         dates: keep,
         lastIssue: Math.max(edition.issue, index?.lastIssue || 0),
+        // The first issue built with story arcs; recaps count from it.
+        arcsSince: arcsSince || undefined,
         siteName: settings.siteName,
         footerNote: settings.footerNote,
         helpline: settings.helpline,
@@ -480,11 +564,45 @@ async function syncToday(existing, edition, retained) {
       important: i.important ? "yes" : "",
       for: i.for || "",
       thumbnail: i.thumbnail || "",
+      arc: i.arc || "",
     }));
   const rows = [...fresh, ...keep].map((r) => toRow("Today", r));
   await clearTab("Today");
   await writeRows("Today!A1", [TABS.Today]);
   if (rows.length) await writeRows("Today!A2", rows);
+}
+
+// This issue plus the issues before it, `count` in all, read from the published files (newest kept issues).
+async function recentEditions(edition, count) {
+  const dir = path.join(outDir, "editions");
+  const files = (await readdir(dir).catch(() => [])).map((f) => f.replace(/\.json$/, "")).filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d) && d < edition.date).sort().reverse();
+  const older = [];
+  for (const d of files.slice(0, count - 1)) older.push(await readFile(path.join(dir, `${d}.json`), "utf8").then(JSON.parse).catch(() => null));
+  return [edition, ...older.filter((e) => e?.date)];
+}
+
+// Writes the starting arcs into the empty Arcs tab and returns them as rows.
+async function seedArcs() {
+  const seed = await readJson("config/arcs-seed.json").catch(() => ({ arcs: [] }));
+  const list = seed.arcs || [];
+  if (list.length) await writeRows("Arcs!A2", list.map((a) => toRow("Arcs", a)));
+  return list.map((a, n) => ({ ...a, _row: n + 2 }));
+}
+
+// Writes links, clicks and last_link into each arc's row of the Arcs tab.
+async function writeArcReport(arcs, rep) {
+  const first = columnOf("Arcs", "links");
+  const last = columnOf("Arcs", "last_link");
+  for (const a of arcs) {
+    const r = rep.arcs.find((x) => x.arc === a.name);
+    if (r && a._row) await writeRows(`Arcs!${first}${a._row}:${last}${a._row}`, [[String(r.links), String(r.clicks), r.last_link]]);
+  }
+}
+
+// Adds this issue's row to the Pilot tab (the editor fills in his minutes), unless it is already there.
+async function logPilot(rows, edition) {
+  if (rows.some((r) => r.issue_date === edition.date)) return;
+  await appendRows("Pilot", [toRow("Pilot", { issue_date: edition.date, issue: edition.issue })]);
 }
 
 async function markUsed(manual, date) {

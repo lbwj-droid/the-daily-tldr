@@ -131,10 +131,10 @@ test("the editor's links placed in India or World do not use up Claude's quota t
   assert.ok(allItems(edition).length <= settings.maxLinks);
 });
 
-test("Culture is off; India and World take up to 2 each, and Campus Watch has ended", () => {
+test("Culture is off; India and World take up to 2 each, AI & Society 1, and Campus Watch has ended", () => {
   const { edition } = dryRun();
-  assert.deepEqual(edition.sections.map((s) => s.key).filter((k) => k !== "picks"), ["india", "world"]);
-  for (const s of edition.sections.filter((x) => x.key !== "picks")) assert.ok(s.items.length <= 2, `${s.key}: ${s.items.length}`);
+  assert.deepEqual(edition.sections.map((s) => s.key).filter((k) => k !== "picks"), ["india", "ai", "world"]);
+  for (const s of edition.sections.filter((x) => x.key !== "picks")) assert.ok(s.items.length <= (s.key === "ai" ? 1 : 2), `${s.key}: ${s.items.length}`);
   assert.ok(edition.lead, "Claude picks a lead when the editor has not");
 });
 

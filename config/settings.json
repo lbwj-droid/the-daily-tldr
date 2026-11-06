@@ -12,13 +12,20 @@
       "title": "India",
       "max": 2,
       "brief": "prompts/india.md",
-      "covers": "general India news: politics, society, education and exams, the Election Commission, courts, women's safety, climate; ranked by the India brief below"
+      "covers": "general India news: politics, society, education and exams, jobs, the economy, inequality and the power of big business, the Election Commission, courts, women's safety, climate; ranked by the India brief below"
+    },
+    {
+      "key": "ai",
+      "title": "AI & Society",
+      "max": 1,
+      "brief": "prompts/ai.md",
+      "covers": "the social and cultural impact of AI: work, study, art, daily life, what AI gets wrong and who is accountable; never product launches or funding news; ranked by the AI brief below"
     },
     {
       "key": "world",
       "title": "World",
       "max": 2,
-      "covers": "major geopolitics: wars, diplomacy, elections and shifts of power between and within major states. Leave out Israel, Gaza, the West Bank, Lebanon, Iran and the Strait of Hormuz: the editor covers those by hand"
+      "covers": "major geopolitics: wars, diplomacy, elections and shifts of power between and within major states, including the US populist movements and youth unemployment in the US, China, France and the UK. Leave out Israel, Gaza, the West Bank, Lebanon, Iran and the Strait of Hormuz: the editor covers those by hand"
     }
   ],
   "independentPathMax": 4,
@@ -50,5 +57,10 @@
   "maxVideoMinutes": 30,
   "preferVideoMinutes": 20,
   "picksTitle": "Editor's Picks",
-  "utcOffset": "+04:00"
+  "utcOffset": "+04:00",
+  "arcs": {
+    "maxActive": 8,
+    "maxOffArc": 1,
+    "recapEvery": 4
+  }
 }

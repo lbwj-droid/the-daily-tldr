@@ -1,4 +1,4 @@
-// Local preview: serves public/ and stands in for the two Vercel functions.
+// Local preview: serves public/ and stands in for the Vercel functions (overrides, click, question).
 // Usage: node scripts/dev-server.mjs [--data <dir>] [--overrides <file.json>] [--port 3000]
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
@@ -18,6 +18,12 @@ createServer(async (req, res) => {
     const body = overridesFile ? await readFile(overridesFile, "utf8") : JSON.stringify({ configured: false, overrides: {}, added: [] });
     res.writeHead(200, { "Content-Type": "application/json" });
     return res.end(body);
+  }
+  if (url.pathname === "/api/question") {
+    let b = "";
+    req.on("data", (c) => (b += c));
+    req.on("end", () => { console.log("question", b); res.writeHead(200, { "Content-Type": "application/json" }); res.end('{"ok":true,"stored":false}'); });
+    return;
   }
   if (url.pathname === "/api/click") {
     let b = "";

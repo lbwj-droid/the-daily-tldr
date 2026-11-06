@@ -1,0 +1,54 @@
+{
+  "note": "Written into the Sheet's Arcs tab by the first build that finds the tab empty, and never again (index.json arcsSince). Edit the arcs in the Sheet, not here.",
+  "arcs": [
+    {
+      "arc": "US populism: DSA vs MAGA",
+      "side": "world",
+      "status": "active",
+      "so_far": "A left-populist wing led by the Democratic Socialists of America is rising inside the Democratic Party, with young voters behind it. It takes on the same establishment as MAGA, from the opposite direction.",
+      "notes": "Lester, 6 Nov: how DSA populism differs from MAGA populism; young voters; ties to the Gen Z push-back against the establishment. Primers via the Desk note."
+    },
+    {
+      "arc": "Gen Z protests and education",
+      "side": "india",
+      "status": "active",
+      "so_far": "The Gen Z protests are about more than one exam or one election. Many young Indians, above all in rural India, leave school without the skills employers want, in an economy that already makes too few jobs.",
+      "notes": "Lester, 6 Nov: link the protests to poor-quality education, urban and especially rural; low proficiency means low employability, on top of too few jobs."
+    },
+    {
+      "arc": "Youth jobs worldwide",
+      "side": "world",
+      "status": "active",
+      "so_far": "Young people are struggling to find good jobs in the US, China, France and the UK too. Comparing them shows what is global and what is particular to India.",
+      "notes": "Lester, 6 Nov: track the US, China, France and the UK for now; draw parallels to India where a source makes them."
+    },
+    {
+      "arc": "Big business and power",
+      "side": "india",
+      "status": "active",
+      "so_far": "After 12 years of the current government, a few business groups such as Adani and Ambani hold more economic and political power than ever, much like America's robber-baron era.",
+      "notes": "Lester, 6 Nov: socio-cultural and political impact of 12+ years of the regime; pro-big-business policy; robber-baron parallel; ties to wealth inequality."
+    },
+    {
+      "arc": "Inequality and your career",
+      "side": "india",
+      "status": "active",
+      "so_far": "Why the gap between India's richest and everyone else keeps widening, and what it means for young people starting their careers now.",
+      "notes": "Lester, 6 Nov: the factors behind rising inequality and what they mean for youth about to start work."
+    },
+    {
+      "arc": "Youth fighting back",
+      "side": "india",
+      "status": "active",
+      "so_far": "Young Indians are organising against injustice by the system, and some are winning. These are the stories of what they did and what changed.",
+      "notes": "Lester, 6 Nov: examples that make them feel empowered, not overwhelmed or defeated by something bigger than them."
+    },
+    {
+      "arc": "AI and society",
+      "side": "",
+      "status": "active",
+      "so_far": "AI is to Gen Z what the internet was to Gen X. These stories are about what it changes in work, study, art and daily life, not the latest product.",
+      "notes": "Lester, 6 Nov: social and cultural impact, never the next new tool; example: The Deep View, 'AI can copy the song, not the reason we sing'."
+    }
+  ]
+}
