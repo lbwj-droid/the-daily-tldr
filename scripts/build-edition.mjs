@@ -238,7 +238,7 @@ async function main() {
     publish_at: new Date(`${settings.today}T${settings.goLive}:00${settings.utcOffset}`).toISOString(),
     generated_at: new Date().toISOString(),
     window_hours: Math.round(lookbackHours),
-    desk: manual.desk ? { teaser: manual.desk.teaser || "Notes from the news desk", url: manual.desk.url } : null,
+    desk: manual.desk ? { teaser: manual.desk.teaser || "Notes from the news desk", url: manual.desk.url, note: manual.desk.note } : null,
     lead: leadSource ? { ...toItem(leadSource, "lead", 0), home: leadSource.section !== "lead" ? leadSource.section : undefined } : null,
     sections: [],
   };
@@ -343,7 +343,7 @@ async function collectManual(inboxRows, deskRows, sections, settings) {
   }
   const desk = deskRows.find((r) => (r.issue_date === today || (!r.issue_date && !String(r.status || "").trim())) && (String(r.teaser || "").trim() || /^https?:\/\//.test(String(r.url || "").trim())));
   if (desk) {
-    out.desk = { teaser: String(desk.teaser || "").trim(), url: String(desk.url || "").trim() || undefined };
+    out.desk = { teaser: String(desk.teaser || "").trim(), url: String(desk.url || "").trim() || undefined, note: String(desk.note || "").trim() || undefined };
     out.deskRow = desk;
   }
   return out;

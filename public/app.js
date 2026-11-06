@@ -233,6 +233,8 @@
       } else {
         box.appendChild(el("p", null, desk.teaser));
       }
+      // The optional note column: a plain explanatory line under the teaser.
+      if (desk.note) box.appendChild(el("p", { class: "desk-note" }, desk.note));
       page.appendChild(box);
     }
 
