@@ -60,7 +60,9 @@
   "utcOffset": "+04:00",
   "arcs": {
     "maxActive": 8,
-    "maxOffArc": 1,
+    "maxOffArc": 2,
     "recapEvery": 4
-  }
+  },
+  "extraMax": 2,
+  "feedbackIssues": 4
 }

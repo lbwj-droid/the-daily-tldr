@@ -126,7 +126,9 @@ ${list}
 
 For every pick (and the lead), set \`arc\` to the one arc the item moves forward: it reports a new development, decision, number or interview on that storyline. A story that only mentions a related subject does not belong to the arc. Among stories that qualify, prefer those that move an active arc forward, but never pick a weak item only because it fits an arc.
 
-Set \`arc\` to "none" for a story outside every arc. Allow at most ${maxOffArc} such picks, for the period's biggest story everyone will mention. Set \`arc\` to "${NEW_ARC}" for at most one pick that looks like the start of a storyline the editor should consider adding: it must be likely to run for weeks.
+The arcs overlap (education, jobs, inequality and protest are one knot). When an item ties several arcs together in one comprehensive analysis, prefer it to a piece on one arc, and tag it with the arc it moves furthest. Otherwise pick the most potent, dramatic new development within one arc.
+
+Set \`arc\` to "none" for a story outside every arc. Never leave out the period's big story because it fits no arc: use your judgement, and keep such picks to the stories everyone will talk about (usually ${maxOffArc} or fewer an issue). Set \`arc\` to "${NEW_ARC}" for at most one pick that looks like the start of a storyline the editor should consider adding: it must be likely to run for weeks.
 
 Also tag each of the editor's own links listed below with its arc, or "none".`;
 }

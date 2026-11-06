@@ -22,7 +22,8 @@ async function askJson(client, { model, effort, system, user, schema }) {
 }
 
 // arcNames: the active story arcs; when given, every pick also names its arc ("none", "new" or an arc name).
-const pickShape = (sectionKeys, arcNames) => ({
+// extra: when true, the pick may also carry `extra` (a must-not-miss story beyond the issue's room).
+const pickShape = (sectionKeys, arcNames, extra = false) => ({
   type: "object",
   additionalProperties: false,
   required: ["item_id", "section", "story", "path", "helpline", ...(arcNames ? ["arc"] : [])],
@@ -33,16 +34,18 @@ const pickShape = (sectionKeys, arcNames) => ({
     path: { type: "string", enum: ["consensus", "independent", "neutral"] },
     helpline: { type: "boolean", description: "true only for kept suicide-related items" },
     ...(arcNames ? { arc: { type: "string", enum: [...arcNames, "new", "none"], description: "the story arc this item moves forward" } } : {}),
+    ...(extra ? { extra: { type: "boolean", description: "true only for a must-not-miss story picked beyond the issue's room" } } : {}),
   },
 });
 
 // sections: [{key, title, max, covers}] with max already reduced by the editor's own links in that section.
 // budget: total links Claude may pick across all sections (the lead not included). needLead: false when the editor set the lead.
 // arcs: the active story arcs [{name}] (empty: no arc tagging). Then editor_arcs tags the editor's own links too.
-export async function selectStories({ client, settings, editorial, candidates, sections, budget, needLead, manual, windowText, arcs = [] }) {
+// extraMax: how many must-not-miss picks may run beyond the room (0: none). feedback: the editor's recent edits.
+export async function selectStories({ client, settings, editorial, candidates, sections, budget, needLead, manual, windowText, arcs = [], extraMax = 0, feedback = "" }) {
   const keys = sections.map((s) => s.key);
   const arcNames = arcs.length ? arcs.map((a) => a.name) : null;
-  const picksSchema = { type: "array", items: pickShape(keys, arcNames), description: "section picks in rank order within each section; never repeats the lead story" };
+  const picksSchema = { type: "array", items: pickShape(keys, arcNames, extraMax > 0), description: "section picks in rank order within each section; never repeats the lead story" };
   const properties = { ...(needLead ? { lead: pickShape(keys, arcNames) } : {}), picks: picksSchema };
   const required = [...(needLead ? ["lead"] : []), "picks"];
   if (arcNames && manual.length) {
@@ -57,8 +60,11 @@ export async function selectStories({ client, settings, editorial, candidates, s
   const sectionList = [
     `This issue has room for ${budget} section links in total${needLead ? ", plus the lead" : " (the editor has chosen the lead himself, so do not pick one)"}. Spread them across the sections below in the order listed, each up to its maximum. Fewer strong links beat a full page of weak ones.`,
     ...sections.map((s) => `- ${s.key} (${s.title}): up to ${s.max}. Covers ${s.covers}.`),
+    ...(extraMax > 0
+      ? [`\nBeyond that room you may add up to ${extraMax} extra picks, marked extra: true, in any section above, only for a story the readers must not miss this period (one they would be embarrassed not to know at dinner). Most issues need none. The editor reviews every extra pick.`]
+      : []),
   ].join("\n");
-  const system = editorial.replaceAll("{{independentPathMax}}", String(settings.independentPathMax)).replaceAll("{{sectionList}}", sectionList);
+  const system = editorial.replaceAll("{{independentPathMax}}", String(settings.independentPathMax)).replaceAll("{{sectionList}}", sectionList) + feedback;
   const flags = (c) =>
     [c.paywalled && "PAYWALLED", c.focusOnly && "FOCUS-ONLY", c.hindi && "HINDI", c.kind === "video" && `VIDEO ${c.seconds ? Math.round(c.seconds / 60) + "m" : "?m"}`].filter(Boolean).join(" ");
   const lines = candidates.map((c) => [c.cid, c.role, c.source + (c.tag ? ` [${c.tag}]` : ""), c.published.slice(0, 16), flags(c), c.title, c.summary].join(" | "));
