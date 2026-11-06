@@ -62,7 +62,7 @@ Each run's `reports/last-run.json` shows `focusCoverage`: how many candidate sto
 
 The running storylines every link is attached to, so a new headline lands on a story the readers already know. Plan and reasoning: the "Daily TL;DR: hyper-curation working notes" Claude Doc. Nothing changes on the page until the **Arcs** tab has at least one active arc.
 
-**Arcs tab** (created by the next build):
+**Arcs tab**: the first build with arcs (9 Nov 2026) fills it from `config/arcs-seed.json`; after that, edit the Sheet only.
 
 | Column | Meaning |
 | --- | --- |
@@ -89,7 +89,7 @@ Give each reader `https://the-daily-tldr.vercel.app/?r=<name>`. Each of them ope
 | To change | Edit |
 | --- | --- |
 | Sources | The Sheet's **Sources** tab (master list): `name, link, role, language, tag, status, notes`; each build fills `last_checked, items, error`. Paste a YouTube channel link (youtube.com/@name), an RSS feed or any web page as the link. `status` off keeps a source listed but unread. `config/sources.json` is a copy saved by each build, used only if the Sheet cannot be read. Roles: `detect`, `prefer`, `neutral`, or `official` (linked only for that body's own statement). Kinds: `rss`, `youtube`, or `site` (any web page: its feed if it has one, otherwise its article links, dated by when first seen) |
-| Sections and their maximums, link limit, Hindi cap, video length, schedule times, model | `config/settings.json` (the schedule itself is in `.github/workflows/daily.yml`) |
+| Sections and their maximums (India 2, AI & Society 1, World 2), link limit, Hindi cap, video length, schedule times, model | `config/settings.json` (the schedule itself is in `.github/workflows/daily.yml`) |
 | What gets picked or excluded | `prompts/editorial.md` |
 | Headline voice and starter examples | `prompts/voice.md` |
 | Focus topics | `config/focus.json` and `prompts/focus/*.md` |

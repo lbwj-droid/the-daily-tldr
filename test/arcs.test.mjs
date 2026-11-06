@@ -144,3 +144,11 @@ test("the 4th issue with arcs carries a recap of the arc links of the last 4 iss
   assert.ok(ceasefire.question && ceasefire.answer);
   assert.equal(report.arcReport.arcs.find((a) => a.arc === "Ceasefire talks").clicks, 1);
 });
+
+test("the starting arcs fit the Arcs tab rules: 7 active, names of 40 characters or fewer, no duplicates", () => {
+  const seed = JSON.parse(readFileSync(path.join(root, "config", "arcs-seed.json"), "utf8"));
+  const { active, warnings } = parseArcs(rows(seed.arcs));
+  assert.equal(warnings.length, 0, warnings.join("; "));
+  assert.equal(active.length, 7);
+  for (const a of seed.arcs) assert.ok(!/—/.test(a.so_far), `${a.arc}: no em dash`);
+});

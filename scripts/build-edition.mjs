@@ -95,6 +95,16 @@ async function main() {
     questionRows = rows(fixture.questions);
   } else if (!dryRun) report.notes = [...(report.notes || []), "Google Sheet not configured yet (SHEET_ID / GOOGLE_SA_KEY missing); issue published without it"];
 
+  // The first time (no issue built with arcs yet and an empty Arcs tab), the tab is filled from config/arcs-seed.json.
+  if (useSheets && !index?.arcsSince && !arcRows.some((r) => String(r.arc || "").trim())) {
+    try {
+      arcRows = await seedArcs();
+      if (arcRows.length) report.notes = [...(report.notes || []), `Arcs tab filled with ${arcRows.length} starting arcs from config/arcs-seed.json`];
+    } catch (err) {
+      report.warnings.push(`Could not fill the Arcs tab from config/arcs-seed.json: ${err.message}`);
+    }
+  }
+
   // Story arcs (Sheet Arcs tab). With no active arc the issue is built exactly as before.
   const arcConfig = { maxActive: 8, maxOffArc: 1, recapEvery: 4, ...(settings.arcs || {}) };
   const arcs = parseArcs(arcRows, arcConfig.maxActive);
@@ -569,6 +579,14 @@ async function recentEditions(edition, count) {
   const older = [];
   for (const d of files.slice(0, count - 1)) older.push(await readFile(path.join(dir, `${d}.json`), "utf8").then(JSON.parse).catch(() => null));
   return [edition, ...older.filter((e) => e?.date)];
+}
+
+// Writes the starting arcs into the empty Arcs tab and returns them as rows.
+async function seedArcs() {
+  const seed = await readJson("config/arcs-seed.json").catch(() => ({ arcs: [] }));
+  const list = seed.arcs || [];
+  if (list.length) await writeRows("Arcs!A2", list.map((a) => toRow("Arcs", a)));
+  return list.map((a, n) => ({ ...a, _row: n + 2 }));
 }
 
 // Writes links, clicks and last_link into each arc's row of the Arcs tab.
