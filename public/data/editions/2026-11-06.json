@@ -1,0 +1,76 @@
+{
+  "date": "2026-11-06",
+  "issue": 4,
+  "publish_at": "2026-11-06T03:30:00.000Z",
+  "generated_at": "2026-11-06T01:16:02.530Z",
+  "window_hours": 102,
+  "desk": null,
+  "lead": {
+    "id": "1064f3d5ac",
+    "section": "lead",
+    "rank": 0,
+    "headline": "TRUMP-GOP DISASTER: DEMS TAKE FULL CONTROL OF CONGRESS, TEXAS INCLUDED",
+    "original_headline": "BREAKING: Dems Take Full Control of Congress in Trump-GOP Disaster",
+    "url": "https://zeteo.com/p/breaking-dems-take-full-control-of-congress",
+    "source": "Zeteo",
+    "kind": "article",
+    "thumbnail": "https://substackcdn.com/image/fetch/$s_!TTEd!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F1d41bfd4-40de-40af-9635-5d6eeb194019_1800x1200.jpeg",
+    "home": "world"
+  },
+  "sections": [
+    {
+      "key": "india",
+      "title": "India",
+      "items": [
+        {
+          "id": "3564c7caf9",
+          "section": "india",
+          "rank": 1,
+          "headline": "EC pulls a U-turn: Form 6 and SIR declaration now delinked",
+          "original_headline": "EC Form 6 U-Turn Explained: Poll Body Delinks Form 6, SIR Declaration, What It Means | Gyanesh Kumar",
+          "url": "https://www.youtube.com/watch?v=vGw6WdFEYyU",
+          "source": "HW News English",
+          "kind": "video",
+          "thumbnail": "https://i.ytimg.com/vi/vGw6WdFEYyU/hqdefault.jpg"
+        },
+        {
+          "id": "9db01fdc71",
+          "section": "india",
+          "rank": 2,
+          "headline": "Arunachal protests an 11,200 MW mega-dam. Govt answers with a crackdown.",
+          "original_headline": "The Siang Mega Dam and the Crackdown on Protests | Explained | Faye D'Souza",
+          "url": "https://www.youtube.com/watch?v=5TH51boJmZo",
+          "source": "Faye D'Souza (Beatroot News)",
+          "kind": "video"
+        }
+      ]
+    },
+    {
+      "key": "world",
+      "title": "World",
+      "items": [
+        {
+          "id": "534584a8c0",
+          "section": "world",
+          "rank": 1,
+          "headline": "Nithya Raman wins LA mayor race. Democratic Socialists eating good.",
+          "original_headline": "Nithya Raman’s win in Los Angeles mayoral race is a major boost for Democratic Socialists in US",
+          "url": "https://scroll.in/article/1096882/nithya-ramans-win-in-los-angeles-mayoral-race-is-a-major-boost-for-democratic-socialists-in-us?utm_source=rss&utm_medium=public",
+          "source": "Scroll",
+          "kind": "article",
+          "thumbnail": "https://sc0.blr1.cdn.digitaloceanspaces.com/article/216456-kvrvwoxxgr-1793840774.jpg"
+        },
+        {
+          "id": "1193f1374e",
+          "section": "world",
+          "rank": 2,
+          "headline": "Paraguay's Peña resigns on X, gets impeached minutes later anyway",
+          "original_headline": "Paraguay's president Peña impeached moments after resigning over banking scandal",
+          "url": "https://www.france24.com/en/americas/20261105-paraguay-s-president-pe%C3%B1a-impeached-moments-after-resigning-amid-banking-scandal",
+          "source": "France 24",
+          "kind": "article"
+        }
+      ]
+    }
+  ]
+}

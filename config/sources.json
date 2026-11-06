@@ -1,53 +1,53 @@
 {
-  "_readme": "role: official = a government body or the Election Commission, linked only for its own statement or response; detect = used only to spot the day's big stories, never linked for politics; prefer = linked first wherever it covered a story; neutral = linked for sports, culture, tech, money and internet stories. kind: rss (url), youtube (handle, handles, user or channelId) or site (a web page; uses its advertised feed if any, otherwise reads its article links). tag: short label shown next to the link, used for party channels. Feeds that fail are skipped and listed in reports/last-run.json. lang: hi marks a Hindi-language source (at most hindiMax Hindi items per issue, counted with any Hindi-script title).",
+  "_readme": "A copy of the Google Sheet's Sources tab, saved by every build. The Sources tab is the master list: edit sources there, not here. This file is used only when the Sheet cannot be read, and to fill the Sources tab if it is empty. role: official = a government body, linked only for its own statement; detect = used only to spot stories, never linked for politics; prefer = linked first wherever it covered a story; neutral = linked for culture, climate and internet stories. lang: hi = Hindi (counts towards hindiMax). status: off = kept but not read.",
   "sources": [
     {
       "name": "BBC World",
       "role": "detect",
-      "kind": "rss",
-      "url": "https://feeds.bbci.co.uk/news/world/rss.xml"
+      "url": "https://feeds.bbci.co.uk/news/world/rss.xml",
+      "kind": "rss"
     },
     {
       "name": "BBC India",
       "role": "detect",
-      "kind": "rss",
-      "url": "https://feeds.bbci.co.uk/news/world/asia/india/rss.xml"
+      "url": "https://feeds.bbci.co.uk/news/world/asia/india/rss.xml",
+      "kind": "rss"
     },
     {
       "name": "Al Jazeera",
       "role": "detect",
-      "kind": "rss",
-      "url": "https://www.aljazeera.com/xml/rss/all.xml"
+      "url": "https://www.aljazeera.com/xml/rss/all.xml",
+      "kind": "rss"
     },
     {
       "name": "The Guardian World",
       "role": "detect",
-      "kind": "rss",
-      "url": "https://www.theguardian.com/world/rss"
+      "url": "https://www.theguardian.com/world/rss",
+      "kind": "rss"
     },
     {
       "name": "NPR World",
       "role": "detect",
-      "kind": "rss",
-      "url": "https://feeds.npr.org/1004/rss.xml"
+      "url": "https://feeds.npr.org/1004/rss.xml",
+      "kind": "rss"
     },
     {
       "name": "The Hindu",
       "role": "detect",
-      "kind": "rss",
-      "url": "https://www.thehindu.com/news/national/feeder/default.rss"
+      "url": "https://www.thehindu.com/news/national/feeder/default.rss",
+      "kind": "rss"
     },
     {
       "name": "NDTV",
       "role": "detect",
-      "kind": "rss",
-      "url": "https://feeds.feedburner.com/ndtvnews-top-stories"
+      "url": "https://feeds.feedburner.com/ndtvnews-top-stories",
+      "kind": "rss"
     },
     {
       "name": "Hindustan Times",
       "role": "detect",
-      "kind": "rss",
-      "url": "https://www.hindustantimes.com/feeds/rss/india-news/rssfeed.xml"
+      "url": "https://www.hindustantimes.com/feeds/rss/india-news/rssfeed.xml",
+      "kind": "rss"
     },
     {
       "name": "Faye D'Souza (Beatroot News)",
@@ -83,11 +83,11 @@
       "name": "Indian National Congress",
       "role": "prefer",
       "kind": "youtube",
-      "tag": "INC",
       "handles": [
         "IndianNationalCongress",
         "INCIndia"
-      ]
+      ],
+      "tag": "INC"
     },
     {
       "name": "Rahul Gandhi",
@@ -99,14 +99,14 @@
     {
       "name": "Scroll",
       "role": "prefer",
-      "kind": "rss",
-      "url": "https://feeds.feedburner.com/ScrollinArticles.rss"
+      "url": "https://feeds.feedburner.com/ScrollinArticles.rss",
+      "kind": "rss"
     },
     {
       "name": "Alt News",
       "role": "prefer",
-      "kind": "rss",
-      "url": "https://www.altnews.in/feed/"
+      "url": "https://www.altnews.in/feed/",
+      "kind": "rss"
     },
     {
       "name": "Breaking Points",
@@ -117,8 +117,8 @@
     {
       "name": "Zeteo",
       "role": "prefer",
-      "kind": "rss",
-      "url": "https://zeteo.com/feed"
+      "url": "https://zeteo.com/feed",
+      "kind": "rss"
     },
     {
       "name": "Glenn Greenwald",
@@ -132,50 +132,50 @@
     {
       "name": "Democracy Now",
       "role": "prefer",
-      "kind": "rss",
-      "url": "https://www.democracynow.org/democracynow.rss"
+      "url": "https://www.democracynow.org/democracynow.rss",
+      "kind": "rss"
     },
     {
       "name": "The Intercept",
       "role": "prefer",
-      "kind": "rss",
-      "url": "https://theintercept.com/feed/?rss"
+      "url": "https://theintercept.com/feed/?rss",
+      "kind": "rss"
     },
     {
       "name": "Drop Site News",
       "role": "prefer",
-      "kind": "rss",
-      "url": "https://www.dropsitenews.com/feed"
+      "url": "https://www.dropsitenews.com/feed",
+      "kind": "rss"
     },
     {
       "name": "BBC Entertainment",
       "role": "neutral",
-      "kind": "rss",
-      "url": "https://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml"
+      "url": "https://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml",
+      "kind": "rss"
     },
     {
       "name": "Soompi",
       "role": "neutral",
-      "kind": "rss",
-      "url": "https://www.soompi.com/feed"
+      "url": "https://www.soompi.com/feed",
+      "kind": "rss"
     },
     {
       "name": "Carbon Brief",
       "role": "neutral",
-      "kind": "rss",
-      "url": "https://www.carbonbrief.org/feed/"
+      "url": "https://www.carbonbrief.org/feed/",
+      "kind": "rss"
     },
     {
       "name": "Mongabay India",
       "role": "neutral",
-      "kind": "rss",
-      "url": "https://india.mongabay.com/feed/"
+      "url": "https://india.mongabay.com/feed/",
+      "kind": "rss"
     },
     {
       "name": "Know Your Meme",
       "role": "neutral",
-      "kind": "rss",
-      "url": "https://knowyourmeme.com/newsfeed.rss"
+      "url": "https://knowyourmeme.com/newsfeed.rss",
+      "kind": "rss"
     },
     {
       "name": "Meghnerd",
@@ -199,8 +199,8 @@
     {
       "name": "AISA",
       "role": "prefer",
-      "kind": "site",
-      "url": "https://www.aisa.in"
+      "url": "https://www.aisa.in",
+      "kind": "site"
     },
     {
       "name": "Naman Shrivastava",
@@ -214,8 +214,8 @@
     {
       "name": "France 24",
       "role": "neutral",
-      "kind": "rss",
-      "url": "https://www.france24.com/en/rss"
+      "url": "https://www.france24.com/en/rss",
+      "kind": "rss"
     },
     {
       "name": "Peek TV",
