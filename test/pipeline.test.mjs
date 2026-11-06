@@ -97,12 +97,12 @@ test("the editor's Inbox links fill Editor's Picks, can set the lead, and squeez
       { issue_date: "2026-12-01", url: "https://news.example.com/later", my_headline: "Not yet" },
       { url: "https://news.example.com/used", my_headline: "Already used", status: "used 2026-10-26" },
     ],
-    desk: [{ teaser: "This week's note", url: "https://docs.google.com/document/d/x/view" }],
+    desk: [{ teaser: "This week's note", url: "https://docs.google.com/document/d/x/view", note: "Why this matters, in one line" }],
   };
   const { edition } = dryRun({ inbox });
   const items = allItems(edition);
   assert.equal(edition.lead.headline, "MY LEAD");
-  assert.deepEqual(edition.desk, { teaser: "This week's note", url: "https://docs.google.com/document/d/x/view" });
+  assert.deepEqual(edition.desk, { teaser: "This week's note", url: "https://docs.google.com/document/d/x/view", note: "Why this matters, in one line" });
   const picks = edition.sections.find((s) => s.key === "picks");
   assert.deepEqual(picks.items.map((i) => i.headline), ["Pick A", "Pick B", "Pick C", "Pick D", "Pick E, a fifth"], "more than 4 picks are fine");
   assert.equal(picks.items[0].subscriber, true);

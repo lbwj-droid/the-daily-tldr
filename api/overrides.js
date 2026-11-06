@@ -49,7 +49,7 @@ export default async function handler(req, res) {
       ? { todayRows: today.length, datesSeen: today.reduce((m, r) => ((m[r.date || "(blank)"] = (m[r.date || "(blank)"] || 0) + 1), m), {}) }
       : undefined;
     res.setHeader("Cache-Control", req.query.debug ? "no-store" : "public, s-maxage=60, stale-while-revalidate=30");
-    return res.status(200).json({ configured: true, rows, pinned, desk: note ? { teaser: clean(note.teaser), url: clean(note.url) || undefined } : null, debug });
+    return res.status(200).json({ configured: true, rows, pinned, desk: note ? { teaser: clean(note.teaser), url: clean(note.url) || undefined, note: clean(note.note) || undefined } : null, debug });
   } catch (err) {
     console.error(err);
     return res.status(200).json({ configured: true, error: "sheet unavailable", ...EMPTY });
