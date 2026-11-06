@@ -76,4 +76,5 @@ Full background, timeline, reader feedback and the options already offered: `doc
 - AI slot and primers: proposal made (one-link slot under Editor's Picks; primers as Drive Docs pages); Lester's three answers pending.
 - Access control: no login yet; `for` links are readable in the public data files. Options offered (per-reader keys recommended); Lester undecided.
 - Next: Lester wants a fresh session to develop the curation strategy from his week of conversations with the niblings.
+- Desk: one note per issue for now (5 Nov decision); Lester may want 2 or 3 links in the box later.
 - Peek TV language unchecked. India brief stays until Lester shifts it. Masthead name undecided.
