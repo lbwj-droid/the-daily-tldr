@@ -1,6 +1,6 @@
 // GET /api/overrides?date=YYYY-MM-DD
 // Returns the editor's live changes from the Google Sheet for one issue: every Today row for that date (headline,
-// status, section, rank, important, for, thumbnail), pinned rows from any date, and the Desk note. The page applies them on top of
+// status, section, rank, important, for, thumbnail, arc), pinned rows from any date, and the Desk note. The page applies them on top of
 // the published issue. Cached for about a minute at the edge.
 import { sheetsConfigured, readRows } from "../lib/sheets.mjs";
 
@@ -27,6 +27,8 @@ export default async function handler(req, res) {
         important: clean(r.important),
         for: clean(r.for),
         thumbnail: clean(r.thumbnail),
+        // undefined for rows from before the arc column existed, so their published arc is kept.
+        arc: "arc" in r ? clean(r.arc) : undefined,
       }));
     // Pinned rows stay on the page in every issue, whatever their date, until the status is cleared.
     const pinned = today

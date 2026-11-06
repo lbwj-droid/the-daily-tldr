@@ -15,6 +15,8 @@ Written at the end of the first long build session so a new session can pick up 
 - **3 Nov**: Sources tab in the Sheet became the only master list; builds and Check sources write each source's health into it.
 - **5 Nov**: Drive uploads folder: Drive image links work as thumbnails (`/api/media`), Google Docs from the folder open as site pages (`/p/<id>`). First test failed because the Google Drive API was not enabled in Cloud project 130820231305 (the-daily-tldr); Lester was enabling it. `/api/media?id=<id>&debug=1` explains failures.
 
+- **5 to 6 Nov**: curation strategy session (exploration mode). 12 options generated; stack chosen with story arcs as the spine. Lester approved a 4-issue pilot of arcs + recap + questions box (6 Nov) to see how much depends on him before adding layers. Notes in the Claude Doc "Daily TL;DR: hyper-curation working notes".
+
 ## Reader feedback so far
 
 - 28 Oct: very positive. Most valued: the one-stop format, "everything they need to know in one place".

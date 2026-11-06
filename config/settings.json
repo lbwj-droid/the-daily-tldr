@@ -50,5 +50,10 @@
   "maxVideoMinutes": 30,
   "preferVideoMinutes": 20,
   "picksTitle": "Editor's Picks",
-  "utcOffset": "+04:00"
+  "utcOffset": "+04:00",
+  "arcs": {
+    "maxActive": 8,
+    "maxOffArc": 1,
+    "recapEvery": 4
+  }
 }
