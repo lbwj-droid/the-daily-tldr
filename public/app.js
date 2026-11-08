@@ -262,6 +262,8 @@
     if (item.pinned) meta.appendChild(el("span", { class: "pin" }, "Start here"));
     if (item.important && !isLead) meta.appendChild(el("span", { class: "imp" }, "Important"));
     if (item.for) meta.appendChild(el("span", { class: "for" }, preview ? "For " + item.for : "Just for you"));
+    // Preview only: Claude's must-not-miss picks beyond the issue's room, for the editor to keep or hide.
+    if (item.extra && preview) meta.appendChild(el("span", { class: "for" }, "Extra pick"));
     if (item.tag) meta.appendChild(el("span", { class: "tag" }, "[" + item.tag + "]"));
     if (item.subscriber) meta.appendChild(el("span", { class: "tag sub" }, "[subscriber]"));
     var arc = item.arc ? arcNode(item, edition, wrap) : null;

@@ -11,6 +11,8 @@ import { fileURLToPath } from "node:url";
 import { fetchAll, fetchOgImage, fetchYoutubeMeta, fetchVideoSeconds, fetchPageMeta, isHindi, shortId, pruneSiteSeen } from "./lib/feeds.mjs";
 import { makeClient, selectStories, rewriteHeadlines, verifyHeadlines, writeRecap } from "./lib/claude.mjs";
 import { parseArcs, matchArc, recapDue, arcLinks, arcReport, heuristicRecap, arcsPromptBlock, NEW_ARC } from "./lib/arcs.mjs";
+import { validatePicks } from "./lib/picks.mjs";
+import { editorFeedback } from "./lib/feedback.mjs";
 import { loadFocus, effectiveSections, focusPromptBlock, focusToneBlock } from "./lib/focus.mjs";
 import { loadSources, writeSourceHealth, saveCopy } from "./lib/sources.mjs";
 import { driveFileId, fileInFolder } from "../lib/drive.mjs";
@@ -106,7 +108,7 @@ async function main() {
   }
 
   // Story arcs (Sheet Arcs tab). With no active arc the issue is built exactly as before.
-  const arcConfig = { maxActive: 8, maxOffArc: 1, recapEvery: 4, ...(settings.arcs || {}) };
+  const arcConfig = { maxActive: 8, maxOffArc: 2, recapEvery: 4, ...(settings.arcs || {}) };
   const arcs = parseArcs(arcRows, arcConfig.maxActive);
   report.warnings.push(...arcs.warnings);
   const arcsSince = index?.arcsSince || (arcs.active.length ? issue : null);
@@ -193,11 +195,15 @@ async function main() {
   if (dryRun) selection = heuristicSelect(candidates, caps, focus, needLead, arcs.active);
   else if (budget > 0 || needLead) {
     const editorial = (await readFile(path.join(root, "prompts", "editorial.md"), "utf8")) + focusPromptBlock(focus, settings) + (await sectionBriefs(sections)) + arcsPromptBlock(arcs.active, arcConfig.maxOffArc);
-    const res = await selectStories({ client, settings, editorial, candidates, sections: caps, budget, needLead, manual: manual.all, windowText, arcs: arcs.active });
+    // The editor's edits to recent issues (hides, moves, promotions, his own and hand-added links) steer this pick.
+    const feedback = editorFeedback(await previousEditions(settings.today, settings.feedbackIssues ?? 4), todayRows, clickRows);
+    report.feedback = feedback.counts;
+    const res = await selectStories({ client, settings, editorial, candidates, sections: caps, budget, needLead, manual: manual.all, windowText, arcs: arcs.active, extraMax: settings.extraMax || 0, feedback: feedback.text });
     report.usage.push({ step: "select", model: res.model, ...res.usage });
     selection = res.data;
   }
-  const picks = validatePicks(selection, byCid, settings, caps, budget, needLead, arcs.active);
+  const picks = validatePicks(selection, byCid, settings, caps, budget, needLead, arcs.active, settings.extraMax || 0);
+  report.extraPicks = picks.filter((p) => p.extra).map((p) => `${p.section}: ${p.title}`);
   // The editor's links without an arc of his own take the arc Claude tagged them with.
   for (const t of selection.editor_arcs || []) {
     const m = manual.all[t.link - 1];
@@ -260,6 +266,7 @@ async function main() {
     subscriber: p.subscriber || undefined,
     manual: p.manual || undefined,
     arc: p.arc || undefined,
+    extra: p.extra || undefined,
   });
   const autoLead = picks.find((p) => p.isLead);
   const leadSource = manual.lead || autoLead;
@@ -425,34 +432,6 @@ async function collectManual(inboxRows, deskRows, sections, settings, knownArcs 
   return out;
 }
 
-function validatePicks(selection, byCid, settings, caps, budget, needLead, arcs = []) {
-  const used = new Set();
-  const out = [];
-  let independent = 0;
-  let hindi = 0;
-  const take = (p, isLead) => {
-    const item = byCid.get(p.item_id);
-    if (!item || used.has(item.cid) || item.paywalled || item.isShort) return;
-    const section = caps.find((s) => s.key === p.section);
-    if (!section && !isLead) return;
-    if (item.focusOnly && !section?.focus) return;
-    if (item.hindi && hindi >= settings.hindiMax) return;
-    // Focus briefs may let single-source items in, so the cap on that path applies to regular sections only.
-    if (!isLead && p.path === "independent" && !section.focus && independent >= settings.independentPathMax) return;
-    const rank = out.filter((o) => !o.isLead && o.section === p.section).length + 1;
-    if (!isLead && (rank > section.max || out.filter((o) => !o.isLead).length >= budget)) return;
-    if (!isLead && p.path === "independent" && !section.focus) independent++;
-    if (item.hindi) hindi++;
-    used.add(item.cid);
-    out.push({ ...item, section: p.section, rank: isLead ? 0 : rank, isLead, helpline: p.helpline, story: p.story, path: p.path, arc: matchArc(p.arc, arcs) || undefined });
-  };
-  if (needLead && selection.lead) take(selection.lead, true);
-  // Sections fill in their listed order (India before World), so a tight budget squeezes the later sections first.
-  const order = (p) => caps.findIndex((s) => s.key === p.section);
-  for (const p of [...(selection.picks || [])].sort((a, b) => order(a) - order(b))) take(p, false);
-  return out;
-}
-
 // The briefs of regular sections that have one (settings.sections[].brief), for the select prompt; toneOnly keeps
 // just each brief's Tone part, for the headline prompt.
 async function sectionBriefs(sections, toneOnly = false) {
@@ -565,6 +544,7 @@ async function syncToday(existing, edition, retained) {
       for: i.for || "",
       thumbnail: i.thumbnail || "",
       arc: i.arc || "",
+      note: "",
     }));
   const rows = [...fresh, ...keep].map((r) => toRow("Today", r));
   await clearTab("Today");
@@ -572,13 +552,18 @@ async function syncToday(existing, edition, retained) {
   if (rows.length) await writeRows("Today!A2", rows);
 }
 
-// This issue plus the issues before it, `count` in all, read from the published files (newest kept issues).
-async function recentEditions(edition, count) {
+// Published issues before `date`, newest first, at most `count`, read from the kept issue files.
+async function previousEditions(date, count) {
   const dir = path.join(outDir, "editions");
-  const files = (await readdir(dir).catch(() => [])).map((f) => f.replace(/\.json$/, "")).filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d) && d < edition.date).sort().reverse();
-  const older = [];
-  for (const d of files.slice(0, count - 1)) older.push(await readFile(path.join(dir, `${d}.json`), "utf8").then(JSON.parse).catch(() => null));
-  return [edition, ...older.filter((e) => e?.date)];
+  const files = (await readdir(dir).catch(() => [])).map((f) => f.replace(/\.json$/, "")).filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d) && d < date).sort().reverse();
+  const out = [];
+  for (const d of files.slice(0, count)) out.push(await readFile(path.join(dir, `${d}.json`), "utf8").then(JSON.parse).catch(() => null));
+  return out.filter((e) => e?.date);
+}
+
+// This issue plus the issues before it, `count` in all.
+async function recentEditions(edition, count) {
+  return [edition, ...(await previousEditions(edition.date, count - 1))];
 }
 
 // Writes the starting arcs into the empty Arcs tab and returns them as rows.
