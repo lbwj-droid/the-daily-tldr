@@ -189,11 +189,27 @@
     if (item.arc === "new") return el("span", { class: "arc new-arc" }, "New story to watch");
     var arc = (edition.arcs || []).filter(function (a) { return a.name === item.arc; })[0];
     if (!arc) return null;
-    if (!arc.so_far) return el("span", { class: "arc" }, arc.name);
+    // The primer link itself carries no "Start here" line under its label.
+    var primer = arc.primer && safeUrl(arc.primer.url) && arc.primer.url !== item.url ? arc.primer : null;
+    if (!arc.so_far && !primer) return el("span", { class: "arc" }, arc.name);
     var btn = el("button", { class: "arc", type: "button", "aria-expanded": "false" }, arc.name);
-    var line = el("p", { class: "so-far", hidden: "" });
-    line.appendChild(el("b", null, "The story so far: "));
-    line.appendChild(document.createTextNode(arc.so_far));
+    var line = el("div", { class: "so-far", hidden: "" });
+    if (arc.so_far) {
+      var p = el("p");
+      p.appendChild(el("b", null, "The story so far: "));
+      p.appendChild(document.createTextNode(arc.so_far));
+      line.appendChild(p);
+    }
+    if (primer) {
+      var sp = el("p", { class: "primer" });
+      sp.appendChild(el("b", null, "Start here: "));
+      var purl = siteLink(primer.url);
+      var pa = el("a", { href: purl, target: purl.charAt(0) === "/" ? null : "_blank", rel: "noopener" }, primer.headline);
+      pa.addEventListener("click", function () { track({ section: "primer", headline: primer.headline, url: primer.url }, edition.date); });
+      sp.appendChild(pa);
+      if (primer.kind === "video" || primer.source) sp.appendChild(document.createTextNode(" (" + (primer.kind === "video" ? "video, " : "") + (primer.source || "") + ")"));
+      line.appendChild(sp);
+    }
     btn.addEventListener("click", function () {
       line.hidden = !line.hidden;
       btn.setAttribute("aria-expanded", String(!line.hidden));

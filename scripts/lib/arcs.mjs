@@ -31,7 +31,9 @@ export function parseArcs(rows, max = 8) {
       continue;
     }
     const side = /^w/i.test(clean(r.side)) ? "world" : /^i/i.test(clean(r.side)) ? "india" : "";
-    const arc = { name, side, status, so_far: clean(r.so_far), _row: r._row };
+    const primer = /^https?:\/\//.test(clean(r.primer)) ? clean(r.primer) : "";
+    if (clean(r.primer) && !primer) warnings.push(`Arcs row ${r._row}: primer "${clean(r.primer)}" is not a link; left out`);
+    const arc = { name, side, status, so_far: clean(r.so_far), primer, primer_headline: clean(r.primer_headline), _row: r._row };
     known.push(arc);
     if (status === "active") {
       if (active.length >= max) warnings.push(`Arcs row ${r._row}: more than ${max} active arcs; "${name}" left out until one is moved to watch`);
@@ -61,7 +63,7 @@ export function arcLinks(editions) {
   const out = [];
   for (const e of [...editions].sort((a, b) => a.date.localeCompare(b.date))) {
     for (const i of [e.lead, ...(e.sections || []).flatMap((s) => s.items || [])]) {
-      if (!i?.arc || i.arc === NEW_ARC) continue;
+      if (!i?.arc || i.arc === NEW_ARC || i.primer) continue;
       out.push({ arc: i.arc, date: e.date, headline: i.headline, original: i.original_headline || i.headline, source: i.source, url: i.url });
     }
   }
@@ -85,14 +87,18 @@ export function arcReport(arcs, editions, clicks, questions = []) {
     };
   });
   const inWindow = (r) => dates.has(clean(r.date));
+  // Primer clicks (the "Start here" link or the one behind an arc label) are counted on their own.
+  const primerUrls = new Set(arcs.map((a) => a.primer).filter(Boolean));
+  const isPrimer = (c) => clean(c.section) === "primer" || primerUrls.has(clean(c.url));
   const allClicks = (clicks || []).filter(inWindow);
-  const arcClicks = allClicks.filter((c) => arcOfLink.has(`${c.date} ${clean(c.url)}`)).length;
+  const primerClicks = allClicks.filter(isPrimer).length;
+  const arcClicks = allClicks.filter((c) => !isPrimer(c) && arcOfLink.has(`${c.date} ${clean(c.url)}`)).length;
   const allLinks = editions.reduce((n, e) => n + [e.lead, ...(e.sections || []).flatMap((s) => s.items || [])].filter(Boolean).length, 0);
   return {
     issues: editions.map((e) => e.date).sort(),
     arcs: rows,
     links: { total: allLinks, withArc: links.length },
-    clicks: { total: allClicks.length, onArcLinks: arcClicks, onOtherLinks: allClicks.length - arcClicks },
+    clicks: { total: allClicks.length, onArcLinks: arcClicks, onPrimers: primerClicks, onOtherLinks: allClicks.length - arcClicks - primerClicks },
     questions: (questions || []).filter(inWindow).length,
   };
 }

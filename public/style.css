@@ -137,6 +137,9 @@ button.arc { cursor: pointer; min-height: 28px; }
 button.arc::after { content: " ▾"; color: var(--muted); }
 button.arc[aria-expanded="true"]::after { content: " ▴"; }
 .arc.new-arc { background: none; color: var(--lead); padding: 0; }
+.so-far p { margin: 0; }
+.so-far .primer { margin-top: 6px; }
+.so-far a { color: var(--important); font-weight: 700; }
 .so-far { text-align: left; margin: 6px 0 0; padding: 8px 10px; background: var(--chip); border-radius: 4px; font: 14px/1.45 var(--sans); color: var(--ink); }
 .ask {
   border: 0; background: none; color: var(--muted); font: 600 12px/1 var(--sans);

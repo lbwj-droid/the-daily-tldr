@@ -51,7 +51,7 @@
   "archiveIssues": 8,
   "minLookbackHours": 30,
   "maxLookbackHours": 120,
-  "maxLinks": 10,
+  "maxLinks": 6,
   "picksMax": 9,
   "hindiMax": 3,
   "maxVideoMinutes": 30,
@@ -61,8 +61,9 @@
   "arcs": {
     "maxActive": 8,
     "maxOffArc": 2,
-    "recapEvery": 4
+    "recapEvery": 4,
+    "startIssue": 6
   },
-  "extraMax": 2,
+  "extraMax": 0,
   "feedbackIssues": 4
 }

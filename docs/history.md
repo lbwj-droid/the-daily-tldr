@@ -17,6 +17,8 @@ Written at the end of the first long build session so a new session can pick up 
 
 - **5 to 6 Nov**: curation strategy session (exploration mode). 12 options generated; stack chosen with story arcs as the spine. Lester approved a 4-issue pilot of arcs + recap + questions box (6 Nov) to see how much depends on him before adding layers. Notes in the Claude Doc "Daily TL;DR: hyper-curation working notes".
 
+- **9 Nov**: issue 5, first with arcs and the AI & Society section. From Lester's chats with the niblings: issue 6 (Fri 13 Nov) becomes the new start; arcs run in 2-week blocks with explanatory primers first, since readers start cold; hard cap of 6 links to leave room for dense primers and questions; primer column in the Arcs tab, Claude summarises candidates and Lester approves.
+
 ## Reader feedback so far
 
 - 28 Oct: very positive. Most valued: the one-stop format, "everything they need to know in one place".
