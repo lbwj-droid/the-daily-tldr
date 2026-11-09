@@ -516,6 +516,8 @@ async function publish(edition, settings, index, arcsSince) {
         arcsSince: arcsSince || undefined,
         siteName: settings.siteName,
         footerNote: settings.footerNote,
+        // Reader names whose page shows every reader's personal links (the editor's own icon).
+        editorReaders: settings.editorReaders || undefined,
         helpline: settings.helpline,
         goLive: settings.goLive,
         timezone: settings.timezone,

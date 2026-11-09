@@ -181,8 +181,12 @@
     try { localStorage.setItem("seen-" + date, JSON.stringify(seen)); } catch (e) {}
   };
 
-  // Personal links (the "for" column) show only on that reader's page; preview shows them all.
-  var visible = function (i) { return i && (!i.for || preview || i.for === reader); };
+  // Personal links (the "for" column) show only on that reader's page; preview and the editor's own page
+  // (?r=lester, or index.json editorReaders) show them all, labelled with the reader's name.
+  var editorReaders = ["lester"];
+  var isEditor = function () { return editorReaders.indexOf(reader) >= 0; };
+  var seeAll = function () { return preview || isEditor(); };
+  var visible = function (i) { return i && (!i.for || seeAll() || i.for === reader); };
 
   // The arc label under a link: tapping it shows the arc's "story so far" line.
   function arcNode(item, edition, wrap) {
@@ -277,7 +281,7 @@
     if (isNew(item, date)) meta.appendChild(el("span", { class: "new" }, "New"));
     if (item.pinned) meta.appendChild(el("span", { class: "pin" }, "Start here"));
     if (item.important && !isLead) meta.appendChild(el("span", { class: "imp" }, "Important"));
-    if (item.for) meta.appendChild(el("span", { class: "for" }, preview ? "For " + item.for : "Just for you"));
+    if (item.for) meta.appendChild(el("span", { class: "for" }, seeAll() && item.for !== reader ? "For " + item.for : "Just for you"));
     // Preview only: Claude's must-not-miss picks beyond the issue's room, for the editor to keep or hide.
     if (item.extra && preview) meta.appendChild(el("span", { class: "for" }, "Extra pick"));
     if (item.tag) meta.appendChild(el("span", { class: "tag" }, "[" + item.tag + "]"));
@@ -409,6 +413,7 @@
   getJson("/data/index.json")
     .then(function (index) {
       tz = index.timezone || tz;
+      if (index.editorReaders && index.editorReaders.length) editorReaders = index.editorReaders;
       var list = (index.editions || (index.dates || []).map(function (d) { return { date: d }; })).filter(released);
       if (!list.length) throw new Error("no released issue");
       var wanted = params.get("d");

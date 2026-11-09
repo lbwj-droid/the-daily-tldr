@@ -44,6 +44,7 @@ A Drudge-style link board that Lester (the editor, Dubai) runs for his five nibl
 - Sports, Tech & Money and Internet & Style sections are off for 6 months from Oct 2026; Culture & Entertainment is off from 27 Oct 2026 until Lester turns it back on. He covers them by hand through the Inbox.
 - Israel & Hormuz Watch focus is built but stays **off**; Lester covers it by hand.
 - Paywalled newsletter links: Lester uses gift/share links; `subscriber=yes` shows a [subscriber] tag.
+- Lester's own page `?r=lester` (settings `editorReaders`, from 9 Nov 2026) shows every reader's `for` links, labelled "For <name>"; the preview still shows the next issue before 07:30. His clicks log as reader `lester`.
 - Readers are told clicks are counted (footer). The footer names "Uncle Lester"; he lives in Dubai, so leave political framing to him.
 
 ## Secrets and settings
