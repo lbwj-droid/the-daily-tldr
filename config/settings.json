@@ -66,5 +66,8 @@
   },
   "extraMax": 0,
   "feedbackIssues": 4,
-  "hardCap": true
+  "hardCap": true,
+  "editorReaders": [
+    "lester"
+  ]
 }

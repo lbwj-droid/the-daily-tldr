@@ -87,7 +87,7 @@ The running storylines every link is attached to, so a new headline lands on a s
 
 ## Personal links for readers
 
-Give each reader `https://the-daily-tldr.vercel.app/?r=<name>`. Each of them opens it in Safari, taps **Share → Add to Home Screen**, and the icon keeps their name. The Clicks tab then shows who clicked what. The page footer tells readers that clicks are counted.
+Give each reader `https://the-daily-tldr.vercel.app/?r=<name>`. Your own page, `?r=lester` (`editorReaders` in settings), shows every reader's personal links, each labelled "For <name>". Each of them opens it in Safari, taps **Share → Add to Home Screen**, and the icon keeps their name. The Clicks tab then shows who clicked what. The page footer tells readers that clicks are counted.
 
 ## Changing things
 
