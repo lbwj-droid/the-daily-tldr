@@ -19,6 +19,8 @@ Written at the end of the first long build session so a new session can pick up 
 
 - **9 Nov**: issue 5, first with arcs and the AI & Society section. From Lester's chats with the niblings: issue 6 (Fri 13 Nov) becomes the new start; arcs run in 2-week blocks with explanatory primers first, since readers start cold; hard cap of 6 links to leave room for dense primers and questions; primer column in the Arcs tab, Claude summarises candidates and Lester approves.
 
+- **9 Nov (later)**: 6-link cap made absolute for Claude (`hardCap`); `?r=lester` shows every reader's personal links; Lester's hides and notes on his own links now feed Claude; cloud environment "the-daily-tldr" created so primer pages can be read; PBS and Down To Earth primers reviewed; logo JPEGs for Lester's YouTube channel (videos Unlisted). Session closed at about 45% context; CLAUDE.md open items rewritten as the handoff.
+
 ## Reader feedback so far
 
 - 28 Oct: very positive. Most valued: the one-stop format, "everything they need to know in one place".
