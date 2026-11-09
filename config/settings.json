@@ -65,5 +65,6 @@
     "startIssue": 6
   },
   "extraMax": 0,
-  "feedbackIssues": 4
+  "feedbackIssues": 4,
+  "hardCap": true
 }

@@ -184,13 +184,19 @@ async function main() {
   const byCid = new Map(candidates.map((c) => [c.cid, c]));
 
   // 4. The link budget: maxLinks in total, counting the lead, the editor's links and pinned starter links.
-  // Claude always keeps at least one section link (India first), even when the editor's links fill the issue.
+  // Without hardCap, Claude always keeps at least one section link (India first), even when the editor's links fill
+  // the issue. With hardCap (from 13 Nov 2026) the limit is absolute for Claude: when the editor's links fill it,
+  // Claude adds nothing, not even a lead; only the editor's own links may take an issue past it.
   // Primers: an arc's approved explainer is a "Start here" link in the first issue that has it (it counts towards the
-  // limit), and afterwards sits behind the arc label (it does not).
-  const primers = await loadPrimers(arcs.active, sections, settings.today);
-  const pinCount = focus.active.reduce((n, f) => n + (f.pins || []).length, 0) + primers.pins.length;
-  const needLead = !manual.lead;
-  const budget = Math.max(1, settings.maxLinks - manual.all.length - pinCount - (needLead ? 1 : 0));
+  // limit), and afterwards sits behind the arc label (it does not). Under hardCap a primer waits for an issue with room.
+  const focusPins = focus.active.reduce((n, f) => n + (f.pins || []).length, 0);
+  const roomForPrimers = settings.hardCap ? Math.max(0, settings.maxLinks - manual.all.length - focusPins - (manual.lead ? 0 : 1)) : Infinity;
+  const primers = await loadPrimers(arcs.active, sections, settings.today, roomForPrimers);
+  if (primers.waiting.length) report.notes = [...(report.notes || []), `No room for the primer debut of: ${primers.waiting.join(", ")}; it waits for the next issue`];
+  const pinCount = focusPins + primers.pins.length;
+  const room = settings.maxLinks - manual.all.length - pinCount;
+  const needLead = !manual.lead && (!settings.hardCap || room > 0);
+  const budget = Math.max(settings.hardCap ? 0 : 1, room - (needLead ? 1 : 0));
   // Section maxima are Claude's own quota: the editor's links placed in India or World come on top of it, and only the
   // issue-wide budget squeezes Claude's share.
   const caps = sections.filter((s) => s.max > 0);
@@ -578,17 +584,22 @@ async function recentEditions(edition, count) {
 
 // The active arcs' primers: { pins: "Start here" items for primers this issue shows first, byArc: {arc: primer} }.
 // The date each primer was first shown is kept in <data>/primers.json, so a rebuild on the same day shows it again.
-async function loadPrimers(arcs, sections, today) {
+// room: how many primers may debut in this issue; the rest keep their debut for a later issue.
+async function loadPrimers(arcs, sections, today, room = Infinity) {
   const file = path.join(outDir, "primers.json");
   const seen = await readFile(file, "utf8").then(JSON.parse).catch(() => ({}));
   const keys = new Set(sections.map((s) => s.key));
-  const out = { pins: [], byArc: {} };
+  const out = { pins: [], byArc: {}, waiting: [] };
   for (const a of arcs.filter((x) => x.primer)) {
     const meta = dryRun ? { url: a.primer, title: "", source: new URL(a.primer).hostname.replace(/^www\./, ""), kind: /youtu/.test(a.primer) ? "video" : "article" } : await fetchPageMeta(a.primer).catch(() => ({ url: a.primer, title: "", source: new URL(a.primer).hostname }));
     const primer = { url: meta.url || a.primer, headline: a.primer_headline || meta.title || "Start here", source: meta.source, kind: meta.kind };
     out.byArc[a.name] = primer;
-    seen[primer.url] ||= today;
-    if (seen[primer.url] !== today) continue;
+    if (seen[primer.url] && seen[primer.url] !== today) continue;
+    if (out.pins.length >= room) {
+      out.waiting.push(a.name);
+      continue;
+    }
+    seen[primer.url] = today;
     // Its section: the arc's side, or AI & Society for an arc on both sides when that section is on, else India.
     const section = a.side && keys.has(a.side) ? a.side : keys.has("ai") && /\bai\b/i.test(a.name) ? "ai" : keys.has("india") ? "india" : sections[0]?.key;
     out.pins.push({ id: shortId(primer.url), section, rank: 0, headline: primer.headline, original_headline: primer.headline, url: primer.url, source: primer.source, kind: primer.kind, thumbnail: meta.image || undefined, pinned: true, primer: true, arc: a.name });
