@@ -117,7 +117,8 @@ test("the editor's Inbox links fill Editor's Picks, can set the lead, and squeez
 test("when the editor fills the issue, Claude keeps one India link and drops World first", () => {
   const inbox = { inbox: [{ section: "lead", url: "https://news.example.com/lead", my_headline: "MY LEAD" }], desk: [] };
   for (const n of [1, 2, 3, 4, 5, 6, 7, 8, 9]) inbox.inbox.push({ url: `https://news.example.com/p${n}`, my_headline: `Pick ${n}` });
-  const { edition } = dryRun({ inbox });
+  // The rule before 13 Nov 2026 (no hard cap); hardCap is tested in arcs.test.mjs.
+  const { edition } = dryRun({ inbox, patch: { maxLinks: 10, hardCap: false } });
   assert.equal(edition.sections.find((s) => s.key === "picks").items.length, 9);
   assert.equal(edition.sections.find((s) => s.key === "india").items.length, 1);
   assert.ok(!edition.sections.find((s) => s.key === "world")?.items.length, "World gives way first");

@@ -198,3 +198,19 @@ test("the issue keeps to the 6-link limit set on 9 Nov, with no extra picks", ()
   const { edition } = dryRun({ patch: {} });
   assert.ok(allItems(edition).length <= 6, `${allItems(edition).length} links`);
 });
+
+test("hard cap: when the editor's links fill the 6 places, Claude adds nothing and a new primer waits", () => {
+  const out = mkdtempSync(path.join(tmpdir(), "tldr-hardcap-"));
+  const inbox = Array.from({ length: 6 }, (_, n) => ({ url: `https://news.example.com/h${n}`, my_headline: `Mine ${n}` }));
+  const arcs = [{ arc: "Data bill", side: "india", primer: "https://example.org/explainer", primer_headline: "Primer" }];
+  const full = dryRun({ out, inbox: { inbox, arcs }, patch: { ...PATCH, maxLinks: 6, hardCap: true } });
+  assert.equal(allItems(full.edition).length, 6);
+  assert.ok(allItems(full.edition).every((i) => i.manual), "no Claude link, not even India");
+  assert.equal(full.edition.lead, null, "no Claude lead either");
+  assert.ok(full.report.notes.some((n) => /No room for the primer debut of: Data bill/.test(n)));
+
+  const roomy = dryRun({ out, date: "2026-11-02", inbox: { inbox: inbox.slice(0, 2), arcs }, patch: { ...PATCH, maxLinks: 6, hardCap: true } });
+  const items = allItems(roomy.edition);
+  assert.ok(items.some((i) => i.primer), "the primer debuts in the next issue with room");
+  assert.ok(items.length <= 6, `${items.length} links`);
+});
