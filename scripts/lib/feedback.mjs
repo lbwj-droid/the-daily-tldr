@@ -25,7 +25,7 @@ export function editorFeedback(editions, todayRows, clicks = [], maxLines = 40) 
     };
     const why = (r) => (clean(r?.note) ? ` Editor's note: "${clean(r.note)}".` : "");
     const tag = (i) => `"${i.original_headline || i.headline}" (${i.source || "?"}${i.arc ? `, arc ${i.arc}` : ""}${i.extra ? ", extra" : ""})`;
-    for (const i of items) {
+    for (const i of items.filter((x) => !x.primer)) {
       const r = rowFor(i);
       const c = clicksOf(e.date, i.url);
       const clickText = c ? ` ${c} click${c > 1 ? "s" : ""}.` : "";

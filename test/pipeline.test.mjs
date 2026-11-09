@@ -50,7 +50,7 @@ const settings = JSON.parse(readFileSync(path.join(root, "config", "settings.jso
 const allItems = (e) => [e.lead, ...e.sections.flatMap((s) => s.items)].filter(Boolean);
 const isHindiTitle = (i) => /[\u0900-\u097F]/.test(i.original_headline || i.headline);
 
-function dryRun({ date = "2026-10-30", inbox, focus, out = mkdtempSync(path.join(tmpdir(), "tldr-")) } = {}) {
+function dryRun({ date = "2026-10-30", inbox, focus, out = mkdtempSync(path.join(tmpdir(), "tldr-")), patch } = {}) {
   execFileSync("node", [path.join(root, "test", "make-fixtures.mjs")]);
   const extra = [];
   if (inbox) {
@@ -61,7 +61,7 @@ function dryRun({ date = "2026-10-30", inbox, focus, out = mkdtempSync(path.join
     writeFileSync(path.join(out, "focus.json"), JSON.stringify(focus));
     extra.push("--focus", path.join(out, "focus.json"));
   }
-  execFileSync("node", [path.join(root, "scripts", "build-edition.mjs"), "--dry-run", "--out", out, ...extra], { env: { ...process.env, EDITION_DATE: date } });
+  execFileSync("node", [path.join(root, "scripts", "build-edition.mjs"), "--dry-run", "--out", out, ...extra], { env: { ...process.env, EDITION_DATE: date, ...(patch ? { SETTINGS_PATCH: JSON.stringify(patch) } : {}) } });
   return {
     out,
     edition: JSON.parse(readFileSync(path.join(out, "editions", `${date}.json`), "utf8")),
@@ -99,7 +99,8 @@ test("the editor's Inbox links fill Editor's Picks, can set the lead, and squeez
     ],
     desk: [{ teaser: "This week's note", url: "https://docs.google.com/document/d/x/view", note: "Why this matters, in one line" }],
   };
-  const { edition } = dryRun({ inbox });
+  // At the 10-link limit, so the editor's 7 links leave Claude some room.
+  const { edition } = dryRun({ inbox, patch: { maxLinks: 10 } });
   const items = allItems(edition);
   assert.equal(edition.lead.headline, "MY LEAD");
   assert.deepEqual(edition.desk, { teaser: "This week's note", url: "https://docs.google.com/document/d/x/view", note: "Why this matters, in one line" });
@@ -110,7 +111,7 @@ test("the editor's Inbox links fill Editor's Picks, can set the lead, and squeez
   assert.equal(picks.items[2].for, "asha");
   assert.equal(edition.sections.find((s) => s.key === "world").items[0].headline, "Hormuz, from Dubai", "editor links lead their section");
   for (const h of ["Not yet", "Already used"]) assert.ok(!items.some((i) => i.headline === h), `${h} left out`);
-  assert.ok(items.length <= settings.maxLinks, `${items.length} links`);
+  assert.ok(items.length <= 10, `${items.length} links`);
 });
 
 test("when the editor fills the issue, Claude keeps one India link and drops World first", () => {

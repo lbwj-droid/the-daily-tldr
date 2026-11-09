@@ -37,6 +37,8 @@ const report = { started: new Date().toISOString(), dryRun, warnings: [], usage:
 
 async function main() {
   const settings = await readJson("config/settings.json");
+  // Tests only: a dry run can override top-level settings (for example the link limit) with SETTINGS_PATCH JSON.
+  if (dryRun && process.env.SETTINGS_PATCH) Object.assign(settings, JSON.parse(process.env.SETTINGS_PATCH));
   settings.today = process.env.EDITION_DATE || localDate(settings.timezone);
   const useSheets = !dryRun && sheetsConfigured();
   // Sources come from the Sheet's Sources tab (the master list), or from the saved copy if the Sheet cannot be read.
@@ -84,6 +86,8 @@ async function main() {
     // The pilot tabs are optional: a failure here leaves the issue as it would be without story arcs.
     try {
       [arcRows, clickRows, questionRows, pilotRows] = await Promise.all(["Arcs", "Clicks", "Questions", "Pilot"].map((t) => readRows(t).catch(() => [])));
+      // The Arcs heading row is rewritten each build, so columns added later (primer) get their headings.
+      await writeRows("Arcs!A1", [TABS.Arcs]);
     } catch (err) {
       report.warnings.push(`Could not read the Arcs, Clicks, Questions or Pilot tab: ${err.message}`);
     }
@@ -111,7 +115,8 @@ async function main() {
   const arcConfig = { maxActive: 8, maxOffArc: 2, recapEvery: 4, ...(settings.arcs || {}) };
   const arcs = parseArcs(arcRows, arcConfig.maxActive);
   report.warnings.push(...arcs.warnings);
-  const arcsSince = index?.arcsSince || (arcs.active.length ? issue : null);
+  // startIssue (settings.arcs) restarts the count: recaps and the arc report start from that issue.
+  const arcsSince = arcConfig.startIssue || index?.arcsSince || (arcs.active.length ? issue : null);
   report.arcs = { active: arcs.active.map((a) => a.name), since: arcsSince };
   const manual = await collectManual(inboxRows, deskRows, sections, settings, arcs.known);
 
@@ -180,7 +185,10 @@ async function main() {
 
   // 4. The link budget: maxLinks in total, counting the lead, the editor's links and pinned starter links.
   // Claude always keeps at least one section link (India first), even when the editor's links fill the issue.
-  const pinCount = focus.active.reduce((n, f) => n + (f.pins || []).length, 0);
+  // Primers: an arc's approved explainer is a "Start here" link in the first issue that has it (it counts towards the
+  // limit), and afterwards sits behind the arc label (it does not).
+  const primers = await loadPrimers(arcs.active, sections, settings.today);
+  const pinCount = focus.active.reduce((n, f) => n + (f.pins || []).length, 0) + primers.pins.length;
   const needLead = !manual.lead;
   const budget = Math.max(1, settings.maxLinks - manual.all.length - pinCount - (needLead ? 1 : 0));
   // Section maxima are Claude's own quota: the editor's links placed in India or World come on top of it, and only the
@@ -235,8 +243,9 @@ async function main() {
     return s && s.length <= 120 ? s : fallback;
   };
 
-  // 7. Pinned starter links from config/focus.json.
+  // 7. Pinned starter links from config/focus.json, and this issue's new primers.
   const pinsBySection = {};
+  for (const p of primers.pins) (pinsBySection[p.section] ||= []).push(p);
   for (const f of focus.active) {
     pinsBySection[f.key] = [];
     for (const pin of f.pins || []) {
@@ -290,7 +299,7 @@ async function main() {
     sections: [],
   };
   // Every arc is listed (with its "story so far" line), so a label the editor types in the Today tab later also works.
-  if (arcs.known.length) edition.arcs = arcs.known.filter((a) => a.status !== "closed").map((a) => ({ name: a.name, side: a.side || undefined, so_far: a.so_far || undefined }));
+  if (arcs.known.length) edition.arcs = arcs.known.filter((a) => a.status !== "closed").map((a) => ({ name: a.name, side: a.side || undefined, so_far: a.so_far || undefined, primer: primers.byArc[a.name] }));
   for (const s of allSections) {
     const list = s.key === "picks" ? manual.picks : sectionItems(s.key);
     edition.sections.push({
@@ -317,7 +326,8 @@ async function main() {
   report.arcLinks = Object.fromEntries([...arcs.active.map((a) => a.name), NEW_ARC, "none"].map((k) => [k, allLinks.filter((i) => (i.arc || "none") === k).length]));
 
   // The fortnightly recap and the per-arc report, over this issue and the ones before it in the recap period.
-  const period = arcs.known.length ? await recentEditions(edition, arcConfig.recapEvery) : [];
+  // Issues before the start issue are left out of recaps and the arc report.
+  const period = arcs.known.length ? (await recentEditions(edition, arcConfig.recapEvery)).filter((e) => !arcsSince || !e.issue || e.issue >= arcsSince) : [];
   if (arcs.active.length && recapDue(issue, arcsSince, arcConfig.recapEvery)) {
     const links = arcLinks(period).filter((l) => arcs.active.some((a) => a.name === l.arc));
     try {
@@ -564,6 +574,28 @@ async function previousEditions(date, count) {
 // This issue plus the issues before it, `count` in all.
 async function recentEditions(edition, count) {
   return [edition, ...(await previousEditions(edition.date, count - 1))];
+}
+
+// The active arcs' primers: { pins: "Start here" items for primers this issue shows first, byArc: {arc: primer} }.
+// The date each primer was first shown is kept in <data>/primers.json, so a rebuild on the same day shows it again.
+async function loadPrimers(arcs, sections, today) {
+  const file = path.join(outDir, "primers.json");
+  const seen = await readFile(file, "utf8").then(JSON.parse).catch(() => ({}));
+  const keys = new Set(sections.map((s) => s.key));
+  const out = { pins: [], byArc: {} };
+  for (const a of arcs.filter((x) => x.primer)) {
+    const meta = dryRun ? { url: a.primer, title: "", source: new URL(a.primer).hostname.replace(/^www\./, ""), kind: /youtu/.test(a.primer) ? "video" : "article" } : await fetchPageMeta(a.primer).catch(() => ({ url: a.primer, title: "", source: new URL(a.primer).hostname }));
+    const primer = { url: meta.url || a.primer, headline: a.primer_headline || meta.title || "Start here", source: meta.source, kind: meta.kind };
+    out.byArc[a.name] = primer;
+    seen[primer.url] ||= today;
+    if (seen[primer.url] !== today) continue;
+    // Its section: the arc's side, or AI & Society for an arc on both sides when that section is on, else India.
+    const section = a.side && keys.has(a.side) ? a.side : keys.has("ai") && /\bai\b/i.test(a.name) ? "ai" : keys.has("india") ? "india" : sections[0]?.key;
+    out.pins.push({ id: shortId(primer.url), section, rank: 0, headline: primer.headline, original_headline: primer.headline, url: primer.url, source: primer.source, kind: primer.kind, thumbnail: meta.image || undefined, pinned: true, primer: true, arc: a.name });
+  }
+  await mkdir(outDir, { recursive: true });
+  await writeFile(file, JSON.stringify(seen, null, 2) + "\n");
+  return out;
 }
 
 // Writes the starting arcs into the empty Arcs tab and returns them as rows.

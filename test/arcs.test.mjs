@@ -13,10 +13,13 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const allItems = (e) => [e.lead, ...e.sections.flatMap((s) => s.items)].filter(Boolean);
 const rows = (list) => list.map((r, n) => ({ ...r, _row: n + 2 }));
 
-function dryRun({ date = "2026-10-30", inbox = {}, out = mkdtempSync(path.join(tmpdir(), "tldr-arcs-")) } = {}) {
+// These tests count arc issues from the first issue built with arcs, as before the 13 Nov restart (startIssue).
+const PATCH = { arcs: { maxActive: 8, maxOffArc: 2, recapEvery: 4 } };
+
+function dryRun({ date = "2026-10-30", inbox = {}, out = mkdtempSync(path.join(tmpdir(), "tldr-arcs-")), patch = PATCH } = {}) {
   execFileSync("node", [path.join(root, "test", "make-fixtures.mjs")]);
   writeFileSync(path.join(out, "inbox.json"), JSON.stringify({ inbox: [], desk: [], ...inbox }));
-  execFileSync("node", [path.join(root, "scripts", "build-edition.mjs"), "--dry-run", "--out", out, "--inbox", path.join(out, "inbox.json")], { env: { ...process.env, EDITION_DATE: date } });
+  execFileSync("node", [path.join(root, "scripts", "build-edition.mjs"), "--dry-run", "--out", out, "--inbox", path.join(out, "inbox.json")], { env: { ...process.env, EDITION_DATE: date, SETTINGS_PATCH: JSON.stringify(patch) } });
   return {
     out,
     edition: JSON.parse(readFileSync(path.join(out, "editions", `${date}.json`), "utf8")),
@@ -84,7 +87,7 @@ test("the arc report counts links, clicks on arc links and other links, and ques
     { arc: "Tariffs", status: "watch", links: 0, clicks: 0, last_link: "" },
   ]);
   assert.deepEqual(r.links, { total: 4, withArc: 2 });
-  assert.deepEqual(r.clicks, { total: 3, onArcLinks: 2, onOtherLinks: 1 });
+  assert.deepEqual(r.clicks, { total: 3, onArcLinks: 2, onPrimers: 0, onOtherLinks: 1 });
   assert.equal(r.questions, 1);
 });
 
@@ -151,4 +154,47 @@ test("the starting arcs fit the Arcs tab rules: 7 active, names of 40 characters
   assert.equal(warnings.length, 0, warnings.join("; "));
   assert.equal(active.length, 7);
   for (const a of seed.arcs) assert.ok(!/—/.test(a.so_far), `${a.arc}: no em dash`);
+});
+
+test("primers: a new primer is a Start here link in its arc's section once, then sits behind the arc label", () => {
+  const out = mkdtempSync(path.join(tmpdir(), "tldr-primer-"));
+  const arcs = [
+    { arc: "Data bill", side: "india", status: "active", so_far: "Parliament is debating a data law.", primer: "https://example.org/explainer", primer_headline: "The data bill in 10 minutes" },
+    { arc: "AI and society", side: "", status: "active", primer: "not a link" },
+  ];
+  const first = dryRun({ out, inbox: { arcs } });
+  const india = first.edition.sections.find((s) => s.key === "india").items;
+  assert.equal(india[0].url, "https://example.org/explainer");
+  assert.equal(india[0].pinned, true);
+  assert.equal(india[0].primer, true);
+  assert.equal(india[0].headline, "The data bill in 10 minutes");
+  assert.deepEqual(first.edition.arcs[0].primer, { url: "https://example.org/explainer", headline: "The data bill in 10 minutes", source: "example.org", kind: "article" });
+  assert.ok(first.report.warnings.some((w) => /primer "not a link" is not a link/.test(w)));
+  assert.equal(first.report.budget.pinned, 1, "the Start here link counts towards the limit");
+
+  const again = dryRun({ out, date: "2026-11-02", inbox: { arcs } });
+  assert.ok(!allItems(again.edition).some((i) => i.primer), "later issues show it only behind the label");
+  assert.equal(again.edition.arcs[0].primer.url, "https://example.org/explainer");
+  assert.equal(again.report.budget.pinned, 0);
+});
+
+test("restart: with startIssue the recap counts from that issue and older issues stay out of the arc report", () => {
+  const out = mkdtempSync(path.join(tmpdir(), "tldr-start-"));
+  mkdirSync(path.join(out, "editions"));
+  const old = ["2026-10-19", "2026-10-23", "2026-10-26"];
+  old.forEach((d, n) => writeFileSync(path.join(out, "editions", `${d}.json`), JSON.stringify({ date: d, issue: n + 4, lead: null, sections: [{ key: "world", items: [{ id: `x${n}`, url: `https://example.org/o${n}`, headline: "Old", source: "BBC", arc: "Ceasefire talks" }] }] })));
+  writeFileSync(path.join(out, "index.json"), JSON.stringify({ lastIssue: 6, arcsSince: 5, editions: old.map((d, n) => ({ date: d, issue: n + 4 })) }));
+  const { edition, index, report } = dryRun({ out, inbox: { arcs: ARCS }, patch: { arcs: { maxActive: 8, maxOffArc: 2, recapEvery: 4, startIssue: 6 } } });
+  assert.equal(edition.issue, 7);
+  assert.equal(index.arcsSince, 6);
+  assert.equal(edition.recap, undefined, "issue 7 is the 2nd issue from the restart");
+  assert.deepEqual(report.arcReport.issues, ["2026-10-26", "2026-10-30"], "issues 6 and 7 only");
+});
+
+test("the issue keeps to the 6-link limit set on 9 Nov, with no extra picks", () => {
+  const settings = JSON.parse(readFileSync(path.join(root, "config", "settings.json"), "utf8"));
+  assert.equal(settings.maxLinks, 6);
+  assert.equal(settings.extraMax, 0);
+  const { edition } = dryRun({ patch: {} });
+  assert.ok(allItems(edition).length <= 6, `${allItems(edition).length} links`);
 });
