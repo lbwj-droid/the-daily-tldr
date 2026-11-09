@@ -9,7 +9,7 @@ const low = (v) => clean(v).toLowerCase();
 // build rewrites it. clicks: the Clicks tab. Returns { text, counts }.
 export function editorFeedback(editions, todayRows, clicks = [], maxLines = 40) {
   const lines = [];
-  const counts = { removed: 0, moved: 0, promoted: 0, added: 0, retagged: 0, important: 0, editorLinks: 0 };
+  const counts = { removed: 0, moved: 0, promoted: 0, added: 0, retagged: 0, important: 0, editorLinks: 0, ownHidden: 0 };
   const clicksOf = (date, url) => clicks.filter((c) => clean(c.date) === date && clean(c.url) === url).length;
   for (const e of editions) {
     const items = [e.lead, ...(e.sections || []).flatMap((s) => (s.items || []).map((i) => ({ ...i, section: i.section || s.key })))].filter(Boolean);
@@ -30,8 +30,14 @@ export function editorFeedback(editions, todayRows, clicks = [], maxLines = 40) 
       const c = clicksOf(e.date, i.url);
       const clickText = c ? ` ${c} click${c > 1 ? "s" : ""}.` : "";
       if (i.manual) {
-        counts.editorLinks++;
-        lines.push(`${e.date} EDITOR'S OWN LINK in ${i.section === "lead" ? "the lead" : i.section}: ${tag(i)}.${clickText}`);
+        const where = i.section === "lead" ? "the lead" : i.section;
+        if (low(r?.status) === "hide") {
+          counts.ownHidden++;
+          lines.push(`${e.date} HID HIS OWN LINK in ${where}: ${tag(i)}.${why(r)}`);
+        } else {
+          counts.editorLinks++;
+          lines.push(`${e.date} EDITOR'S OWN LINK in ${where}: ${tag(i)}.${why(r)}${clickText}`);
+        }
         continue;
       }
       if (!r) continue;
@@ -61,8 +67,15 @@ export function editorFeedback(editions, todayRows, clicks = [], maxLines = 40) 
     }
     // Rows typed into Today after the build: links he added to a published issue.
     for (const r of rows) {
-      if (!/^https?:\/\//.test(clean(r.url)) || !clean(r.my_headline) || low(r.status) === "hide") continue;
+      if (!/^https?:\/\//.test(clean(r.url)) || !clean(r.my_headline)) continue;
       if (items.some((i) => (r.id && clean(r.id) === i.id) || clean(r.url) === i.url)) continue;
+      // A link he added and then hid teaches something only when he said why.
+      if (low(r.status) === "hide") {
+        if (!clean(r.note)) continue;
+        counts.ownHidden++;
+        lines.push(`${e.date} HID HIS OWN LINK, added by hand: "${clean(r.my_headline)}" (${clean(r.source) || new URL(clean(r.url)).hostname}).${why(r)}`);
+        continue;
+      }
       counts.added++;
       lines.push(`${e.date} ADDED BY HAND after the build, in ${low(r.section) || "Editor's Picks"}: "${clean(r.my_headline)}" (${clean(r.source) || new URL(clean(r.url)).hostname}).${why(r)}`);
     }
@@ -79,6 +92,7 @@ What the editor did with the last ${editions.length} issues, newest first. Learn
 - PROMOTED, MARKED IMPORTANT: picks he valued most. Look for more like them.
 - MOVED, RE-TAGGED: you had the right story in the wrong section or arc.
 - ADDED BY HAND and EDITOR'S OWN LINK: stories he wanted. They show the topics, angles and sources he values; never pick the same story again.
+- HID HIS OWN LINK: he changed his mind about a link he chose. His note is the lesson, often a rule about what belongs on the page or in an arc; apply it to your own picks.
 - Clicks show what the readers opened; a few readers, so treat them as hints.
 
 ${kept.join("\n")}${lines.length > kept.length ? `\n(${lines.length - kept.length} older edits left out.)` : ""}`;

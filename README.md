@@ -79,7 +79,7 @@ The running storylines every link is attached to, so a new headline lands on a s
 - **Questions**: a "? Ask" button under each link (shown once arcs exist). Questions land in the **Questions** tab with the reader's name. Answer one per issue in the Desk note and write `answered` in its `status`.
 - **Pilot tab**: each build adds a row for its issue; type your curation minutes in `minutes`.
 - **Extra picks**: Claude may add up to 2 links beyond the 10-link limit (`extraMax` in settings) for a story readers must not miss. The preview marks them "Extra pick"; hide one in Today if you disagree.
-- **Your edits as feedback**: each build reads what you did with the last 4 issues (Today tab: hides, section and arc changes, `lead`, `important`, rows you added; your Inbox links; clicks) and gives it to Claude before it picks. Today's `note` column (column O) is for a few words on why ("sent on WhatsApp already"); Claude reads it. The run report's `feedback` counts the edits it saw.
+- **Your edits as feedback**: each build reads what you did with the last 4 issues (Today tab: hides, section and arc changes, `lead`, `important`, rows you added; your Inbox links, including ones you later hid; clicks) and gives it to Claude before it picks. Today's `note` column (column O) is for a few words on why ("sent on WhatsApp already"); Claude reads it. The run report's `feedback` counts the edits it saw.
 - At each recap, `reports/last-run.json` has `arcReport`: links and clicks per arc, clicks on arc links versus other links, questions, and your logged minutes.
 
 ## Personal links for readers

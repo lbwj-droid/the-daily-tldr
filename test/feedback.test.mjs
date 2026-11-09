@@ -25,11 +25,12 @@ const today = [
   { date: "2026-11-09", id: "D", url: "https://a.org/d", section: "world", status: "lead", arc: "" },
   { date: "2026-11-09", id: "", url: "https://b.org/new", section: "", my_headline: "My late add", source: "Rest of World", status: "" },
   { date: "2026-11-09", id: "", url: "https://b.org/gone", my_headline: "Hidden add", status: "hide" },
+  { date: "2026-11-09", id: "", url: "https://b.org/gone2", my_headline: "Hidden add with reason", source: "Scroll", status: "hide", note: "too old" },
 ];
 
 test("feedback: hides with their note, moves, promotions, re-tags, important marks and the editor's own links", () => {
   const { text, counts } = editorFeedback([edition], today, [{ date: "2026-11-09", url: "https://a.org/mine" }]);
-  assert.deepEqual(counts, { removed: 1, moved: 1, promoted: 1, added: 1, retagged: 1, important: 1, editorLinks: 1 });
+  assert.deepEqual(counts, { removed: 1, moved: 1, promoted: 1, added: 1, retagged: 1, important: 1, editorLinks: 1, ownHidden: 1 });
   assert.match(text, /REMOVED your india pick: "Story A" \(Scroll, arc Big business and power\)\. Editor's note: "sent it on WhatsApp already"/);
   assert.match(text, /MOVED your pick from india to world: "Story B"/);
   assert.match(text, /RE-TAGGED your pick from arc "none" to "Youth jobs worldwide"/);
@@ -37,13 +38,14 @@ test("feedback: hides with their note, moves, promotions, re-tags, important mar
   assert.match(text, /ADDED BY HAND after the build, in Editor's Picks: "My late add" \(Rest of World\)/);
   assert.match(text, /EDITOR'S OWN LINK in picks: "Mine" \(Jacobin, arc US populism: DSA vs MAGA\)\. 1 click\./);
   assert.ok(!/AI & Society|Story C/.test(text.split("\n").filter((l) => l.startsWith("2026")).join("\n")), "a section typed as its title is not a move");
-  assert.ok(!/Hidden add/.test(text));
+  assert.ok(!/"Hidden add"/.test(text), "a hand-added link hidden without a reason teaches nothing");
+  assert.match(text, /HID HIS OWN LINK, added by hand: "Hidden add with reason" \(Scroll\)\. Editor's note: "too old"/);
 });
 
 test("feedback: nothing edited gives an empty block", () => {
   const plain = { ...edition, sections: edition.sections.filter((s) => s.key !== "picks") };
   const rows = today.slice(0, 1).concat([{ date: "2026-11-09", id: "A", url: "https://a.org/a", section: "india", arc: "Big business and power" }]);
-  assert.deepEqual(editorFeedback([plain], rows), { text: "", counts: { removed: 0, moved: 0, promoted: 0, added: 0, retagged: 0, important: 0, editorLinks: 0 } });
+  assert.deepEqual(editorFeedback([plain], rows), { text: "", counts: { removed: 0, moved: 0, promoted: 0, added: 0, retagged: 0, important: 0, editorLinks: 0, ownHidden: 0 } });
 });
 
 const settings = { hindiMax: 3, independentPathMax: 4 };
@@ -59,4 +61,12 @@ test("extra picks: only marked must-not-miss stories run past the section maximu
   assert.deepEqual(none.map((p) => p.cid), ["c1", "c2", "c4"], "with extraMax 0 the old limits hold");
   const roomy = validatePicks({ picks: [pick("c1", "india", true)] }, byCid, settings, caps, 3, false, [], 2);
   assert.equal(roomy[0].extra, undefined, "an extra mark on a pick that fits is a regular pick");
+});
+
+test("feedback: the editor hiding his own Inbox link, with his reason, reaches Claude", () => {
+  const rows = today.map((r) => (r.id === "L" ? r : r)).concat([{ date: "2026-11-09", id: "M", url: "https://a.org/mine", section: "picks", status: "hide", note: "doesn't fit the arcs: BJP corruption story" }]);
+  const { text, counts } = editorFeedback([edition], rows);
+  assert.equal(counts.ownHidden, 2);
+  assert.equal(counts.editorLinks, 0);
+  assert.match(text, /HID HIS OWN LINK in picks: "Mine" \(Jacobin, arc US populism: DSA vs MAGA\)\. Editor's note: "doesn't fit the arcs: BJP corruption story"/);
 });
