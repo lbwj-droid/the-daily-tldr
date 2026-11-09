@@ -1,0 +1,165 @@
+{
+  "date": "2026-11-09",
+  "issue": 5,
+  "publish_at": "2026-11-09T03:30:00.000Z",
+  "generated_at": "2026-11-09T01:16:19.991Z",
+  "window_hours": 78,
+  "desk": null,
+  "lead": {
+    "id": "a63cc93274",
+    "section": "lead",
+    "rank": 0,
+    "headline": "\"Clear Admission Of Guilt!\": Yogendra Yadav On 'ECI's U-Turn' | Gyanesh Kumar | Voter Deletions | EC",
+    "original_headline": "\"Clear Admission Of Guilt!\": Yogendra Yadav On 'ECI's U-Turn' | Gyanesh Kumar | Voter Deletions | EC",
+    "url": "https://www.youtube.com/watch?v=tkIoib1yV4A",
+    "source": "HW News English",
+    "kind": "video",
+    "thumbnail": "https://i.ytimg.com/vi/tkIoib1yV4A/hqdefault.jpg",
+    "arc": "Youth fighting back",
+    "home": "india"
+  },
+  "sections": [
+    {
+      "key": "picks",
+      "title": "Editor's Picks",
+      "editor": true,
+      "items": [
+        {
+          "id": "f506b1600f",
+          "section": "picks",
+          "rank": 1,
+          "headline": "AI summaries cause ‘devastating’ drop in audiences, online news media told",
+          "original_headline": "AI summaries cause ‘devastating’ drop in audiences, online news media told",
+          "url": "https://www.theguardian.com/technology/2025/jul/24/ai-summaries-causing-devastating-drop-in-online-news-audiences-study-finds",
+          "source": "the Guardian",
+          "kind": "article",
+          "thumbnail": "https://i.guim.co.uk/img/media/e2524b5328c8d78bec4747e497605b6aaf0d8631/157_0_3333_2667/master/3333.jpg?width=1200&height=630&quality=85&auto=format&fit=crop&precrop=40:21,offset-x50,offset-y0&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctYWdlLTIwMjUucG5n&enable=upscale&s=a96c1473ec17422909c7358e90be5b89",
+          "manual": true,
+          "arc": "AI and society"
+        }
+      ]
+    },
+    {
+      "key": "india",
+      "title": "India",
+      "items": [
+        {
+          "id": "bfe1fae277",
+          "section": "india",
+          "rank": 1,
+          "headline": "Sting operation exposes Governor of Ladakh - Sonam Wangchuk",
+          "original_headline": "Sting Operation on LG Ladakh Team",
+          "url": "https://www.youtube.com/watch?v=Fc30E8yfQl0",
+          "source": "Sonam Wangchuk",
+          "kind": "video",
+          "thumbnail": "https://drive.google.com/open?id=1nilUJrn0goK2Iwsrlo_ggwDywPqasadb&usp=drive_fs",
+          "sheetImage": true,
+          "manual": true
+        },
+        {
+          "id": "75ec23ae61",
+          "section": "india",
+          "rank": 2,
+          "headline": "The demographic dividend just switched sides on Modi",
+          "original_headline": "The Demographic Dividend Has Turned on Narendra Modi",
+          "url": "https://www.theindiaforum.in/politics/demographic-dividend-has-turned-modi",
+          "source": "The India Forum",
+          "kind": "article",
+          "arc": "Gen Z protests and education"
+        },
+        {
+          "id": "0959fe4125",
+          "section": "india",
+          "rank": 3,
+          "headline": "SC said green only. Fake 'green' crackers sold in front of Delhi Police anyway",
+          "original_headline": "Illegal Firecrackers Sold Openly In Delhi In Front Of Delhi Police | Supreme Court Ban Violated",
+          "url": "https://www.youtube.com/watch?v=ADHXQn6WoHE",
+          "source": "Peek TV",
+          "kind": "video"
+        }
+      ]
+    },
+    {
+      "key": "ai",
+      "title": "AI & Society",
+      "items": [
+        {
+          "id": "75587710cd",
+          "section": "ai",
+          "rank": 1,
+          "headline": "AI can copy a song, but not the reason we sing it",
+          "original_headline": "AI can copy the song, not the reason we sing",
+          "url": "https://www.thedeepview.com/articles/ai-can-copy-the-song-not-the-reason-we-sing",
+          "source": "The Deep View",
+          "kind": "article",
+          "thumbnail": "https://cdn.sanity.io/images/0no9te5e/production/c8864495826f3efe89a062d646912f43af349c65-1920x1080.png?rect=0,39,1920,1003&w=1200&h=627&fit=crop&auto=format",
+          "arc": "AI and society"
+        }
+      ]
+    },
+    {
+      "key": "world",
+      "title": "World",
+      "items": [
+        {
+          "id": "3a8abd3757",
+          "section": "world",
+          "rank": 1,
+          "headline": "Hasan Piker to Democrats: you won the midterms, now deliver",
+          "original_headline": "Hasan Piker: Democrats Won Midterms, But Now They Have to Deliver on Voter Demands for Change",
+          "url": "http://www.democracynow.org/2026/11/6/hasan_piker_dsa_2026_midterms",
+          "source": "Democracy Now",
+          "kind": "article",
+          "thumbnail": "https://www.democracynow.org/images/story/05/84205/w320/SEG3-guest-Hasan-Piker.jpg",
+          "arc": "US populism: DSA vs MAGA"
+        },
+        {
+          "id": "808af11d2e",
+          "section": "world",
+          "rank": 2,
+          "headline": "Nvidia board to probe reports Chinese intelligence targeted Jensen Huang",
+          "original_headline": "Nvidia to probe reports that Chinese intelligence targeted CEO Jensen Huang",
+          "url": "https://www.france24.com/en/technology/20261108-nvidia-jensen-huang-chinese-intelligence-probe",
+          "source": "France 24",
+          "kind": "article"
+        }
+      ]
+    }
+  ],
+  "arcs": [
+    {
+      "name": "US populism: DSA vs MAGA",
+      "side": "world",
+      "so_far": "A left-populist wing led by the Democratic Socialists of America is rising inside the Democratic Party, with young voters behind it. It takes on the same establishment as MAGA, from the opposite direction."
+    },
+    {
+      "name": "Gen Z protests and education",
+      "side": "india",
+      "so_far": "The Gen Z protests are about more than one exam or one election. Many young Indians, above all in rural India, leave school without the skills employers want, in an economy that already makes too few jobs."
+    },
+    {
+      "name": "Youth jobs worldwide",
+      "side": "world",
+      "so_far": "Young people are struggling to find good jobs in the US, China, France and the UK too. Comparing them shows what is global and what is particular to India."
+    },
+    {
+      "name": "Big business and power",
+      "side": "india",
+      "so_far": "After 12 years of the current government, a few business groups such as Adani and Ambani hold more economic and political power than ever, much like America's robber-baron era."
+    },
+    {
+      "name": "Inequality and your career",
+      "side": "india",
+      "so_far": "Why the gap between India's richest and everyone else keeps widening, and what it means for young people starting their careers now."
+    },
+    {
+      "name": "Youth fighting back",
+      "side": "india",
+      "so_far": "Young Indians are organising against injustice by the system, and some are winning. These are the stories of what they did and what changed."
+    },
+    {
+      "name": "AI and society",
+      "so_far": "AI is to Gen Z what the internet was to Gen X. These stories are about what it changes in work, study, art and daily life, not the latest product."
+    }
+  ]
+}

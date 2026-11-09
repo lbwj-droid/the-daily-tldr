@@ -225,6 +225,42 @@
         "peektvofficial",
         "PeekTVOfficial"
       ]
+    },
+    {
+      "name": "The Deep View",
+      "role": "prefer",
+      "url": "https://www.thedeepview.com",
+      "kind": "site"
+    },
+    {
+      "name": "Rest of World",
+      "role": "prefer",
+      "url": "https://restofworld.org",
+      "kind": "site"
+    },
+    {
+      "name": "MIT Technology Review",
+      "role": "prefer",
+      "url": "https://www.technologyreview.com",
+      "kind": "site"
+    },
+    {
+      "name": "The India Forum",
+      "role": "prefer",
+      "url": "https://www.theindiaforum.in",
+      "kind": "site"
+    },
+    {
+      "name": "IndiaSpend",
+      "role": "prefer",
+      "url": "https://www.indiaspend.com",
+      "kind": "site"
+    },
+    {
+      "name": "Jacobin",
+      "role": "prefer",
+      "url": "https://jacobin.com",
+      "kind": "site"
     }
   ]
 }
