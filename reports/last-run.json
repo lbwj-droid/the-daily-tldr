@@ -1,26 +1,28 @@
 {
-  "started": "2026-11-09T01:15:27.268Z",
+  "started": "2026-11-13T01:15:37.531Z",
   "dryRun": false,
-  "warnings": [],
+  "warnings": [
+    "Arcs row 2: primer \"Watch this as a broad introduction to American Politics. After this we will look at the relationship of Gen Z with MAGA. And how a left-populist wing led by the Democratic Socialists of America is rising inside the Democratic Party, is attracting young voters to it. It takes on the same establishment as MAGA, from the opposite direction.\" is not a link; left out"
+  ],
   "usage": [
     {
       "step": "select",
       "model": "claude-opus-5-5",
-      "input_tokens": 54009,
+      "input_tokens": 60639,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 2395,
+      "output_tokens": 2292,
       "service_tier": "standard",
       "inference_geo": "global",
       "speed": "standard",
       "iterations": [
         {
-          "input_tokens": 54009,
-          "output_tokens": 2395,
+          "input_tokens": 60639,
+          "output_tokens": 2292,
           "cache_read_input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_creation": {
@@ -32,27 +34,27 @@
         }
       ],
       "output_tokens_details": {
-        "thinking_tokens": 1956
+        "thinking_tokens": 1871
       }
     },
     {
       "step": "rewrite",
       "model": "claude-opus-5-5",
-      "input_tokens": 2330,
+      "input_tokens": 2195,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 1067,
+      "output_tokens": 1018,
       "service_tier": "standard",
       "inference_geo": "global",
       "speed": "standard",
       "iterations": [
         {
-          "input_tokens": 2330,
-          "output_tokens": 1067,
+          "input_tokens": 2195,
+          "output_tokens": 1018,
           "cache_read_input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_creation": {
@@ -64,27 +66,27 @@
         }
       ],
       "output_tokens_details": {
-        "thinking_tokens": 742
+        "thinking_tokens": 727
       }
     },
     {
       "step": "verify",
       "model": "claude-opus-5-5",
-      "input_tokens": 1517,
+      "input_tokens": 1352,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 413,
+      "output_tokens": 135,
       "service_tier": "standard",
       "inference_geo": "global",
       "speed": "standard",
       "iterations": [
         {
-          "input_tokens": 1517,
-          "output_tokens": 413,
+          "input_tokens": 1352,
+          "output_tokens": 135,
           "cache_read_input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_creation": {
@@ -96,29 +98,23 @@
         }
       ],
       "output_tokens_details": {
-        "thinking_tokens": 220
+        "thinking_tokens": 0
       }
     }
   ],
   "sourcesFrom": "sheet",
-  "date": "2026-11-09",
-  "issue": 5,
-  "lookbackHours": 78,
+  "date": "2026-11-13",
+  "issue": 6,
+  "lookbackHours": 102,
   "focus": [],
-  "notes": [
-    "Arcs tab filled with 7 starting arcs from config/arcs-seed.json"
-  ],
   "arcs": {
     "active": [
       "US populism: DSA vs MAGA",
       "Gen Z protests and education",
-      "Youth jobs worldwide",
-      "Big business and power",
-      "Inequality and your career",
       "Youth fighting back",
       "AI and society"
     ],
-    "since": 5
+    "since": 6
   },
   "feeds": [
     {
@@ -140,17 +136,17 @@
     {
       "source": "BBC Entertainment",
       "ok": true,
-      "items": 23
+      "items": 17
     },
     {
       "source": "BBC India",
       "ok": true,
-      "items": 22
+      "items": 20
     },
     {
       "source": "BBC World",
       "ok": true,
-      "items": 28
+      "items": 31
     },
     {
       "source": "Breaking Points",
@@ -166,7 +162,7 @@
     {
       "source": "Democracy Now",
       "ok": true,
-      "items": 34
+      "items": 38
     },
     {
       "source": "Dhruv Rathee",
@@ -193,7 +189,7 @@
     {
       "source": "Glenn Greenwald",
       "ok": true,
-      "items": 15,
+      "items": 14,
       "via": "YouTube API"
     },
     {
@@ -234,7 +230,7 @@
     {
       "source": "Know Your Meme",
       "ok": true,
-      "items": 4
+      "items": 6
     },
     {
       "source": "Meghnerd",
@@ -345,55 +341,39 @@
   "emptyFeeds": [],
   "videosDroppedTooLong": 8,
   "videosLengthUnknown": 0,
-  "candidates": 408,
+  "candidates": 423,
   "focusCoverage": {},
   "budget": {
-    "maxLinks": 10,
-    "editorLinks": 2,
+    "maxLinks": 6,
+    "editorLinks": 0,
     "pinned": 0,
-    "claudeLinks": 7,
+    "claudeLinks": 5,
     "claudeLead": true
   },
   "feedback": {
     "removed": 5,
     "moved": 0,
     "promoted": 0,
-    "added": 23,
+    "added": 24,
     "retagged": 0,
     "important": 0,
-    "editorLinks": 3
+    "editorLinks": 4,
+    "ownHidden": 1
   },
   "extraPicks": [],
-  "factCheck": [
-    {
-      "rejected": "EC PULLS A U-TURN ON VOTER DELETIONS. YOGENDRA YADAV: 'CLEAR ADMISSION OF GUILT'",
-      "original": "\"Clear Admission Of Guilt!\": Yogendra Yadav On 'ECI's U-Turn' | Gyanesh Kumar | Voter Deletions | EC",
-      "problem": "U-turn is Yadav's claim, stated as fact"
-    },
-    {
-      "rejected": "AI summaries read the news for you. Newsrooms call the audience drop 'devastating'",
-      "original": "AI summaries cause ‘devastating’ drop in audiences, online news media told",
-      "problem": "Misattributes 'devastating' to newsrooms"
-    }
-  ],
-  "links": 8,
+  "factCheck": [],
+  "links": 6,
   "arcLinks": {
     "US populism: DSA vs MAGA": 1,
-    "Gen Z protests and education": 1,
-    "Youth jobs worldwide": 0,
-    "Big business and power": 0,
-    "Inequality and your career": 0,
+    "Gen Z protests and education": 0,
     "Youth fighting back": 1,
-    "AI and society": 2,
+    "AI and society": 1,
     "new": 0,
     "none": 3
   },
   "arcReport": {
     "issues": [
-      "2026-10-30",
-      "2026-11-02",
-      "2026-11-06",
-      "2026-11-09"
+      "2026-11-13"
     ],
     "arcs": [
       {
@@ -401,32 +381,32 @@
         "status": "active",
         "links": 1,
         "clicks": 0,
-        "last_link": "2026-11-09"
+        "last_link": "2026-11-13"
       },
       {
         "arc": "Gen Z protests and education",
         "status": "active",
-        "links": 1,
+        "links": 0,
         "clicks": 0,
-        "last_link": "2026-11-09"
+        "last_link": ""
       },
       {
         "arc": "Youth jobs worldwide",
-        "status": "active",
+        "status": "watch",
         "links": 0,
         "clicks": 0,
         "last_link": ""
       },
       {
         "arc": "Big business and power",
-        "status": "active",
+        "status": "watch",
         "links": 0,
         "clicks": 0,
         "last_link": ""
       },
       {
         "arc": "Inequality and your career",
-        "status": "active",
+        "status": "watch",
         "links": 0,
         "clicks": 0,
         "last_link": ""
@@ -436,72 +416,72 @@
         "status": "active",
         "links": 1,
         "clicks": 0,
-        "last_link": "2026-11-09"
+        "last_link": "2026-11-13"
       },
       {
         "arc": "AI and society",
         "status": "active",
-        "links": 2,
+        "links": 1,
         "clicks": 0,
-        "last_link": "2026-11-09"
+        "last_link": "2026-11-13"
       }
     ],
     "links": {
-      "total": 23,
-      "withArc": 5
+      "total": 6,
+      "withArc": 3
     },
     "clicks": {
-      "total": 88,
+      "total": 0,
       "onArcLinks": 0,
-      "onOtherLinks": 88
+      "onPrimers": 0,
+      "onOtherLinks": 0
     },
     "questions": 0
   },
   "picks": {
-    "picks": 1,
-    "india": 3,
+    "india": 2,
     "ai": 1,
     "world": 2
   },
   "picksDetail": [
     {
       "section": "lead",
-      "path": "independent",
-      "story": "Election Commission U-turn on Form 6 and SIR declaration",
-      "source": "HW News English"
+      "path": "consensus",
+      "story": "Delhi's worst Diwali air missing from official CPCB data",
+      "source": "Alt News"
     },
     {
       "section": "india",
-      "path": "independent",
-      "story": "India's demographic dividend turns against Modi government",
+      "path": "consensus",
+      "story": "Explainer: can the flawed SIR voter-roll revision be fixed?",
       "source": "The India Forum"
     },
     {
       "section": "india",
       "path": "consensus",
-      "story": "Delhi chokes after Diwali as illegal firecrackers sold openly",
-      "source": "Peek TV"
+      "story": "Retail inflation crosses RBI's 6% limit for first time in two years",
+      "source": "Scroll"
     },
     {
       "section": "ai",
-      "path": "independent",
-      "story": "AI can copy music but not why we sing",
-      "source": "The Deep View"
+      "path": "neutral",
+      "story": "Tamil Nadu mega library hit by AI-generated books scandal",
+      "source": "BBC India"
     },
     {
       "section": "world",
       "path": "consensus",
-      "story": "DSA-backed socialists win big in US midterms",
+      "story": "Sanders breaks with Schumer as Democrats fight over party's direction",
       "source": "Democracy Now"
     },
     {
       "section": "world",
       "path": "consensus",
-      "story": "Nvidia CEO Jensen Huang affair with suspected Chinese spy",
-      "source": "France 24"
+      "story": "Jensen Huang quits Nvidia amid spy scandal and US-China tech war",
+      "source": "Zeteo"
     }
   ],
-  "lead": "\"Clear Admission Of Guilt!\": Yogendra Yadav On 'ECI's U-Turn' | Gyanesh Kumar | Voter Deletions | EC",
-  "finished": "2026-11-09T01:16:23.495Z",
-  "estimatedCostUsd": 0.3089
+  "lead": "DELHI'S WORST DIWALI AIR? CPCB HAS NO RECORD. 250+ DATA POINTS JUST VANISHED",
+  "finished": "2026-11-13T01:16:25.991Z",
+  "estimatedCostUsd": 0.3256
 }
