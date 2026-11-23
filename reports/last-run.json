@@ -1,5 +1,5 @@
 {
-  "started": "2026-11-20T01:15:27.062Z",
+  "started": "2026-11-23T01:15:26.599Z",
   "dryRun": false,
   "warnings": [
     "Arcs row 2: primer \"Watch this as a broad introduction to American Politics. After this we will look at the relationship of Gen Z with MAGA. And how a left-populist wing led by the Democratic Socialists of America is rising inside the Democratic Party, is attracting young voters to it. It takes on the same establishment as MAGA, from the opposite direction.\" is not a link; left out"
@@ -8,21 +8,21 @@
     {
       "step": "select",
       "model": "claude-opus-5-5",
-      "input_tokens": 64812,
+      "input_tokens": 51723,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 2978,
+      "output_tokens": 2846,
       "service_tier": "standard",
       "inference_geo": "global",
       "speed": "standard",
       "iterations": [
         {
-          "input_tokens": 64812,
-          "output_tokens": 2978,
+          "input_tokens": 51723,
+          "output_tokens": 2846,
           "cache_read_input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_creation": {
@@ -34,27 +34,27 @@
         }
       ],
       "output_tokens_details": {
-        "thinking_tokens": 2609
+        "thinking_tokens": 2440
       }
     },
     {
       "step": "rewrite",
       "model": "claude-opus-5-5",
-      "input_tokens": 2206,
+      "input_tokens": 2241,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 919,
+      "output_tokens": 896,
       "service_tier": "standard",
       "inference_geo": "global",
       "speed": "standard",
       "iterations": [
         {
-          "input_tokens": 2206,
-          "output_tokens": 919,
+          "input_tokens": 2241,
+          "output_tokens": 896,
           "cache_read_input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_creation": {
@@ -66,27 +66,27 @@
         }
       ],
       "output_tokens_details": {
-        "thinking_tokens": 647
+        "thinking_tokens": 596
       }
     },
     {
       "step": "verify",
       "model": "claude-opus-5-5",
-      "input_tokens": 1342,
+      "input_tokens": 1408,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 253,
+      "output_tokens": 157,
       "service_tier": "standard",
       "inference_geo": "global",
       "speed": "standard",
       "iterations": [
         {
-          "input_tokens": 1342,
-          "output_tokens": 253,
+          "input_tokens": 1408,
+          "output_tokens": 157,
           "cache_read_input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_creation": {
@@ -98,14 +98,46 @@
         }
       ],
       "output_tokens_details": {
-        "thinking_tokens": 139
+        "thinking_tokens": 0
+      }
+    },
+    {
+      "step": "recap",
+      "model": "claude-opus-5-5",
+      "input_tokens": 1817,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 507,
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard",
+      "iterations": [
+        {
+          "input_tokens": 1817,
+          "output_tokens": 507,
+          "cache_read_input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 0
+          },
+          "type": "message",
+          "model": null
+        }
+      ],
+      "output_tokens_details": {
+        "thinking_tokens": 0
       }
     }
   ],
   "sourcesFrom": "sheet",
-  "date": "2026-11-20",
-  "issue": 8,
-  "lookbackHours": 102,
+  "date": "2026-11-23",
+  "issue": 9,
+  "lookbackHours": 78,
   "focus": [],
   "arcs": {
     "active": [
@@ -136,17 +168,17 @@
     {
       "source": "BBC Entertainment",
       "ok": true,
-      "items": 22
+      "items": 25
     },
     {
       "source": "BBC India",
       "ok": true,
-      "items": 22
+      "items": 23
     },
     {
       "source": "BBC World",
       "ok": true,
-      "items": 36
+      "items": 35
     },
     {
       "source": "Breaking Points",
@@ -189,7 +221,7 @@
     {
       "source": "Glenn Greenwald",
       "ok": true,
-      "items": 14,
+      "items": 15,
       "via": "YouTube API"
     },
     {
@@ -218,8 +250,8 @@
     {
       "source": "IndiaSpend",
       "ok": true,
-      "items": 31,
-      "via": "page links"
+      "items": 4,
+      "via": "feed"
     },
     {
       "source": "Jacobin",
@@ -230,7 +262,7 @@
     {
       "source": "Know Your Meme",
       "ok": true,
-      "items": 5
+      "items": 2
     },
     {
       "source": "Meghnerd",
@@ -324,7 +356,7 @@
     {
       "source": "The India Forum",
       "ok": true,
-      "items": 37,
+      "items": 38,
       "via": "page links"
     },
     {
@@ -339,51 +371,58 @@
     }
   ],
   "emptyFeeds": [],
-  "videosDroppedTooLong": 15,
+  "videosDroppedTooLong": 8,
   "videosLengthUnknown": 0,
-  "candidates": 456,
+  "candidates": 373,
   "focusCoverage": {},
   "budget": {
     "maxLinks": 6,
-    "editorLinks": 1,
+    "editorLinks": 0,
     "pinned": 0,
-    "claudeLinks": 4,
+    "claudeLinks": 5,
     "claudeLead": true
   },
   "feedback": {
     "removed": 6,
     "moved": 0,
     "promoted": 0,
-    "added": 17,
+    "added": 15,
     "retagged": 0,
     "important": 0,
-    "editorLinks": 1,
+    "editorLinks": 2,
     "ownHidden": 1
   },
   "extraPicks": [],
-  "factCheck": [],
+  "factCheck": [
+    {
+      "rejected": "Delhi called it 'frivolous'. US court summons NSA Doval anyway in Pannun case.",
+      "original": "Pannun murder plot: US court sends summonses to NSA Ajit Doval, former RAW chief",
+      "problem": "implies summons came after Delhi's objection; sequence unsupported"
+    }
+  ],
   "links": 6,
   "arcLinks": {
     "US populism: DSA vs MAGA": 1,
     "Gen Z protests and education": 0,
-    "Youth fighting back": 0,
-    "AI and society": 2,
+    "Youth fighting back": 2,
+    "AI and society": 1,
     "new": 0,
-    "none": 3
+    "none": 2
   },
   "arcReport": {
     "issues": [
       "2026-11-13",
       "2026-11-16",
-      "2026-11-20"
+      "2026-11-20",
+      "2026-11-23"
     ],
     "arcs": [
       {
         "arc": "US populism: DSA vs MAGA",
         "status": "active",
-        "links": 3,
+        "links": 4,
         "clicks": 2,
-        "last_link": "2026-11-20"
+        "last_link": "2026-11-23"
       },
       {
         "arc": "Gen Z protests and education",
@@ -416,68 +455,88 @@
       {
         "arc": "Youth fighting back",
         "status": "active",
-        "links": 1,
+        "links": 3,
         "clicks": 3,
-        "last_link": "2026-11-13"
+        "last_link": "2026-11-23"
       },
       {
         "arc": "AI and society",
         "status": "active",
-        "links": 4,
+        "links": 5,
         "clicks": 2,
-        "last_link": "2026-11-20"
+        "last_link": "2026-11-23"
       }
     ],
     "links": {
-      "total": 18,
-      "withArc": 8
+      "total": 24,
+      "withArc": 12
     },
     "clicks": {
-      "total": 42,
+      "total": 48,
       "onArcLinks": 7,
       "onPrimers": 0,
-      "onOtherLinks": 35
+      "onOtherLinks": 41
     },
-    "questions": 1
+    "questions": 1,
+    "pilotMinutes": [
+      {
+        "issue_date": "2026-11-13",
+        "minutes": ""
+      },
+      {
+        "issue_date": "2026-11-16",
+        "minutes": ""
+      },
+      {
+        "issue_date": "2026-11-20",
+        "minutes": ""
+      }
+    ]
   },
   "picks": {
     "india": 2,
-    "ai": 2,
-    "world": 1
+    "ai": 1,
+    "world": 2
   },
   "picksDetail": [
     {
       "section": "lead",
       "path": "consensus",
-      "story": "Xi, Trump and Putin issue joint peace declaration",
-      "source": "Democracy Now"
+      "story": "Maharashtra SIR: only 74 of 14,500 deletion requests valid",
+      "source": "Scroll"
     },
     {
       "section": "india",
-      "path": "consensus",
-      "story": "SIR voter deletions: Karnataka asks Supreme Court for old rolls",
+      "path": "independent",
+      "story": "Media body tells Supreme Court police restrained journalists at CEC protests",
       "source": "Scroll"
     },
     {
       "section": "india",
       "path": "consensus",
-      "story": "Cyclone Akvan hits Odisha, lakhs evacuated",
-      "source": "NDTV"
+      "story": "US court summons NSA Doval over Pannun murder plot",
+      "source": "Scroll"
     },
     {
       "section": "ai",
-      "path": "independent",
-      "story": "AI is turning skilled jobs into low-paid gig work",
-      "source": "Rest of World"
+      "path": "consensus",
+      "story": "South Korean minister resigns over AI exam cheating scandal",
+      "source": "France 24"
     },
     {
       "section": "world",
       "path": "consensus",
-      "story": "Jeffries wins Speaker nomination as Congress's left regroups",
-      "source": "Jacobin"
+      "story": "Democrats win biggest House majority since 1992",
+      "source": "France 24"
+    },
+    {
+      "section": "world",
+      "path": "consensus",
+      "story": "COP31 climate talks collapse without fossil fuel deal",
+      "source": "IndiaSpend"
     }
   ],
-  "lead": "XI HOSTS TRUMP AND PUTIN IN SHENZHEN: 90 MINUTES TO REDRAW THE WORLD?",
-  "finished": "2026-11-20T01:16:20.572Z",
-  "estimatedCostUsd": 0.3564
+  "lead": "BHUSAWAL: OVER 14,500 VOTER DELETION REQUESTS. ONLY 74 FOUND VALID.",
+  "finished": "2026-11-23T01:16:26.913Z",
+  "estimatedCostUsd": 0.3169
 }
