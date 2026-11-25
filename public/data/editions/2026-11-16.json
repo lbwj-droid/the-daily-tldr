@@ -1,0 +1,132 @@
+{
+  "date": "2026-11-16",
+  "issue": 7,
+  "publish_at": "2026-11-16T03:30:00.000Z",
+  "generated_at": "2026-11-16T01:16:18.797Z",
+  "window_hours": 78,
+  "desk": null,
+  "lead": {
+    "id": "864e7ef098",
+    "section": "lead",
+    "rank": 0,
+    "headline": "Democracy destroyed in India in 2014, alleges Rahul Gandhi",
+    "original_headline": "Democracy destroyed in India in 2014, alleges Rahul Gandhi",
+    "url": "https://scroll.in/latest/1097087/democracy-destroyed-in-india-in-2014-alleges-rahul-gandhi?utm_source=rss&utm_medium=public",
+    "source": "Scroll",
+    "kind": "article",
+    "thumbnail": "https://sc0.blr1.cdn.digitaloceanspaces.com/article/216595-mmewtloupy-1794712172.jpg",
+    "home": "india"
+  },
+  "sections": [
+    {
+      "key": "india",
+      "title": "India",
+      "items": [
+        {
+          "id": "22951c7519",
+          "section": "india",
+          "rank": 1,
+          "headline": "Can the SIR be fixed? An explainer",
+          "original_headline": "Explainer: Can the SIR Be Rectified?",
+          "url": "https://www.theindiaforum.in/politics/can-sir-be-rectified",
+          "source": "The India Forum",
+          "kind": "article",
+          "thumbnail": "https://www.theindiaforum.in/sites/default/files/styles/cover_story_small/public/field/image/2026/11/11/lead-image-2026-11-11t170407807-1794397191.png.webp?h=498d07fe"
+        },
+        {
+          "id": "a6140578b5",
+          "section": "india",
+          "rank": 2,
+          "headline": "Delhi AQI hits 351, Centre shuts 191 factories with no emission controls",
+          "original_headline": "Delhi pollution: Centre orders closure of 191 industries for lack of emission control equipment",
+          "url": "https://scroll.in/latest/1097086/delhi-pollution-centre-orders-closure-of-191-industries-for-lack-of-emission-control-equipment?utm_source=rss&utm_medium=public",
+          "source": "Scroll",
+          "kind": "article"
+        }
+      ]
+    },
+    {
+      "key": "ai",
+      "title": "AI & Society",
+      "items": [
+        {
+          "id": "fd96e64856",
+          "section": "ai",
+          "rank": 1,
+          "headline": "What does it cost to keep the internet human?",
+          "original_headline": "The cost of keeping the internet human",
+          "url": "https://www.thedeepview.com/articles/the-cost-of-keeping-the-internet-human",
+          "source": "The Deep View",
+          "kind": "article",
+          "thumbnail": "https://cdn.sanity.io/images/0no9te5e/production/57ba5465c0e9c2a66605b52b7e362ecebb4c567c-1920x1080.png?rect=0,39,1920,1003&w=1200&h=627&fit=crop&auto=format",
+          "arc": "AI and society"
+        }
+      ]
+    },
+    {
+      "key": "world",
+      "title": "World",
+      "items": [
+        {
+          "id": "812c8097d0",
+          "section": "world",
+          "rank": 1,
+          "headline": "France's 'Hot Autumn': suburban teens spark revolt, workers and unions join in",
+          "original_headline": "France’s “Hot Autumn” Is Boosting the Left",
+          "url": "https://jacobin.com/2026/11/france-insoumise-school-protests-election",
+          "source": "Jacobin",
+          "kind": "article",
+          "thumbnail": "https://media.jacobin.com/images/2026/11/730674240024.jpg",
+          "arc": "new"
+        },
+        {
+          "id": "f89d5354bd",
+          "section": "world",
+          "rank": 2,
+          "headline": "Van Hollen enters the chat, Breaking Points says Schumer is panicking",
+          "original_headline": "Schumer PANICS As Chris Van Hollen Enters Race",
+          "url": "https://www.youtube.com/watch?v=IishXff-9lA",
+          "source": "Breaking Points",
+          "kind": "video",
+          "arc": "US populism: DSA vs MAGA"
+        }
+      ]
+    }
+  ],
+  "arcs": [
+    {
+      "name": "US populism: DSA vs MAGA",
+      "side": "world",
+      "so_far": "Anger at a political class that serves big donors over workers is growing on America's left and right. The new socialists and MAGA share some targets, like big money and the cost of living, but split on who is to blame and what to do."
+    },
+    {
+      "name": "Gen Z protests and education",
+      "side": "india",
+      "so_far": "The Gen Z protests are about more than one exam or one election. Many young Indians, above all in rural India, leave school without the skills employers want, in an economy that already makes too few jobs."
+    },
+    {
+      "name": "Youth jobs worldwide",
+      "side": "world",
+      "so_far": "Young people are struggling to find good jobs in the US, China, France and the UK too. Comparing them shows what is global and what is particular to India."
+    },
+    {
+      "name": "Big business and power",
+      "side": "india",
+      "so_far": "After 12 years of the current government, a few business groups such as Adani and Ambani hold more economic and political power than ever, much like America's robber-baron era."
+    },
+    {
+      "name": "Inequality and your career",
+      "side": "india",
+      "so_far": "Why the gap between India's richest and everyone else keeps widening, and what it means for young people starting their careers now."
+    },
+    {
+      "name": "Youth fighting back",
+      "side": "india",
+      "so_far": "Young Indians are pushing back on three things: broken exams and schools, too few jobs, and attempts to silence them. Many groups claim to lead, from the Cockroach Janta Party and AISA to Congress's youth wings, and no one is fully in charge."
+    },
+    {
+      "name": "AI and society",
+      "so_far": "AI is to Gen Z what the internet was to Gen X. These stories are about what it changes in work, study, art and daily life, not the latest product."
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "date": "2026-11-20",
+  "issue": 8,
+  "publish_at": "2026-11-20T03:30:00.000Z",
+  "generated_at": "2026-11-20T01:16:19.054Z",
+  "window_hours": 102,
+  "desk": null,
+  "lead": {
+    "id": "e3509021c6",
+    "section": "lead",
+    "rank": 0,
+    "headline": "XI HOSTS TRUMP AND PUTIN IN SHENZHEN: 90 MINUTES TO REDRAW THE WORLD?",
+    "original_headline": "A New International Order? Xi, Trump & Putin Hold Historic Trilateral Summit in China",
+    "url": "http://www.democracynow.org/2026/11/19/china_us_russia",
+    "source": "Democracy Now",
+    "kind": "article",
+    "thumbnail": "https://www.democracynow.org/images/story/75/84375/w320/seg-APEC-Summit.jpg",
+    "home": "world"
+  },
+  "sections": [
+    {
+      "key": "india",
+      "title": "India",
+      "items": [
+        {
+          "id": "8243eba9eb",
+          "section": "india",
+          "rank": 1,
+          "headline": "Karnataka wants SC nod for pre-SIR rolls, says 43 lakh Bengaluru names deleted",
+          "original_headline": "Karnataka seeks SC nod to hold Bengaluru municipal polls using pre-SIR voter rolls",
+          "url": "https://scroll.in/latest/1097179/karnataka-seeks-sc-nod-to-hold-bengaluru-municipal-polls-using-pre-sir-voter-rolls?utm_source=rss&utm_medium=public",
+          "source": "Scroll",
+          "kind": "article",
+          "thumbnail": "https://sc0.blr1.cdn.digitaloceanspaces.com/article/199365-gykskcmvoh-1710767666.jpg"
+        },
+        {
+          "id": "f4751837d2",
+          "section": "india",
+          "rank": 2,
+          "headline": "Cyclone Akvan heads for Odisha: over 3 lakh evacuated, 47 trains cancelled",
+          "original_headline": "47 Train Cancelled, Over 3 Lakh Evacuated As Cyclone Akvan Heads To Odisha",
+          "url": "https://www.ndtv.com/india-news/47-train-cancelled-over-3-lakh-evacuated-as-cyclone-akvan-heads-to-odisha-12351955#publisher=newsstand",
+          "source": "NDTV",
+          "kind": "article"
+        }
+      ]
+    },
+    {
+      "key": "ai",
+      "title": "AI & Society",
+      "items": [
+        {
+          "id": "f7f742f78c",
+          "section": "ai",
+          "rank": 1,
+          "headline": "Bernie interviews Claude 🚨",
+          "original_headline": "Bernie Sanders Grills Claude AI Over Data Privacy And Surveillance In Viral Anthropic Conversation",
+          "url": "https://www.youtube.com/watch?v=82Xv_bPVtpU",
+          "source": "CRUX",
+          "kind": "video",
+          "thumbnail": "https://i.ytimg.com/vi/82Xv_bPVtpU/hqdefault.jpg",
+          "manual": true,
+          "arc": "AI and society"
+        },
+        {
+          "id": "b2365444eb",
+          "section": "ai",
+          "rank": 2,
+          "headline": "AI isn't taking your job. It's turning it into low-paid gig work.",
+          "original_headline": "AI isn’t replacing your job. It’s turning it into low-paid gig work",
+          "url": "https://restofworld.org/2026/ai-jobs-skills-gig-work/?utm_source=rss&utm_medium=rss&utm_campaign=feeds",
+          "source": "Rest of World",
+          "kind": "article",
+          "arc": "AI and society"
+        }
+      ]
+    },
+    {
+      "key": "world",
+      "title": "World",
+      "items": [
+        {
+          "id": "41ca9569c3",
+          "section": "world",
+          "rank": 1,
+          "headline": "Jeffries is set to be Speaker. Congress's Left is ready for the fight anyway.",
+          "original_headline": "Hakeem Jeffries Aside, Congress’s Left Is Well Positioned",
+          "url": "https://jacobin.com/2026/11/jeffries-house-speaker-centrism-socialist-challenge",
+          "source": "Jacobin",
+          "kind": "article",
+          "thumbnail": "https://media.jacobin.com/images/2026/11/159852261365.jpg",
+          "arc": "US populism: DSA vs MAGA"
+        }
+      ]
+    }
+  ],
+  "arcs": [
+    {
+      "name": "US populism: DSA vs MAGA",
+      "side": "world",
+      "so_far": "Anger at a political class that serves big donors over workers is growing on America's left and right. The new socialists and MAGA share some targets, like big money and the cost of living, but split on who is to blame and what to do."
+    },
+    {
+      "name": "Gen Z protests and education",
+      "side": "india",
+      "so_far": "The Gen Z protests are about more than one exam or one election. Many young Indians, above all in rural India, leave school without the skills employers want, in an economy that already makes too few jobs."
+    },
+    {
+      "name": "Youth jobs worldwide",
+      "side": "world",
+      "so_far": "Young people are struggling to find good jobs in the US, China, France and the UK too. Comparing them shows what is global and what is particular to India."
+    },
+    {
+      "name": "Big business and power",
+      "side": "india",
+      "so_far": "After 12 years of the current government, a few business groups such as Adani and Ambani hold more economic and political power than ever, much like America's robber-baron era."
+    },
+    {
+      "name": "Inequality and your career",
+      "side": "india",
+      "so_far": "Why the gap between India's richest and everyone else keeps widening, and what it means for young people starting their careers now."
+    },
+    {
+      "name": "Youth fighting back",
+      "side": "india",
+      "so_far": "Young Indians are pushing back on three things: broken exams and schools, too few jobs, and attempts to silence them. Many groups claim to lead, from the Cockroach Janta Party and AISA to Congress's youth wings, and no one is fully in charge."
+    },
+    {
+      "name": "AI and society",
+      "so_far": "AI is to Gen Z what the internet was to Gen X. These stories are about what it changes in work, study, art and daily life, not the latest product."
+    }
+  ]
+}

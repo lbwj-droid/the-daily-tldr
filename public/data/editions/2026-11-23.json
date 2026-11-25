@@ -1,0 +1,161 @@
+{
+  "date": "2026-11-23",
+  "issue": 9,
+  "publish_at": "2026-11-23T03:30:00.000Z",
+  "generated_at": "2026-11-23T01:16:19.098Z",
+  "window_hours": 78,
+  "desk": null,
+  "lead": {
+    "id": "fb4c57d9d3",
+    "section": "lead",
+    "rank": 0,
+    "headline": "BHUSAWAL: OVER 14,500 VOTER DELETION REQUESTS. ONLY 74 FOUND VALID.",
+    "original_headline": "Maharashtra SIR: Of over 14,500 voter deletion applications in Bhusawal, only 74 found valid",
+    "url": "https://scroll.in/latest/1097229/maharashtra-sir-of-over-14500-voter-deletion-applications-in-bhusawal-only-74-found-valid?utm_source=rss&utm_medium=public",
+    "source": "Scroll",
+    "kind": "article",
+    "thumbnail": "https://sc0.blr1.cdn.digitaloceanspaces.com/article/216360-ohwemvxpws-1793348469.jpg",
+    "arc": "Youth fighting back",
+    "home": "india"
+  },
+  "sections": [
+    {
+      "key": "india",
+      "title": "India",
+      "items": [
+        {
+          "id": "397fa6c3ae",
+          "section": "india",
+          "rank": 1,
+          "headline": "Media body to SC: calling it 'crowd control' doesn't justify restraining journalists",
+          "original_headline": "Police cannot justify restraining journalists by calling it crowd control: Media organisation to SC",
+          "url": "https://scroll.in/latest/1097231/police-cannot-justify-restraining-journalists-by-calling-it-crowd-control-media-organisation-to-sc?utm_source=rss&utm_medium=public",
+          "source": "Scroll",
+          "kind": "article",
+          "thumbnail": "https://sc0.blr1.cdn.digitaloceanspaces.com/article/216005-zbiwjahmtt-1791627359.jpg",
+          "arc": "Youth fighting back"
+        },
+        {
+          "id": "19ef1355bc",
+          "section": "india",
+          "rank": 2,
+          "headline": "Pannun murder plot: US court sends summonses to NSA Ajit Doval, former RAW chief",
+          "original_headline": "Pannun murder plot: US court sends summonses to NSA Ajit Doval, former RAW chief",
+          "url": "https://scroll.in/latest/1097230/pannun-murder-plot-us-court-sends-summonses-to-nsa-ajit-doval-former-raw-chief?utm_source=rss&utm_medium=public",
+          "source": "Scroll",
+          "kind": "article"
+        }
+      ]
+    },
+    {
+      "key": "ai",
+      "title": "AI & Society",
+      "items": [
+        {
+          "id": "2b6d139f92",
+          "section": "ai",
+          "rank": 1,
+          "headline": "South Korea's education minister resigns after AI exam cheating scandal",
+          "original_headline": "South Korea: AI cheating sparks exam security chaos",
+          "url": "https://www.france24.com/en/south-korea-ai-cheating-sparks-exam-security-chaos",
+          "source": "France 24",
+          "kind": "article",
+          "thumbnail": "https://s.france24.com/media/display/a42888e6-e658-11f1-af0b-e56ab3dc0809/w:1024/p:16x9/EN-20261122-100808-100945-CS.jpg",
+          "arc": "AI and society"
+        }
+      ]
+    },
+    {
+      "key": "world",
+      "title": "World",
+      "items": [
+        {
+          "id": "e5a422eec0",
+          "section": "world",
+          "rank": 1,
+          "headline": "Recount done: Hubbard unseats Foxx, Democrats clinch historic House majority",
+          "original_headline": "Democrat Hubbard wins North Carolina recount, clinching historic House majority",
+          "url": "https://www.france24.com/en/americas/20261122-democrat-hubbard-wins-north-carolina-recount-clinching-historic-house-majority",
+          "source": "France 24",
+          "kind": "article",
+          "thumbnail": "https://s.france24.com/media/display/e68dbef8-e6ae-11f1-838f-13439ca2fe89/w:1024/p:16x9/AP26312701855096.jpg",
+          "arc": "US populism: DSA vs MAGA"
+        },
+        {
+          "id": "657b316b81",
+          "section": "world",
+          "rank": 2,
+          "headline": "COP31 runs overtime, still no deal. Meanwhile 2026 set to be among hottest years.",
+          "original_headline": "COP31 Ends Without Consensus Even As 2026 Is Set To Be Among Hottest Years",
+          "url": "https://www.isignal.in/climate-change/cop31-ends-without-consensus-even-as-2026-is-set-to-be-among-hottest-years-991871",
+          "source": "IndiaSpend",
+          "kind": "article"
+        }
+      ]
+    }
+  ],
+  "arcs": [
+    {
+      "name": "US populism: DSA vs MAGA",
+      "side": "world",
+      "so_far": "Anger at a political class that serves big donors over workers is growing on America's left and right. The new socialists and MAGA share some targets, like big money and the cost of living, but split on who is to blame and what to do."
+    },
+    {
+      "name": "Gen Z protests and education",
+      "side": "india",
+      "so_far": "The Gen Z protests are about more than one exam or one election. Many young Indians, above all in rural India, leave school without the skills employers want, in an economy that already makes too few jobs."
+    },
+    {
+      "name": "Youth jobs worldwide",
+      "side": "world",
+      "so_far": "Young people are struggling to find good jobs in the US, China, France and the UK too. Comparing them shows what is global and what is particular to India."
+    },
+    {
+      "name": "Big business and power",
+      "side": "india",
+      "so_far": "After 12 years of the current government, a few business groups such as Adani and Ambani hold more economic and political power than ever, much like America's robber-baron era."
+    },
+    {
+      "name": "Inequality and your career",
+      "side": "india",
+      "so_far": "Why the gap between India's richest and everyone else keeps widening, and what it means for young people starting their careers now."
+    },
+    {
+      "name": "Youth fighting back",
+      "side": "india",
+      "so_far": "Young Indians are pushing back on three things: broken exams and schools, too few jobs, and attempts to silence them. Many groups claim to lead, from the Cockroach Janta Party and AISA to Congress's youth wings, and no one is fully in charge."
+    },
+    {
+      "name": "AI and society",
+      "so_far": "AI is to Gen Z what the internet was to Gen X. These stories are about what it changes in work, study, art and daily life, not the latest product."
+    }
+  ],
+  "recap": {
+    "issues": [
+      "2026-11-13",
+      "2026-11-16",
+      "2026-11-20",
+      "2026-11-23"
+    ],
+    "arcs": [
+      {
+        "arc": "US populism: DSA vs MAGA",
+        "changed": "Democrats clinched a historic House majority after Hubbard won a North Carolina recount against Foxx. Jeffries is set to be Speaker, while Bernie Sanders called for a new and bold direction and Chris Van Hollen entered a race against Schumer. Jacobin says Congress's left is well positioned anyway.",
+        "question": "Which recount result clinched the Democrats' historic House majority?",
+        "answer": "Hubbard unseating Foxx in North Carolina"
+      },
+      {
+        "arc": "Youth fighting back",
+        "changed": "Questions over the SIR voter roll process grew, with an explainer asking whether it can be fixed. In Bhusawal, Maharashtra, only 74 of over 14,500 voter deletion requests were found valid. A media organisation told the Supreme Court that police cannot justify restraining journalists by calling it crowd control.",
+        "question": "Of over 14,500 voter deletion requests in Bhusawal, how many were found valid?",
+        "answer": "Only 74"
+      },
+      {
+        "arc": "AI and society",
+        "changed": "A new mega library in India was hit by a scandal over alleged AI-generated books, and Tamil Nadu ordered an audit. South Korea's education minister resigned after an AI exam cheating scandal. Rest of World argued AI is turning jobs into low-paid gig work rather than replacing them.",
+        "question": "Who resigned after South Korea's AI exam cheating scandal?",
+        "answer": "The education minister"
+      }
+    ]
+  }
+}

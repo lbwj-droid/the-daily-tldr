@@ -1,0 +1,132 @@
+{
+  "date": "2026-11-13",
+  "issue": 6,
+  "publish_at": "2026-11-13T03:30:00.000Z",
+  "generated_at": "2026-11-13T01:16:23.181Z",
+  "window_hours": 102,
+  "desk": null,
+  "lead": {
+    "id": "e51a595a68",
+    "section": "lead",
+    "rank": 0,
+    "headline": "DELHI'S WORST DIWALI AIR? CPCB HAS NO RECORD. 250+ DATA POINTS JUST VANISHED",
+    "original_headline": "Mother, should I trust the government? The worst Diwali air in Delhi never made it to CPCB record",
+    "url": "https://www.altnews.in/mother-should-i-trust-the-government-the-worst-diwali-air-in-delhi-never-made-it-to-cpcb-record/",
+    "source": "Alt News",
+    "kind": "article",
+    "thumbnail": "https://www.altnews.in/wp-content/uploads/2026/11/delhiaqi.jpeg",
+    "home": "india"
+  },
+  "sections": [
+    {
+      "key": "india",
+      "title": "India",
+      "items": [
+        {
+          "id": "22951c7519",
+          "section": "india",
+          "rank": 1,
+          "headline": "Can the SIR still be fixed? An explainer",
+          "original_headline": "Explainer: Can the SIR be Rectified?",
+          "url": "https://www.theindiaforum.in/politics/can-sir-be-rectified",
+          "source": "The India Forum",
+          "kind": "article",
+          "thumbnail": "https://www.theindiaforum.in/sites/default/files/styles/cover_story_small/public/field/image/2026/11/11/lead-image-2026-11-11t170407807-1794397191.png.webp",
+          "arc": "Youth fighting back"
+        },
+        {
+          "id": "343d53745e",
+          "section": "india",
+          "rank": 2,
+          "headline": "Retail inflation blows past RBI's limit, above 6% for first time in two years",
+          "original_headline": "Retail inflation rises above 6% in October for first time in two years",
+          "url": "https://scroll.in/latest/1097044/retail-inflation-rises-above-6-in-october-for-first-time-in-two-years?utm_source=rss&utm_medium=public",
+          "source": "Scroll",
+          "kind": "article"
+        }
+      ]
+    },
+    {
+      "key": "ai",
+      "title": "AI & Society",
+      "items": [
+        {
+          "id": "b0b00dc134",
+          "section": "ai",
+          "rank": 1,
+          "headline": "'AI-generated books' scandal hits new mega library; Tamil Nadu orders audit",
+          "original_headline": "New Indian mega library rocked by scandal over 'AI-generated books'",
+          "url": "https://www.bbc.co.uk/news/articles/c54gne3plvrxo?at_medium=RSS&at_campaign=rss",
+          "source": "BBC India",
+          "kind": "article",
+          "thumbnail": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/a10f/live/ec975ef0-dd88-11f1-994d-0d0f033add01.png",
+          "arc": "AI and society"
+        }
+      ]
+    },
+    {
+      "key": "world",
+      "title": "World",
+      "items": [
+        {
+          "id": "852eb4ce63",
+          "section": "world",
+          "rank": 1,
+          "headline": "Bernie to Schumer: thanks, but no. Wants a 'new and bold direction'",
+          "original_headline": "\"Don't F#*k It Up, Democrats\": David Sirota on Direction of Party & Fight Over Jeffries & Schumer",
+          "url": "http://www.democracynow.org/2026/11/12/david_sirota_dont_f_up_democrats",
+          "source": "Democracy Now",
+          "kind": "article",
+          "thumbnail": "https://www.democracynow.org/images/story/94/84294/w320/Seg2-splits-Sirota-vs-rightwingdems.jpg",
+          "arc": "US populism: DSA vs MAGA"
+        },
+        {
+          "id": "607572df5c",
+          "section": "world",
+          "rank": 2,
+          "headline": "Nvidia boss's tryst with suspected spy? China was gaining on the US for years anyway",
+          "original_headline": "Jensen Huang’s Affair Isn’t the Only Reason the U.S. Is Losing Ground to China in the Tech War",
+          "url": "https://zeteo.com/p/jensen-huangs-affair-isnt-the-only",
+          "source": "Zeteo",
+          "kind": "article"
+        }
+      ]
+    }
+  ],
+  "arcs": [
+    {
+      "name": "US populism: DSA vs MAGA",
+      "side": "world",
+      "so_far": "Anger at a political class that serves big donors over workers is growing on America's left and right. The new socialists and MAGA share some targets, like big money and the cost of living, but split on who is to blame and what to do."
+    },
+    {
+      "name": "Gen Z protests and education",
+      "side": "india",
+      "so_far": "The Gen Z protests are about more than one exam or one election. Many young Indians, above all in rural India, leave school without the skills employers want, in an economy that already makes too few jobs."
+    },
+    {
+      "name": "Youth jobs worldwide",
+      "side": "world",
+      "so_far": "Young people are struggling to find good jobs in the US, China, France and the UK too. Comparing them shows what is global and what is particular to India."
+    },
+    {
+      "name": "Big business and power",
+      "side": "india",
+      "so_far": "After 12 years of the current government, a few business groups such as Adani and Ambani hold more economic and political power than ever, much like America's robber-baron era."
+    },
+    {
+      "name": "Inequality and your career",
+      "side": "india",
+      "so_far": "Why the gap between India's richest and everyone else keeps widening, and what it means for young people starting their careers now."
+    },
+    {
+      "name": "Youth fighting back",
+      "side": "india",
+      "so_far": "Young Indians are pushing back on three things: broken exams and schools, too few jobs, and attempts to silence them. Many groups claim to lead, from the Cockroach Janta Party and AISA to Congress's youth wings, and no one is fully in charge."
+    },
+    {
+      "name": "AI and society",
+      "so_far": "AI is to Gen Z what the internet was to Gen X. These stories are about what it changes in work, study, art and daily life, not the latest product."
+    }
+  ]
+}
