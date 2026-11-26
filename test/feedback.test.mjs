@@ -30,7 +30,7 @@ const today = [
 
 test("feedback: hides with their note, moves, promotions, re-tags, important marks and the editor's own links", () => {
   const { text, counts } = editorFeedback([edition], today, [{ date: "2026-11-09", url: "https://a.org/mine" }]);
-  assert.deepEqual(counts, { removed: 1, moved: 1, promoted: 1, added: 1, retagged: 1, important: 1, editorLinks: 1, ownHidden: 1 });
+  assert.deepEqual(counts, { removed: 1, moved: 1, promoted: 1, added: 1, retagged: 1, important: 1, editorLinks: 1, ownHidden: 1, read: 0, desk: 0 });
   assert.match(text, /REMOVED your india pick: "Story A" \(Scroll, arc Big business and power\)\. Editor's note: "sent it on WhatsApp already"/);
   assert.match(text, /MOVED your pick from india to world: "Story B"/);
   assert.match(text, /RE-TAGGED your pick from arc "none" to "Youth jobs worldwide"/);
@@ -45,7 +45,7 @@ test("feedback: hides with their note, moves, promotions, re-tags, important mar
 test("feedback: nothing edited gives an empty block", () => {
   const plain = { ...edition, sections: edition.sections.filter((s) => s.key !== "picks") };
   const rows = today.slice(0, 1).concat([{ date: "2026-11-09", id: "A", url: "https://a.org/a", section: "india", arc: "Big business and power" }]);
-  assert.deepEqual(editorFeedback([plain], rows), { text: "", counts: { removed: 0, moved: 0, promoted: 0, added: 0, retagged: 0, important: 0, editorLinks: 0, ownHidden: 0 } });
+  assert.deepEqual(editorFeedback([plain], rows), { text: "", counts: { removed: 0, moved: 0, promoted: 0, added: 0, retagged: 0, important: 0, editorLinks: 0, ownHidden: 0, read: 0, desk: 0 } });
 });
 
 const settings = { hindiMax: 3, independentPathMax: 4 };
@@ -69,4 +69,44 @@ test("feedback: the editor hiding his own Inbox link, with his reason, reaches C
   assert.equal(counts.ownHidden, 2);
   assert.equal(counts.editorLinks, 0);
   assert.match(text, /HID HIS OWN LINK in picks: "Mine" \(Jacobin, arc US populism: DSA vs MAGA\)\. Editor's note: "doesn't fit the arcs: BJP corruption story"/);
+});
+
+test("feedback: links the readers had already read are good picks, not rejections", () => {
+  const rows = [
+    { date: "2026-11-09", id: "A", url: "https://a.org/a", section: "india", status: "read", arc: "Big business and power" },
+    { date: "2026-11-09", id: "B", url: "https://a.org/b", section: "india", status: "hide", note: "Discussed" },
+    { date: "2026-11-09", id: "M", url: "https://a.org/mine", section: "picks", status: "read" },
+    { date: "2026-11-09", id: "", url: "https://b.org/seen", my_headline: "Seen already", status: "read" },
+  ];
+  const { text, counts } = editorFeedback([edition], rows);
+  assert.equal(counts.read, 3);
+  assert.equal(counts.removed, 0);
+  assert.equal(counts.ownHidden, 0);
+  assert.match(text, /ALREADY READ your india pick: "Story A"/);
+  assert.match(text, /ALREADY READ your india pick: "Story B" \(Scroll\)\.(\n|$)/);
+  assert.ok(!/Editor's note: "Discussed"/.test(text), "a bare read note is not repeated as a lesson");
+  assert.match(text, /ALREADY READ, his own link in picks: "Mine"/);
+  assert.ok(!/Seen already/.test(text), "a hand-added link they had read teaches nothing");
+  assert.match(text, /ALREADY READ: a good pick/);
+});
+
+test("feedback: the arc he typed on a hand-added link, and his Desk notes with their reason", () => {
+  const rows = [
+    { date: "2026-11-09", id: "", url: "https://b.org/x", my_headline: "Maybe a storyline", source: "Compact", arc: "new", note: "MAGA split might deserve its own arc" },
+    { date: "2026-11-09", id: "", url: "https://b.org/y", my_headline: "Just useful", source: "Scroll", arc: "none", note: "explains tariffs for Bethia" },
+    { date: "2026-11-09", id: "", url: "https://b.org/z", my_headline: "On an arc", source: "PARI", arc: "Youth fighting back" },
+  ];
+  const desk = [
+    { issue_date: "2026-11-09", teaser: "This meme explains SIR in 10 seconds", url: "https://www.instagram.com/p/abc", status: "used 2026-11-09", note: "Watch before the India links", why: "they found SIR confusing on the call" },
+    { issue_date: "2026-11-02", teaser: "Older note", url: "", status: "used 2026-11-02" },
+    { issue_date: "2026-11-09", teaser: "", url: "", status: "" },
+  ];
+  const { text, counts } = editorFeedback([edition], rows, [], { deskRows: desk });
+  assert.equal(counts.added, 3);
+  assert.equal(counts.desk, 1);
+  assert.match(text, /"Maybe a storyline" \(Compact, a possible new arc\)\. Editor's note: "MAGA split might deserve its own arc"/);
+  assert.match(text, /"Just useful" \(Scroll, outside every arc\)\. Editor's note: "explains tariffs for Bethia"/);
+  assert.match(text, /"On an arc" \(PARI, arc Youth fighting back\)/);
+  assert.match(text, /DESK NOTE by the editor: "This meme explains SIR in 10 seconds" \(instagram\.com\)\. Line shown under it: "Watch before the India links"\. Why: "they found SIR confusing on the call"/);
+  assert.ok(!/Older note/.test(text), "Desk notes of issues outside the window are left out");
 });

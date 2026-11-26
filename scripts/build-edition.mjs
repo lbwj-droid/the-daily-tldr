@@ -86,8 +86,11 @@ async function main() {
     // The pilot tabs are optional: a failure here leaves the issue as it would be without story arcs.
     try {
       [arcRows, clickRows, questionRows, pilotRows] = await Promise.all(["Arcs", "Clicks", "Questions", "Pilot"].map((t) => readRows(t).catch(() => [])));
-      // The Arcs heading row is rewritten each build, so columns added later (primer) get their headings.
+      // The Arcs, Inbox and Desk heading rows are rewritten each build, so columns added later (primer, thumbnail,
+      // arc, why) get their headings.
       await writeRows("Arcs!A1", [TABS.Arcs]);
+      await writeRows("Inbox!A1", [TABS.Inbox]);
+      await writeRows("Desk!A1", [TABS.Desk]);
     } catch (err) {
       report.warnings.push(`Could not read the Arcs, Clicks, Questions or Pilot tab: ${err.message}`);
     }
@@ -210,7 +213,7 @@ async function main() {
   else if (budget > 0 || needLead) {
     const editorial = (await readFile(path.join(root, "prompts", "editorial.md"), "utf8")) + focusPromptBlock(focus, settings) + (await sectionBriefs(sections)) + arcsPromptBlock(arcs.active, arcConfig.maxOffArc);
     // The editor's edits to recent issues (hides, moves, promotions, his own and hand-added links) steer this pick.
-    const feedback = editorFeedback(await previousEditions(settings.today, settings.feedbackIssues ?? 4), todayRows, clickRows);
+    const feedback = editorFeedback(await previousEditions(settings.today, settings.feedbackIssues ?? 4), todayRows, clickRows, { deskRows });
     report.feedback = feedback.counts;
     const res = await selectStories({ client, settings, editorial, candidates, sections: caps, budget, needLead, manual: manual.all, windowText, arcs: arcs.active, extraMax: settings.extraMax || 0, feedback: feedback.text });
     report.usage.push({ step: "select", model: res.model, ...res.usage });

@@ -100,7 +100,7 @@
     ((ov && ov.rows) || []).forEach(function (row) {
       var item = all.filter(function (i) { return (row.id && i.id === row.id) || (row.url && i.url === row.url); })[0];
       if (!item) {
-        if (!safeUrl(row.url) || !row.my_headline || row.status === "hide") return;
+        if (!safeUrl(row.url) || !row.my_headline || row.status === "hide" || row.status === "read") return;
         item = { added: true, id: row.id || "add-" + ++added, url: row.url, headline: row.my_headline, source: row.source || new URL(row.url).hostname.replace(/^www\./, ""), section: "picks", rank: 99 };
         all.push(item);
       }
@@ -110,7 +110,8 @@
         if (row.thumbnail !== item.thumbnail) item.sheetImage = true;
         item.thumbnail = row.thumbnail;
       }
-      if (row.status === "hide") item.hidden = true;
+      // "read": the readers had already read or discussed it, so it leaves the page like a hide.
+      if (row.status === "hide" || row.status === "read") item.hidden = true;
       var target = sectionKey(row.section);
       if ((row.status === "lead" || target === "lead") && !item.isLead) promoted = item;
       else if (item.isLead && target && target !== "lead") demoteLead = target;
