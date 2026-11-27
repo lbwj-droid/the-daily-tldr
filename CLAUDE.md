@@ -61,6 +61,7 @@ A Drudge-style link board that Lester (the editor, Dubai) runs for his five nibl
 - **GitHub "Re-run jobs" replays the original run's old code.** For a fresh build use "Run workflow".
 - **Two builds on one day replace stories**, orphaning Lester's edits on dropped links.
 - **GitHub's schedule ran 4.5 hours late (25 Oct)** and missed Monday 26 Oct entirely; hence the Vercel trigger.
+- **Fri 27 Nov build failed: `401 invalid x-api-key`.** The Anthropic API key in the GitHub secret `ANTHROPIC_API_KEY` had **expired** (console showed "expired"). Fix: new key at console.anthropic.com, update the secret, then Run workflow. When creating a key, check its expiry date and note it.
 - This Claude Code container cannot reach the live site, YouTube, news sites or GitHub Actions APIs; ask Lester for screenshots or the debug links, and read results from the repository.
 
 ## Working with Lester
