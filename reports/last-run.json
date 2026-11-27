@@ -1,28 +1,28 @@
 {
-  "started": "2026-11-23T01:15:26.599Z",
+  "started": "2026-11-27T04:16:43.414Z",
   "dryRun": false,
   "warnings": [
-    "Arcs row 2: primer \"Watch this as a broad introduction to American Politics. After this we will look at the relationship of Gen Z with MAGA. And how a left-populist wing led by the Democratic Socialists of America is rising inside the Democratic Party, is attracting young voters to it. It takes on the same establishment as MAGA, from the opposite direction.\" is not a link; left out"
+    "Arcs row 2: arc name longer than 40 characters; skipped"
   ],
   "usage": [
     {
       "step": "select",
       "model": "claude-opus-5-5",
-      "input_tokens": 51723,
+      "input_tokens": 54209,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 2846,
+      "output_tokens": 1947,
       "service_tier": "standard",
       "inference_geo": "global",
       "speed": "standard",
       "iterations": [
         {
-          "input_tokens": 51723,
-          "output_tokens": 2846,
+          "input_tokens": 54209,
+          "output_tokens": 1947,
           "cache_read_input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_creation": {
@@ -34,27 +34,27 @@
         }
       ],
       "output_tokens_details": {
-        "thinking_tokens": 2440
+        "thinking_tokens": 1575
       }
     },
     {
       "step": "rewrite",
       "model": "claude-opus-5-5",
-      "input_tokens": 2241,
+      "input_tokens": 2267,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 896,
+      "output_tokens": 1162,
       "service_tier": "standard",
       "inference_geo": "global",
       "speed": "standard",
       "iterations": [
         {
-          "input_tokens": 2241,
-          "output_tokens": 896,
+          "input_tokens": 2267,
+          "output_tokens": 1162,
           "cache_read_input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_creation": {
@@ -66,59 +66,27 @@
         }
       ],
       "output_tokens_details": {
-        "thinking_tokens": 596
+        "thinking_tokens": 883
       }
     },
     {
       "step": "verify",
       "model": "claude-opus-5-5",
-      "input_tokens": 1408,
+      "input_tokens": 1404,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 157,
+      "output_tokens": 135,
       "service_tier": "standard",
       "inference_geo": "global",
       "speed": "standard",
       "iterations": [
         {
-          "input_tokens": 1408,
-          "output_tokens": 157,
-          "cache_read_input_tokens": 0,
-          "cache_creation_input_tokens": 0,
-          "cache_creation": {
-            "ephemeral_5m_input_tokens": 0,
-            "ephemeral_1h_input_tokens": 0
-          },
-          "type": "message",
-          "model": null
-        }
-      ],
-      "output_tokens_details": {
-        "thinking_tokens": 0
-      }
-    },
-    {
-      "step": "recap",
-      "model": "claude-opus-5-5",
-      "input_tokens": 1817,
-      "cache_creation_input_tokens": 0,
-      "cache_read_input_tokens": 0,
-      "cache_creation": {
-        "ephemeral_5m_input_tokens": 0,
-        "ephemeral_1h_input_tokens": 0
-      },
-      "output_tokens": 507,
-      "service_tier": "standard",
-      "inference_geo": "global",
-      "speed": "standard",
-      "iterations": [
-        {
-          "input_tokens": 1817,
-          "output_tokens": 507,
+          "input_tokens": 1404,
+          "output_tokens": 135,
           "cache_read_input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_creation": {
@@ -135,13 +103,12 @@
     }
   ],
   "sourcesFrom": "sheet",
-  "date": "2026-11-23",
-  "issue": 9,
-  "lookbackHours": 78,
+  "date": "2026-11-27",
+  "issue": 10,
+  "lookbackHours": 105,
   "focus": [],
   "arcs": {
     "active": [
-      "US populism: DSA vs MAGA",
       "Gen Z protests and education",
       "Youth fighting back",
       "AI and society"
@@ -173,12 +140,12 @@
     {
       "source": "BBC India",
       "ok": true,
-      "items": 23
+      "items": 26
     },
     {
       "source": "BBC World",
       "ok": true,
-      "items": 35
+      "items": 31
     },
     {
       "source": "Breaking Points",
@@ -192,9 +159,15 @@
       "items": 12
     },
     {
+      "source": "Compact",
+      "ok": true,
+      "items": 15,
+      "via": "feed"
+    },
+    {
       "source": "Democracy Now",
       "ok": true,
-      "items": 43
+      "items": 37
     },
     {
       "source": "Dhruv Rathee",
@@ -250,7 +223,7 @@
     {
       "source": "IndiaSpend",
       "ok": true,
-      "items": 4,
+      "items": 3,
       "via": "feed"
     },
     {
@@ -262,7 +235,7 @@
     {
       "source": "Know Your Meme",
       "ok": true,
-      "items": 2
+      "items": 4
     },
     {
       "source": "Meghnerd",
@@ -279,7 +252,7 @@
     {
       "source": "Mojo Story",
       "ok": true,
-      "items": 15,
+      "items": 13,
       "via": "YouTube API"
     },
     {
@@ -345,8 +318,8 @@
     },
     {
       "source": "The Guardian World",
-      "ok": true,
-      "items": 45
+      "ok": false,
+      "error": "HTTP 403"
     },
     {
       "source": "The Hindu",
@@ -356,7 +329,7 @@
     {
       "source": "The India Forum",
       "ok": true,
-      "items": 38,
+      "items": 40,
       "via": "page links"
     },
     {
@@ -371,9 +344,9 @@
     }
   ],
   "emptyFeeds": [],
-  "videosDroppedTooLong": 8,
+  "videosDroppedTooLong": 10,
   "videosLengthUnknown": 0,
-  "candidates": 373,
+  "candidates": 391,
   "focusCoverage": {},
   "budget": {
     "maxLinks": 6,
@@ -386,44 +359,32 @@
     "removed": 6,
     "moved": 0,
     "promoted": 0,
-    "added": 15,
-    "retagged": 0,
+    "added": 14,
+    "retagged": 1,
     "important": 0,
-    "editorLinks": 2,
-    "ownHidden": 1
+    "editorLinks": 1,
+    "ownHidden": 0,
+    "read": 0,
+    "desk": 3
   },
   "extraPicks": [],
-  "factCheck": [
-    {
-      "rejected": "Delhi called it 'frivolous'. US court summons NSA Doval anyway in Pannun case.",
-      "original": "Pannun murder plot: US court sends summonses to NSA Ajit Doval, former RAW chief",
-      "problem": "implies summons came after Delhi's objection; sequence unsupported"
-    }
-  ],
+  "factCheck": [],
   "links": 6,
   "arcLinks": {
-    "US populism: DSA vs MAGA": 1,
     "Gen Z protests and education": 0,
-    "Youth fighting back": 2,
+    "Youth fighting back": 1,
     "AI and society": 1,
-    "new": 0,
-    "none": 2
+    "new": 1,
+    "none": 3
   },
   "arcReport": {
     "issues": [
-      "2026-11-13",
       "2026-11-16",
       "2026-11-20",
-      "2026-11-23"
+      "2026-11-23",
+      "2026-11-27"
     ],
     "arcs": [
-      {
-        "arc": "US populism: DSA vs MAGA",
-        "status": "active",
-        "links": 4,
-        "clicks": 2,
-        "last_link": "2026-11-23"
-      },
       {
         "arc": "Gen Z protests and education",
         "status": "active",
@@ -456,42 +417,28 @@
         "arc": "Youth fighting back",
         "status": "active",
         "links": 3,
-        "clicks": 3,
-        "last_link": "2026-11-23"
+        "clicks": 0,
+        "last_link": "2026-11-27"
       },
       {
         "arc": "AI and society",
         "status": "active",
         "links": 5,
-        "clicks": 2,
-        "last_link": "2026-11-23"
+        "clicks": 1,
+        "last_link": "2026-11-27"
       }
     ],
     "links": {
       "total": 24,
-      "withArc": 12
+      "withArc": 11
     },
     "clicks": {
-      "total": 48,
-      "onArcLinks": 7,
+      "total": 23,
+      "onArcLinks": 1,
       "onPrimers": 0,
-      "onOtherLinks": 41
+      "onOtherLinks": 22
     },
-    "questions": 1,
-    "pilotMinutes": [
-      {
-        "issue_date": "2026-11-13",
-        "minutes": ""
-      },
-      {
-        "issue_date": "2026-11-16",
-        "minutes": ""
-      },
-      {
-        "issue_date": "2026-11-20",
-        "minutes": ""
-      }
-    ]
+    "questions": 0
   },
   "picks": {
     "india": 2,
@@ -502,41 +449,41 @@
     {
       "section": "lead",
       "path": "consensus",
-      "story": "Maharashtra SIR: only 74 of 14,500 deletion requests valid",
-      "source": "Scroll"
-    },
-    {
-      "section": "india",
-      "path": "independent",
-      "story": "Media body tells Supreme Court police restrained journalists at CEC protests",
-      "source": "Scroll"
+      "story": "CJP's Saurav Das stopped by police and airport authorities",
+      "source": "HW News English"
     },
     {
       "section": "india",
       "path": "consensus",
-      "story": "US court summons NSA Doval over Pannun murder plot",
+      "story": "Special Parliament session to push delimitation bill",
+      "source": "Peek TV"
+    },
+    {
+      "section": "india",
+      "path": "consensus",
+      "story": "Centre warns Netflix over Pakistani series release",
       "source": "Scroll"
     },
     {
       "section": "ai",
-      "path": "consensus",
-      "story": "South Korean minister resigns over AI exam cheating scandal",
-      "source": "France 24"
+      "path": "independent",
+      "story": "How AI is unsettling how Indian students learn",
+      "source": "The India Forum"
     },
     {
       "section": "world",
       "path": "consensus",
-      "story": "Democrats win biggest House majority since 1992",
-      "source": "France 24"
+      "story": "Trump pushed Nvidia to reinstate Jensen Huang",
+      "source": "Zeteo"
     },
     {
       "section": "world",
       "path": "consensus",
-      "story": "COP31 climate talks collapse without fossil fuel deal",
-      "source": "IndiaSpend"
+      "story": "COP31 climate summit collapses over fossil fuels",
+      "source": "Democracy Now"
     }
   ],
-  "lead": "BHUSAWAL: OVER 14,500 VOTER DELETION REQUESTS. ONLY 74 FOUND VALID.",
-  "finished": "2026-11-23T01:16:26.913Z",
-  "estimatedCostUsd": 0.3169
+  "lead": "SAURAV DAS SAYS UP POLICE STOPPED HIM AT MEERUT BORDER: 'BANANA REPUBLIC OF UP'",
+  "finished": "2026-11-27T04:17:31.219Z",
+  "estimatedCostUsd": 0.2964
 }

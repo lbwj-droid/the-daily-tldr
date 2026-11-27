@@ -1,0 +1,127 @@
+{
+  "date": "2026-11-27",
+  "issue": 10,
+  "publish_at": "2026-11-27T03:30:00.000Z",
+  "generated_at": "2026-11-27T04:17:28.621Z",
+  "window_hours": 105,
+  "desk": null,
+  "lead": {
+    "id": "8cdf276ede",
+    "section": "lead",
+    "rank": 0,
+    "headline": "SAURAV DAS SAYS UP POLICE STOPPED HIM AT MEERUT BORDER: 'BANANA REPUBLIC OF UP'",
+    "original_headline": "\"Banana Republic Of UP!\": Saurav Das After Being \"Stopped At Meerut Border\" | UP Police | CJP | Yogi",
+    "url": "https://www.youtube.com/watch?v=laio0w_PveU",
+    "source": "HW News English",
+    "kind": "video",
+    "thumbnail": "https://i.ytimg.com/vi/laio0w_PveU/hqdefault.jpg",
+    "arc": "Youth fighting back",
+    "home": "india"
+  },
+  "sections": [
+    {
+      "key": "india",
+      "title": "India",
+      "items": [
+        {
+          "id": "54469498b6",
+          "section": "india",
+          "rank": 1,
+          "headline": "Special Parliament sitting, three contested bills. Did the govt finally find its numbers?",
+          "original_headline": "India's New Political Map Soon?",
+          "url": "https://www.youtube.com/watch?v=GoEPHQKgseE",
+          "source": "Peek TV",
+          "kind": "video",
+          "thumbnail": "https://i.ytimg.com/vi/GoEPHQKgseE/hqdefault.jpg",
+          "arc": "new"
+        },
+        {
+          "id": "ff2bda0ba3",
+          "section": "india",
+          "rank": 2,
+          "headline": "Cine workers' body wants a Netflix show banned before it even airs",
+          "original_headline": "Netflix series ‘Jo Bachay Hain Sang Samait Lo’ is the latest flashpoint in India-Pak cultural ties",
+          "url": "https://scroll.in/article/1097328/netflix-series-jo-bachay-hain-sang-samait-lo-is-the-latest-flashpoint-in-india-pak-cultural-ties?utm_source=rss&utm_medium=public",
+          "source": "Scroll",
+          "kind": "article"
+        }
+      ]
+    },
+    {
+      "key": "ai",
+      "title": "AI & Society",
+      "items": [
+        {
+          "id": "2e8a09840c",
+          "section": "ai",
+          "rank": 1,
+          "headline": "Is AI breaking how students learn to become scholars?",
+          "original_headline": "The Crisis of Academic Formation in the Age of AI",
+          "url": "https://www.theindiaforum.in/education/crisis-academic-formation-age-ai",
+          "source": "The India Forum",
+          "kind": "article",
+          "thumbnail": "https://www.theindiaforum.in/sites/default/files/styles/cover_story_small/public/field/image/2026/08/15/lead-image-41-1786778605.png.webp?h=498d07fe",
+          "arc": "AI and society"
+        }
+      ]
+    },
+    {
+      "key": "world",
+      "title": "World",
+      "items": [
+        {
+          "id": "22efc91b84",
+          "section": "world",
+          "rank": 1,
+          "headline": "Report: Trump made getting Jensen Huang his Nvidia job back a priority",
+          "original_headline": "BREAKING: Trump ‘Made It A Priority’ to Get Nvidia’s Jensen Huang Reinstated",
+          "url": "https://zeteo.com/p/trump-nvidia-jensen-huang-job-back",
+          "source": "Zeteo",
+          "kind": "article",
+          "thumbnail": "https://substackcdn.com/image/fetch/$s_!vpgg!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F6ab4b894-ab12-440f-8d07-f292f9668e72_3799x2633.jpeg"
+        },
+        {
+          "id": "e3501205c3",
+          "section": "world",
+          "rank": 2,
+          "headline": "COP31 collapses after final text forgets fossil fuels exist",
+          "original_headline": "\"A Shameful Failure\": U.N. Climate Summit Collapses as Final Text Drops Mention of Fossil Fuels",
+          "url": "http://www.democracynow.org/2026/11/23/cop31_recap",
+          "source": "Democracy Now",
+          "kind": "article"
+        }
+      ]
+    }
+  ],
+  "arcs": [
+    {
+      "name": "Gen Z protests and education",
+      "side": "india",
+      "so_far": "The Gen Z protests are about more than one exam or one election. Many young Indians, above all in rural India, leave school without the skills employers want, in an economy that already makes too few jobs."
+    },
+    {
+      "name": "Youth jobs worldwide",
+      "side": "world",
+      "so_far": "Young people are struggling to find good jobs in the US, China, France and the UK too. Comparing them shows what is global and what is particular to India."
+    },
+    {
+      "name": "Big business and power",
+      "side": "india",
+      "so_far": "After 12 years of the current government, a few business groups such as Adani and Ambani hold more economic and political power than ever, much like America's robber-baron era."
+    },
+    {
+      "name": "Inequality and your career",
+      "side": "india",
+      "so_far": "Why the gap between India's richest and everyone else keeps widening, and what it means for young people starting their careers now."
+    },
+    {
+      "name": "Youth fighting back",
+      "side": "india",
+      "so_far": "Young Indians are pushing back on three things: broken exams and schools, too few jobs, and attempts to silence them. Many groups claim to lead, from the Cockroach Janta Party and AISA to Congress's youth wings, and no one is fully in charge."
+    },
+    {
+      "name": "AI and society",
+      "so_far": "AI is to Gen Z what the internet was to Gen X. These stories are about what it changes in work, study, art and daily life, not the latest product."
+    }
+  ]
+}

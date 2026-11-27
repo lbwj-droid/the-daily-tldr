@@ -261,6 +261,12 @@
       "role": "prefer",
       "url": "https://jacobin.com",
       "kind": "site"
+    },
+    {
+      "name": "Compact",
+      "role": "neutral",
+      "url": "https://www.compactmag.com/",
+      "kind": "site"
     }
   ]
 }
